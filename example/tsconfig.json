@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@kishannareshpal/expo-pdf": ["../src/index"],
+      "@kishannareshpal/expo-pdf/*": ["../src/*"]
+    }
+  }
+}

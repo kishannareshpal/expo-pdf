@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["KishanExpoPdfModule"]
+  },
+  "android": {
+    "modules": ["com.kishanjadav.expopdf.KishanExpoPdfModule"]
+  }
+}
