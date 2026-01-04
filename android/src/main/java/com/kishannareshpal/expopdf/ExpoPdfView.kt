@@ -13,7 +13,6 @@ import androidx.core.net.toUri
 
 class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
-    const val DEFAULT_PASSWORD = ""
     const val DEFAULT_PAGING_ENABLED = false
     const val DEFAULT_DOUBLE_TAP_ZOOM = true
     const val DEFAULT_HORIZONTAL_MODE_ENABLED = false
@@ -27,11 +26,13 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   internal enum class ErrorCode(val code: String) {
     invalidUri("invalid_uri"),
     invalidDocument("invalid_document"),
+    passwordRequired("password_required"),
+    passwordIncorrect("password_incorrect"),
     unknown("unknown"),
   }
 
   private var uri: Uri? = null
-  private var password: String = DEFAULT_PASSWORD
+  private var password: String? = null
   private var isPagingEnabled: Boolean = DEFAULT_PAGING_ENABLED
   private var isDoubleTapZoomEnabled: Boolean = DEFAULT_DOUBLE_TAP_ZOOM
   private var isHorizontalModeEnabled: Boolean = DEFAULT_HORIZONTAL_MODE_ENABLED
@@ -42,7 +43,6 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   }
 
   init {
-    initPdfView()
     addView(this.pdfView)
   }
 
@@ -53,17 +53,17 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
 
   fun setUri(uri: String?) {
     if (uri == null) {
-      this.reportError(ErrorCode.invalidUri, "No document URI provided.")
+      this.reportError(ErrorCode.invalidUri, "No URI provided")
       return
     }
 
     try {
       this.uri = uri.toUri()
-      this.renderPdf()
-
     } catch (_: Exception) {
-      this.reportError(ErrorCode.invalidUri, "Invalid URI provided: $uri.")
+      this.reportError(ErrorCode.invalidUri, "The provided URI is invalid")
     }
+
+    this.renderPdf()
   }
 
   fun setPassword(password: String) {
@@ -72,7 +72,7 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   }
 
   fun resetPassword() {
-    this.password = DEFAULT_PASSWORD
+    this.password = null
     this.renderPdf()
   }
 
@@ -117,33 +117,21 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   }
 
   private fun renderPdf() {
-    // 1. Capture the current state of uri in a local val
-    val currentUri = this.uri
+    val currentUri = this.uri ?: return
 
-    // 2. Perform the null check on the local variable
-    if (currentUri == null) {
-      this.reportError(ErrorCode.invalidUri, "No document URI provided.")
-      return
-    }
-
-    val pdfBuilder = if (currentUri.scheme == "content") {
-      try {
+    val pdfBuilder = try {
+      if (currentUri.scheme == "content") {
         val contentResolver = context.contentResolver
         val inputStream = contentResolver.openInputStream(currentUri)
-          ?: throw FileNotFoundException("Could not open input stream for URI: $currentUri")
-
+          ?: throw FileNotFoundException("Could not open input stream for the provided URI: $currentUri")
         this.pdfView.fromStream(inputStream)
-      } catch (e: Exception) {
-        this.reportError(ErrorCode.invalidDocument, e.message.toString())
-        return
+      } else {
+        this.pdfView.fromUri(currentUri)
       }
-
-    } else {
-      // Handle file:// or other URIs
-      // TODO: Support URLs
-      this.pdfView.fromUri(currentUri)
+    } catch (e: Exception) {
+      this.reportError(ErrorCode.invalidDocument, e.message.toString())
+      return
     }
-
 
     // Set the primitive PdfView's content background to transparent so that it inherits
     // the color from the React Native view (ExpoView), as defined by the
@@ -152,19 +140,9 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
 
     pdfBuilder
       .pageFitPolicy(FitPolicy.BOTH)
-      .password(this.password)
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)
       .spacing(this.pageGap)
-      .onError { error ->
-        val code = when (error) {
-          is FileNotFoundException -> ErrorCode.invalidDocument
-          is SecurityException -> ErrorCode.invalidUri
-          else -> ErrorCode.unknown
-        }
-
-        this.reportError(code, error.message ?: "Unknown error")
-      }
       .onLoad {
         this.onLoadComplete(
           mapOf(
@@ -182,7 +160,32 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
       }
 
     post {
-      pdfBuilder.load()
+      pdfBuilder
+        .onError { e ->
+          // PDF fails to load if it's NOT pw protected AND a password is provided.
+          // - For this reason, the first time we load the pdf, we check if we have received the pw
+          //   required error and retry loading the PDF with password provided
+          if (e.message.toString().lowercase().contains("password required")) {
+            if (this.password == null) {
+              this.reportError(
+                ErrorCode.passwordRequired,
+                "PDF requires a password, but no password was provided"
+              )
+            } else {
+              // Password has been provided, so re-attempt a load
+              pdfBuilder
+                .password(this.password)
+                .onError {
+                  this.reportError(
+                    ErrorCode.passwordIncorrect,
+                    "The provided password was incorrect"
+                  )
+                }
+                .load()
+            }
+          }
+        }
+        .load()
     }
   }
 
