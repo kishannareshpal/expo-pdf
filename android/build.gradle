@@ -43,6 +43,13 @@ android {
 }
 
 dependencies {
-    implementation("androidx.pdf:pdf-viewer-fragment:1.0.0-alpha12")
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+  // NOTE: The original repo at com.github.barteksc is abandoned by the maintainer; there will be no
+  //       more updates coming from that repo.
+  //       - The repo from zacharee is based on PdfiumAndroidKt, a much newer fork of PdfiumAndroid,
+  //       with better maintenance and updated native libraries.
+  implementation "com.github.zacharee:AndroidPdfViewer:4.0.1"
+
+  // Explicitly define the version of PdfiumAndroidKt so this can be updated independently of
+  // AndroidPdfViewer as updates are provided.
+  implementation 'io.legere:pdfiumandroid:1.0.35'
 }

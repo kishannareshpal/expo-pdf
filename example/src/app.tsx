@@ -1,7 +1,7 @@
-import { PdfView, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from '@kishannareshpal/expo-pdf';
-import { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAssetLocalUri } from './lib/use-pdf-uri';
+import { PdfView } from '@kishannareshpal/expo-pdf';
 
 export const App = () => {
   return (
@@ -13,10 +13,7 @@ export const App = () => {
 
 export const Content = () => {
   const insets = useSafeAreaInsets();
-
-  const [pageChangedPayload, setPageChangedPayload] = useState<OnPageChangedEventPayload>();
-  const [loadCompletePayload, setLoadCompletePayload] = useState<OnLoadCompleteEventPayload>();
-  const [errorPayload, setErrorPayload] = useState<OnErrorEventPayload>();
+  const samplePdfUri = useAssetLocalUri(require('./assets/samples/sample.pdf'));
 
   return (
     <View style={{ flex: 1 }}>
@@ -24,23 +21,18 @@ export const Content = () => {
         <Text style={{ color: 'white' }}>@kishannareshpal/expo-pdf</Text>
       </View>
 
-      <PdfView
-        style={{ flex: 1 }}
-        uri="https://www.lysator.liu.se/mit-guide/MITLockGuide.pdf"
-        onLoadComplete={setLoadCompletePayload}
-        onPageChanged={setPageChangedPayload}
-        onError={setErrorPayload}
-      />
-
-      <View style={{ paddingHorizontal: 12, paddingTop: 12, borderColor: '#292929', borderBottomWidth: 1, backgroundColor: '#000' }}>
-        <ScrollView horizontal contentContainerStyle={{ paddingBottom: insets.bottom + 12 }}>
-          <View>
-            <Text style={{ color: 'white' }}>Events:</Text>
-            <Text style={{ color: 'white' }}>- onLoadComplete: {JSON.stringify(loadCompletePayload)}</Text>
-            <Text style={{ color: 'white' }}>- onPageChanged: {JSON.stringify(pageChangedPayload)}</Text>
-            <Text style={{ color: 'white' }}>- onError: {JSON.stringify(errorPayload)}</Text>
-          </View>
-        </ScrollView>
+      <View style={{ flex: 1 }}>
+        {samplePdfUri ? (
+          <PdfView
+            style={{ flex: 1, backgroundColor: 'green' }}
+            uri={samplePdfUri}
+            pageGap={0}
+            password="123456"
+            onPageChanged={(payload) => console.debug('[expo-pdf] onPageChanged', payload)}
+            onLoadComplete={(payload) => console.debug('[expo-pdf] onLoadComplete', payload)}
+            onError={(payload) => console.debug('[expo-pdf] onError', payload)}
+          />
+        ) : null}
       </View>
     </View>
   )

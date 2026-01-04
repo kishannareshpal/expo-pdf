@@ -1,8 +1,11 @@
 package com.kishannareshpal.expopdf
 
+import android.net.Uri
+import androidx.core.net.toUri
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
+import kotlin.math.roundToInt
 
 class ExpoPdfModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
@@ -19,8 +22,48 @@ class ExpoPdfModule : Module() {
     View(ExpoPdfView::class) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
-      Prop("uri") { view: ExpoPdfView, url: URL ->
-//        view.webView.loadUrl(url.toString())
+      Prop("uri") { view: ExpoPdfView, uri: String ->
+        view.setUri(uri)
+      }
+
+      Prop("password") { view: ExpoPdfView, password: String? ->
+        if (password != null) {
+          view.setPassword(password)
+        } else {
+          view.resetPassword()
+        }
+      }
+
+      Prop("pagingEnabled") { view: ExpoPdfView, enabled: Boolean? ->
+        if (enabled != null) {
+          view.setPagingEnabled(enabled)
+        } else {
+          view.resetPagingEnabled()
+        }
+      }
+
+      Prop("disableDoubleTapToZoom") { view: ExpoPdfView, disabled: Boolean? ->
+        if (disabled != null) {
+          view.setDoubleTapZoomEnabled(!disabled)
+        } else {
+          view.resetDoubleTapZoomEnabled()
+        }
+      }
+
+      Prop("horizontal") { view: ExpoPdfView, enabled: Boolean? ->
+        if (enabled != null) {
+          view.setHorizontalModeEnabled(!enabled)
+        } else {
+          view.resetHorizontalModeEnabled()
+        }
+      }
+
+      Prop("pageGap") { view: ExpoPdfView, gap: Float? ->
+        if (gap != null) {
+          view.setPageGap(gap.roundToInt())
+        } else {
+          view.resetPageGap()
+        }
       }
     }
   }
