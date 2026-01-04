@@ -22,7 +22,7 @@ class ExpoPdfModule : Module() {
     View(ExpoPdfView::class) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
-      Prop("uri") { view: ExpoPdfView, uri: String ->
+      Prop("uri") { view: ExpoPdfView, uri: String? ->
         view.setUri(uri)
       }
 
