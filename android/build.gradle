@@ -41,3 +41,8 @@ android {
     abortOnError false
   }
 }
+
+dependencies {
+    implementation("androidx.pdf:pdf-viewer-fragment:1.0.0-alpha12")
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+}

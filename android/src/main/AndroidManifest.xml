@@ -1,2 +1,9 @@
-<manifest>
+<manifest xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk tools:overrideLibrary="
+        androidx.pdf,
+        androidx.pdf.document.service,
+        androidx.pdf.viewer,
+        androidx.pdf.viewer.fragment,
+        androidx.pdf.models,
+        androidx.pdf.util" />
 </manifest>
