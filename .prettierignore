@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+build/
+dist/
+*.tgz
+
+# iOS
+ios/Pods/
+ios/build/
+*.xcworkspace
+*.xcodeproj
+
+# Android
+android/build/
+android/.gradle/
+android/.idea/
+*.iml
+
+# Generated files
+*.generated.*
+.expo/
+.expo-shared/
+
+# Lock files
+package-lock.json
+yarn.lock
+bun.lock
+pnpm-lock.yaml
