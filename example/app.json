@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kishanjadav.expopdf.example"
+      "bundleIdentifier": "com.kishannareshpal.expopdf.example"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.kishanjadav.expopdf.example"
+      "package": "com.kishannareshpal.expopdf.example"
     },
     "web": {
       "favicon": "./assets/favicon.png"

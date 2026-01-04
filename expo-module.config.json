@@ -1,9 +1,16 @@
 {
-  "platforms": ["apple", "android", "web"],
+  "platforms": [
+    "apple",
+    "android"
+  ],
   "apple": {
-    "modules": ["KishanExpoPdfModule"]
+    "modules": [
+      "ExpoPdfModule"
+    ]
   },
   "android": {
-    "modules": ["com.kishanjadav.expopdf.KishanExpoPdfModule"]
+    "modules": [
+      "com.kishannareshpal.expopdf.ExpoPdfModule"
+    ]
   }
 }

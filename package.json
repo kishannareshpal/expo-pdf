@@ -1,7 +1,7 @@
 {
   "name": "@kishannareshpal/expo-pdf",
   "version": "0.1.0",
-  "description": "Expo / React Native PDF viewer",
+  "description": "A cross-platform, performant PDF viewer component for React Native and Expo",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
@@ -19,7 +19,11 @@
     "react-native",
     "expo",
     "@kishannareshpal/expo-pdf",
-    "KishanExpoPdf"
+    "rn-pdf",
+    "react-native-pdf",
+    "expo-pdf",
+    "pdf",
+    "expopdf"
   ],
   "repository": "https://github.com/kishannareshpal/expo-pdf",
   "bugs": {

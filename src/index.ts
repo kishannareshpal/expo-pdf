@@ -1,5 +1,4 @@
-// Reexport the native module. On web, it will be resolved to KishanExpoPdfModule.web.ts
-// and on native platforms to KishanExpoPdfModule.ts
-export { default } from './KishanExpoPdfModule';
-export { default as KishanExpoPdfView } from './KishanExpoPdfView';
-export * from  './KishanExpoPdf.types';
+// Reexport the native module
+export { default } from './pdf-module';
+export { PdfView } from './pdf-view';
+export * from './types';
