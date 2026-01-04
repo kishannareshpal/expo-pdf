@@ -76,7 +76,7 @@ export const App = () => {
 
 ### Contributing
 
-Feel free to open an issue or submit a pull request — I’ll happily review and merge improvements.
+Please read [CONTRIBUTING.md](./contri)
 
 ### License
 

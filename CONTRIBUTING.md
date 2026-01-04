@@ -12,6 +12,10 @@ Thank you for your interest in contributing to `@kishannarehpal/expo-pdf`! This 
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [Edit the module source code](#edit-the-module-source-code)
+      - [TypeScript](#typescript)
+      - [Android](#android)
+      - [iOS](#ios)
+      - [Resources](#resources)
     - [Running the Example App](#running-the-example-app)
     - [Code Style Guidelines](#code-style-guidelines)
   - [Testing](#testing)
@@ -60,11 +64,12 @@ Before you begin:
 ### Installation
 
 1. **Install root dependencies**:
+
    ```bash
    bun install
    ```
-
 2. **Install example app dependencies**:
+
    ```bash
    cd example
    bun install
@@ -72,11 +77,25 @@ Before you begin:
 
 ### Edit the module source code
 
-- Edit the React Native binding TypeScript files from: `src/`
-- Edit the Android native files by opening Android Studio: `bun open:android`
-- Edit the iOS native files by opening Xcode: `bun open:ios`
+#### TypeScript
 
-The following resources may be helpful as these represent the core of the project:
+Edit the React Native binding TypeScript files from `src/` using your favorite editor, such as VS Code.
+
+#### Android
+
+Edit the Android native files by opening Android Studio: `bun open:android`
+
+![](./docs/contributing-android.png)
+
+#### iOS
+
+Edit the iOS native files by opening Xcode: `bun open:ios`
+
+![](./docs/contributing-ios.png)
+
+#### Resources
+
+The following resources may be helpful as they represent the core of the project:
 
 - [`Expo Modules API` documentation](https://docs.expo.dev/modules/module-api/)
 - [`Apple PDFKit` documentation](https://developer.apple.com/documentation/pdfkit)
@@ -87,18 +106,19 @@ The following resources may be helpful as these represent the core of the projec
 The `example/` directory contains a test app to develop and test the changes you make in the module. For example, if you make a change to either the Android / iOS native module, you will need to re-build and re-install the app on the device - this can be easily achieved by following:
 
 1. Start the Metro bundler (if not already):
+
    ```bash
    cd example
    bun start
    ```
-
 2. Install and run the app on iOS:
+
    ```bash
    cd example
    bun ios
    ```
-
 3. Install and run the app on Android:
+
    ```bash
    cd example
    bun android
@@ -107,22 +127,23 @@ The `example/` directory contains a test app to develop and test the changes you
 ### Code Style Guidelines
 
 1. **TypeScript/React**:
+
    - Use functional components with hooks
    - Prefer `const` over `let` when possible
    - Use meaningful, self-documenting variable and function names
    - Add TSDoc comments for public APIs when necessary
-
 2. **Swift**:
+
    - Follow Swift style guide conventions
    - Use meaningful, self-documenting names for classes, functions, and variables
    - Add documentation comments for public APIs
-
 3. **Kotlin**:
+
    - Follow Kotlin style guide conventions
    - Use meaningful names for classes, functions, and variables
    - Add KDoc comments for public APIs
-
 4. **General**:
+
    - Keep functions focused and small
    - Write self-documenting code
    - Comment complex logic
@@ -140,14 +161,15 @@ The `example/` directory contains a test app to develop and test the changes you
 ### Before Submitting
 
 1. **Update the CHANGELOG.md**:
+
    - Add your changes under the appropriate version
    - Use the following format:
      - `### 🎉 New features` for new features
      - `### 🐛 Bug fixes` for bug fixes
      - `### 💡 Others` for other changes
      - `### 🛠 Breaking changes` for breaking changes
-
 2. **Test your changes**:
+
    - Test on iOS
    - Test on Android
    - Verify the example app works correctly
@@ -155,25 +177,27 @@ The `example/` directory contains a test app to develop and test the changes you
 ### Pull Request Process
 
 1. **Create a branch** from `main`:
+
    ```bash
    git checkout -b feature/your-feature-name
    # or
    git checkout -b username/your-bug-fix
    ```
-
 2. **Make your changes**:
+
    - Write clean, well-documented code
    - Follow existing code patterns
    - Add tests if applicable
    - Update documentation as needed
-
 3. **Commit your changes**:
+
    ```bash
    git add .
    git commit -m "feat: add support for password-protected PDFs"
    ```
-   
+
    Use conventional commit messages:
+
    - `feat:` for new features
    - `fix:` for bug fixes
    - `docs:` for documentation changes
@@ -181,13 +205,13 @@ The `example/` directory contains a test app to develop and test the changes you
    - `refactor:` for code refactoring
    - `test:` for adding tests
    - `chore:` for maintenance tasks
-
 4. **Push to your fork**:
+
    ```bash
    git push origin feature/your-feature-name
    ```
-
 5. **Create a Pull Request**:
+
    - Go to the GitHub repository
    - Click "New Pull Request"
    - Select your branch
@@ -196,8 +220,8 @@ The `example/` directory contains a test app to develop and test the changes you
      - Testing performed
      - Screenshots/videos if applicable
      - Related issues (if any)
-
 6. **Respond to feedback**:
+
    - Address any review comments
    - Make requested changes
    - Keep the PR up to date with `main`
@@ -239,9 +263,9 @@ When requesting features, please include:
 ## Questions?
 
 Feel free to:
+
 - Open an issue for questions or discussions
 - Start a discussion in the GitHub Discussions tab
 - Contact the maintainer directly
 
 Thank you for contributing to `@kishannareshpal/expo-pdf`! 🎉
-
