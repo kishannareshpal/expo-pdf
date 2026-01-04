@@ -1,5 +1,6 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
+const { withUniwindConfig } = require('uniwind/metro');
 const path = require('path');
 
 const config = getDefaultConfig(__dirname);
@@ -31,4 +32,7 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
-module.exports = config;
+module.exports = withUniwindConfig(config, {
+  cssEntryFile: './src/global.css',
+  dtsFile: './src/uniwind-types.d.ts'
+});
