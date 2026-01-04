@@ -15,8 +15,48 @@ public class ExpoPdfModule: Module {
     View(ExpoPdfView.self) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
-      Prop("uri") { (view: ExpoPdfView, uri: URL?) in
-        view.load(url: uri)
+      Prop("uri") { (view: ExpoPdfView, uri: String) in
+        view.setUri(uri)
+      }
+
+      Prop("password") { (view: ExpoPdfView, password: String?) in
+        if let password {
+          view.setPassword(password)
+        } else {
+          view.resetPassword()
+        }
+      }
+
+      Prop("pagingEnabled") { (view: ExpoPdfView, enabled: Bool?) in
+        if let enabled {
+          view.setPagingEnabled(enabled)
+        } else {
+          view.resetPagingEnabled()
+        }
+      }
+
+      Prop("disableDoubleTapToZoom") { (view: ExpoPdfView, disabled: Bool?) in
+        if let disabled {
+          view.setDoubleTapZoomEnabled(!disabled)
+        } else {
+          view.resetDoubleTapZoomEnabled()
+        }
+      }
+
+      Prop("horizontal") { (view: ExpoPdfView, enabled: Bool?) in
+        if let enabled {
+          view.setHorizontalModeEnabled(!enabled)
+        } else {
+          view.resetHorizontalModeEnabled()
+        }
+      }
+
+      Prop("pageGap") { (view: ExpoPdfView, gap: CGFloat?) in
+        if let gap {
+          view.setPageGap(gap)
+        } else {
+          view.resetPageGap()
+        }
       }
     }
   }

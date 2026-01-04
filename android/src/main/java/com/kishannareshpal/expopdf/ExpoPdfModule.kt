@@ -1,8 +1,11 @@
 package com.kishannareshpal.expopdf
 
+import android.net.Uri
+import androidx.core.net.toUri
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
+import kotlin.math.roundToInt
 
 class ExpoPdfModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
@@ -14,37 +17,54 @@ class ExpoPdfModule : Module() {
     // The module will be accessible from `requireNativeModule('ExpoPdf')` in JavaScript.
     Name("ExpoPdf")
 
-    // Defines constant property on the module.
-    Constant("PI") {
-      Math.PI
-    }
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      "Hello world! 👋"
-    }
-
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { value: String ->
-      // Send an event to JavaScript.
-      sendEvent("onChange", mapOf(
-        "value" to value
-      ))
-    }
-
     // Enables the module to be used as a native view. Definition components that are accepted as part of
     // the view definition: Prop, Events.
     View(ExpoPdfView::class) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { view: ExpoPdfView, url: URL ->
-        view.webView.loadUrl(url.toString())
+      Events("onLoadComplete", "onPageChanged", "onError")
+
+      Prop("uri") { view: ExpoPdfView, uri: String ->
+        view.setUri(uri)
       }
-      // Defines an event that the view can send to JavaScript.
-      Events("onLoad")
+
+      Prop("password") { view: ExpoPdfView, password: String? ->
+        if (password != null) {
+          view.setPassword(password)
+        } else {
+          view.resetPassword()
+        }
+      }
+
+      Prop("pagingEnabled") { view: ExpoPdfView, enabled: Boolean? ->
+        if (enabled != null) {
+          view.setPagingEnabled(enabled)
+        } else {
+          view.resetPagingEnabled()
+        }
+      }
+
+      Prop("disableDoubleTapToZoom") { view: ExpoPdfView, disabled: Boolean? ->
+        if (disabled != null) {
+          view.setDoubleTapZoomEnabled(!disabled)
+        } else {
+          view.resetDoubleTapZoomEnabled()
+        }
+      }
+
+      Prop("horizontal") { view: ExpoPdfView, enabled: Boolean? ->
+        if (enabled != null) {
+          view.setHorizontalModeEnabled(!enabled)
+        } else {
+          view.resetHorizontalModeEnabled()
+        }
+      }
+
+      Prop("pageGap") { view: ExpoPdfView, gap: Float? ->
+        if (gap != null) {
+          view.setPageGap(gap.roundToInt())
+        } else {
+          view.resetPageGap()
+        }
+      }
     }
   }
 }

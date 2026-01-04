@@ -6,11 +6,16 @@ import { NativeSyntheticEvent, StyleProp, StyleSheet, ViewStyle } from 'react-na
 import { forwardNativeEventTo } from './utils';
 
 type BaseProps = {
+  style?: StyleProp<ViewStyle>;
   /**
    * The file URI. Accepts a remote resource (e.g. via HTTPs) or a local file path (e.g. file:///)
    */
   uri: string;
-  style?: StyleProp<ViewStyle>;
+  password?: string;
+  pagingEnabled?: boolean
+  disableDoubleTapToZoom?: boolean
+  horizontal?: boolean
+  pageGap?: number
 }
 
 type NativePdfViewProps = BaseProps & {
@@ -39,10 +44,15 @@ export const PdfView = ({
   return (
     <NativePdfView
       style={[styles.container, style]}
+      uri={props.uri}
+      disableDoubleTapToZoom={props.disableDoubleTapToZoom}
+      horizontal={props.horizontal}
+      pageGap={props.pageGap}
+      pagingEnabled={props.pagingEnabled}
+      password={props.password}
       onLoadComplete={forwardNativeEventTo(onLoadComplete)}
       onPageChanged={forwardNativeEventTo(onPageChanged)}
       onError={forwardNativeEventTo(onError)}
-      {...props}
     />
   )
 }
