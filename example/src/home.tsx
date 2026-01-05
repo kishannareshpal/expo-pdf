@@ -1,6 +1,6 @@
-import { Text, View } from "react-native"
+import { ScrollView, Text, View } from "react-native"
 import { Example } from "./components/example"
-import { useAtom, useAtomValue } from "jotai"
+import { useAtom } from "jotai"
 import { exampleSelectorAtom } from "./lib/atoms"
 import { Pressable } from 'react-native'
 
@@ -13,6 +13,8 @@ export const HomeScreen = () => {
         return <Example.Normal />;
       case 'password-protected':
         return <Example.PasswordProtected />;
+      case 'content-padding':
+        return <Example.ContentPadding />;
       default:
         return null;
     }
@@ -20,19 +22,27 @@ export const HomeScreen = () => {
 
   const renderExamplesList = () => {
     return (
-      <View className="flex-1 p-2 gap-2">
-        <ExampleCard
-          title="Normal PDF"
-          description="Renders a standard PDF file with multiple pages."
-          onPress={() => setExample('normal')}
-        />
+      <ScrollView>
+        <View className="flex-1 p-2 gap-2">
+          <ExampleCard
+            title="Normal PDF"
+            description="Renders a standard PDF file with multiple pages."
+            onPress={() => setExample('normal')}
+          />
 
-        <ExampleCard
-          title="Password Protected PDF"
-          description="Renders a PDF file that is protected with a password."
-          onPress={() => setExample('password-protected')}
-        />
-      </View>
+          <ExampleCard
+            title="Password protected"
+            description="Renders a PDF file that is protected with a password."
+            onPress={() => setExample('password-protected')}
+          />
+
+          <ExampleCard
+            title="Content padding"
+            description="Renders a PDF file with custom content padding around the entire document."
+            onPress={() => setExample('content-padding')}
+          />
+        </View>
+      </ScrollView>
     )
   }
 

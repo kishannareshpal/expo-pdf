@@ -45,9 +45,9 @@ android {
 dependencies {
   // NOTE: The original repo at com.github.barteksc is abandoned by the maintainer; there will be no
   //       more updates coming from that repo.
-  //       - The repo from zacharee is based on PdfiumAndroidKt, a much newer fork of PdfiumAndroid,
-  //       with better maintenance and updated native libraries.
-  implementation "com.github.zacharee:AndroidPdfViewer:4.0.1"
+  //       - com.github.kishannareshpal:AndroidPdfViewer repo is based on PdfiumAndroidKt, a much newer
+  //       fork of PdfiumAndroid, with better maintenance and updated native libraries.
+  implementation 'com.github.kishannareshpal:AndroidPdfViewer:2026.01.05.5'
 
   // Explicitly define the version of PdfiumAndroidKt so this can be updated independently of
   // AndroidPdfViewer as updates are provided.
