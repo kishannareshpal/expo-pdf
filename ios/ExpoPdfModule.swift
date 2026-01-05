@@ -20,43 +20,27 @@ public class ExpoPdfModule: Module {
       }
 
       Prop("password") { (view: ExpoPdfView, password: String?) in
-        if let password {
-          view.setPassword(password)
-        } else {
-          view.resetPassword()
-        }
+        view.setPassword(password)
       }
 
       Prop("pagingEnabled") { (view: ExpoPdfView, enabled: Bool?) in
-        if let enabled {
-          view.setPagingEnabled(enabled)
-        } else {
-          view.resetPagingEnabled()
-        }
+        view.setPagingEnabled(enabled)
       }
 
       Prop("disableDoubleTapToZoom") { (view: ExpoPdfView, disabled: Bool?) in
-        if let disabled {
-          view.setDoubleTapZoomEnabled(!disabled)
-        } else {
-          view.resetDoubleTapZoomEnabled()
-        }
+        view.setDoubleTapZoomEnabled(disabled != true)
       }
 
       Prop("horizontal") { (view: ExpoPdfView, enabled: Bool?) in
-        if let enabled {
-          view.setHorizontalModeEnabled(!enabled)
-        } else {
-          view.resetHorizontalModeEnabled()
-        }
+        view.setHorizontalModeEnabled(enabled)
       }
 
-      Prop("pageGap") { (view: ExpoPdfView, gap: CGFloat?) in
-        if let gap {
-          view.setPageGap(gap)
-        } else {
-          view.resetPageGap()
-        }
+      Prop("pageGap") { (view: ExpoPdfView, gapPx: Int?) in
+        view.setPageGap(gapPx)
+      }
+      
+      Prop("contentPadding") { (view: ExpoPdfView, contentPadding: ContentPadding?) in
+        view.setContentPadding(contentPadding?.toEdgeInset())
       }
     }
   }

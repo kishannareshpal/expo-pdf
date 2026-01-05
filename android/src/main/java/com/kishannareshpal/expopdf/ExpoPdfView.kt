@@ -28,8 +28,7 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
     invalidUri("invalid_uri"),
     invalidDocument("invalid_document"),
     passwordRequired("password_required"),
-    passwordIncorrect("password_incorrect"),
-    unknown("unknown"),
+    passwordIncorrect("password_incorrect")
   }
 
   private var uri: Uri? = null
