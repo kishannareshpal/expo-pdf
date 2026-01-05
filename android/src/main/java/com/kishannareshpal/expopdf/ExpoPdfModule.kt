@@ -2,6 +2,7 @@ package com.kishannareshpal.expopdf
 
 import android.net.Uri
 import androidx.core.net.toUri
+import com.kishannareshpal.expopdf.lib.records.ContentPadding
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
@@ -61,6 +62,19 @@ class ExpoPdfModule : Module() {
       Prop("pageGap") { view: ExpoPdfView, gap: Float? ->
         if (gap != null) {
           view.setPageGap(gap.roundToInt())
+        } else {
+          view.resetPageGap()
+        }
+      }
+
+      Prop("contentPadding") { view: ExpoPdfView, contentPadding: ContentPadding? ->
+        if (contentPadding != null) {
+          view.setContentPadding(
+            contentPadding.left,
+            contentPadding.top,
+            contentPadding.right,
+            contentPadding.bottom
+          )
         } else {
           view.resetPageGap()
         }

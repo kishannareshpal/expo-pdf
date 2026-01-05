@@ -2,6 +2,7 @@ package com.kishannareshpal.expopdf
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.net.Uri
 import expo.modules.kotlin.AppContext
 import expo.modules.kotlin.views.ExpoView
@@ -37,6 +38,7 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   private var isDoubleTapZoomEnabled: Boolean = DEFAULT_DOUBLE_TAP_ZOOM
   private var isHorizontalModeEnabled: Boolean = DEFAULT_HORIZONTAL_MODE_ENABLED
   private var pageGap: Int = DEFAULT_PAGE_GAP
+  private var contentPadding: Rect = Rect(0, 0, 0, 0)
 
   internal val pdfView = PDFView(context, null).apply {
     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -116,6 +118,16 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
     this.renderPdf()
   }
 
+  fun setContentPadding(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
+    this.contentPadding = Rect(left, top, right, bottom)
+    this.renderPdf()
+  }
+
+  fun resetContentPadding() {
+    this.contentPadding = Rect(0, 0, 0, 0)
+    this.renderPdf()
+  }
+
   private fun renderPdf() {
     val currentUri = this.uri ?: return
 
@@ -143,6 +155,19 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)
       .spacing(this.pageGap)
+      .contentPadding(
+        this.contentPadding.left,
+        this.contentPadding.top,
+        this.contentPadding.right,
+        this.contentPadding.bottom
+      )
+      .onLoad { pageCount ->
+        this.onLoadComplete(
+          mapOf(
+            "pageCount" to pageCount
+          )
+        )
+      }
       .onLoad {
         this.onLoadComplete(
           mapOf(

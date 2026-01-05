@@ -9,7 +9,7 @@ export const Normal = () => {
     <View className="flex-1">
       {pdfLocalUri ? (
         <PdfView
-          style={{ flex: 1, backgroundColor: 'red' }}
+          style={{ flex: 1, backgroundColor: 'blue' }}
           uri={pdfLocalUri}
           pageGap={12}
           onError={(payload) => console.debug('[expo-pdf] onError', payload)}
