@@ -9,6 +9,7 @@ class ExpoPdfView: ExpoView {
   static let DEFAULT_HORIZONTAL_MODE_ENABLED = false
   static let DEFAULT_PAGE_GAP = 0
   static let DEFAULT_CONTENT_PADDING = UIEdgeInsets.zero
+  static let DEFAULT_FIT_MODE = FitMode.both
 
   let onLoadComplete = EventDispatcher()
   let onPageChanged = EventDispatcher()
@@ -30,6 +31,7 @@ class ExpoPdfView: ExpoView {
   private var isHorizontalModeEnabled: Bool = DEFAULT_HORIZONTAL_MODE_ENABLED
   private var pageGap: Int = DEFAULT_PAGE_GAP
   private var contentPadding: UIEdgeInsets = DEFAULT_CONTENT_PADDING
+  private var fitMode: FitMode = DEFAULT_FIT_MODE
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
@@ -52,7 +54,7 @@ class ExpoPdfView: ExpoView {
     pdfView.frame = bounds
     
     // Maintain insets on rotation, but don't reset reading position
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, resetOffset: false)
+    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
 
   deinit {
@@ -116,7 +118,7 @@ class ExpoPdfView: ExpoView {
       bottom: padding.bottom - margins.bottom,
       right: padding.right - margins.right
     )
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, resetOffset: false)
+    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
   
   func setContentPadding(_ padding: UIEdgeInsets?) {
@@ -135,7 +137,13 @@ class ExpoPdfView: ExpoView {
       bottom: padding.bottom - margins.bottom,
       right: padding.right - margins.right
     )
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, resetOffset: false)
+    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+  }
+  
+  func setFitMode(_ mode: FitMode?) {
+    self.fitMode = mode ?? Self.DEFAULT_FIT_MODE
+    
+    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
   
   @objc private func handlePageChange() {
@@ -176,7 +184,7 @@ class ExpoPdfView: ExpoView {
 
     // Dispatch async to allow PDFView to finish its initial layout
     DispatchQueue.main.async {
-      self.pdfView.scaleToFit(contentPadding: self.contentPadding, resetOffset: true)
+      self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: true)
     }
 
     self.onLoadComplete([

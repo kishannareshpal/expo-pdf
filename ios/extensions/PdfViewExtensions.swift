@@ -8,7 +8,7 @@
 import PDFKit
 
 extension PDFView {
-  func scaleToFit(contentPadding: UIEdgeInsets, resetOffset: Bool) {
+  func scaleToFit(contentPadding: UIEdgeInsets, fitMode: FitMode, resetOffset: Bool = false) {
     guard let page = self.currentPage else {
       return
     }

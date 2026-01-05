@@ -42,6 +42,10 @@ public class ExpoPdfModule: Module {
       Prop("contentPadding") { (view: ExpoPdfView, contentPadding: ContentPadding?) in
         view.setContentPadding(contentPadding?.toEdgeInset())
       }
+      
+      Prop("fitMode") { (view: ExpoPdfView, fitMode: FitMode?) in
+        view.setFitMode(fitMode)
+      }
     }
   }
 }
