@@ -12,29 +12,38 @@ extension PDFView {
     guard let page = self.currentPage else {
       return
     }
-
+    
     let viewSize = self.bounds.size
     let pageSize = page.bounds(for: self.displayBox).size
-    guard viewSize.width > 0, pageSize.width > 0 else {
+    
+    // Ensure we have valid dimensions to avoid division by zero
+    guard viewSize.width > 0, pageSize.width > 0, pageSize.height > 0 else {
       return
     }
     
-    // Calculate the available space (that is, the View size minus the Padding)
+    // Calculate the available space (View size minus Padding)
     let availableWidth = viewSize.width - contentPadding.left - contentPadding.right
     let availableHeight = viewSize.height - contentPadding.top - contentPadding.bottom
     
-    // Determine the scale factor to fit content into available space
-    let targetScale: CGFloat = if self.displayDirection == .horizontal {
-      // For horizontal scroll, fit content to height
-      availableHeight / pageSize.height
-    } else {
-      // For vertical scroll, fit content to width
-      availableWidth / pageSize.width
+    // Calculate potential scale factors
+    let widthScale = availableWidth / pageSize.width
+    let heightScale = availableHeight / pageSize.height
+    
+    // Determine the target scale based on the requested FitMode
+    let targetScale: CGFloat
+    switch fitMode {
+    case .width:
+      targetScale = widthScale
+    case .height:
+      targetScale = heightScale
+    case .both:
+      // "Aspect Fit": Choose the smaller scale to ensure the whole page is visible
+      targetScale = min(widthScale, heightScale)
     }
     
     // Apply new scale factor
     if abs(self.scaleFactor - targetScale) > 0.001 {
-      self.minScaleFactor = targetScale // Prevent zooming out further than padding
+      self.minScaleFactor = targetScale // Prevent zooming out further than the fit
       self.scaleFactor = targetScale
     }
     
