@@ -7,17 +7,22 @@ import android.net.Uri
 import expo.modules.kotlin.AppContext
 import expo.modules.kotlin.views.ExpoView
 import com.github.barteksc.pdfviewer.PDFView
-import com.github.barteksc.pdfviewer.util.FitPolicy
 import expo.modules.kotlin.viewevent.EventDispatcher
 import java.io.FileNotFoundException
 import androidx.core.net.toUri
+import com.github.barteksc.pdfviewer.util.FitPolicy
+import com.kishannareshpal.expopdf.lib.FitMode
+
+// TODO: Refresh the content on prop change
 
 class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
-    const val DEFAULT_PAGING_ENABLED = false
-    const val DEFAULT_DOUBLE_TAP_ZOOM = true
-    const val DEFAULT_HORIZONTAL_MODE_ENABLED = false
-    const val DEFAULT_PAGE_GAP = 6
+    internal val DEFAULT_PAGING_ENABLED = false
+    internal val DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true
+    internal val DEFAULT_HORIZONTAL_MODE_ENABLED = false
+    internal val DEFAULT_PAGE_GAP = 0
+    internal val DEFAULT_CONTENT_PADDING = Rect(0, 0, 0, 0)
+    internal val DEFAULT_FIT_MODE = FitMode.both
   }
 
   private val onLoadComplete by EventDispatcher()
@@ -34,16 +39,22 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
   private var uri: Uri? = null
   private var password: String? = null
   private var isPagingEnabled: Boolean = DEFAULT_PAGING_ENABLED
-  private var isDoubleTapZoomEnabled: Boolean = DEFAULT_DOUBLE_TAP_ZOOM
+  private var isDoubleTapZoomEnabled: Boolean = DEFAULT_DOUBLE_TAP_ZOOM_ENABLED
   private var isHorizontalModeEnabled: Boolean = DEFAULT_HORIZONTAL_MODE_ENABLED
   private var pageGap: Int = DEFAULT_PAGE_GAP
-  private var contentPadding: Rect = Rect(0, 0, 0, 0)
+  private var contentPadding: Rect = DEFAULT_CONTENT_PADDING
+  private var fitMode: FitMode = DEFAULT_FIT_MODE
 
   internal val pdfView = PDFView(context, null).apply {
     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
   }
 
   init {
+    // Set the primitive PdfView's content background to transparent so that it inherits
+    // the color from the React Native view (ExpoView), as defined by the
+    // style prop in the component (`style={{ backgroundColor: '#eee' }}`).
+    this.pdfView.setBackgroundColor(Color.TRANSPARENT)
+
     addView(this.pdfView)
   }
 
@@ -64,70 +75,54 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
       this.reportError(ErrorCode.invalidUri, "The provided URI is invalid")
     }
 
-    this.renderPdf()
+    this.reloadPdf()
   }
 
-  fun setPassword(password: String) {
+  fun setPassword(password: String?) {
     this.password = password;
-    this.renderPdf()
+    this.reloadPdf()
   }
 
-  fun resetPassword() {
-    this.password = null
-    this.renderPdf()
+  fun setPagingEnabled(enabled: Boolean?) {
+    this.isPagingEnabled = enabled ?: DEFAULT_PAGING_ENABLED
+    this.reloadPdf()
   }
 
-  fun setPagingEnabled(enabled: Boolean) {
-    this.isPagingEnabled = enabled
-    this.renderPdf()
+  fun setDoubleTapZoomEnabled(enabled: Boolean?) {
+    this.isDoubleTapZoomEnabled = enabled ?: DEFAULT_DOUBLE_TAP_ZOOM_ENABLED
+    this.pdfView.enableDoubletap(this.isDoubleTapZoomEnabled)
   }
 
-  fun resetPagingEnabled() {
-    this.isPagingEnabled = DEFAULT_PAGING_ENABLED
-    this.renderPdf()
+  fun setHorizontalModeEnabled(enabled: Boolean?) {
+    this.isHorizontalModeEnabled = enabled ?: DEFAULT_HORIZONTAL_MODE_ENABLED
+    this.reloadPdf()
   }
 
-  fun setDoubleTapZoomEnabled(enabled: Boolean) {
-    this.isDoubleTapZoomEnabled = enabled
-    this.renderPdf()
+  fun setPageGap(pageGap: Int?) {
+    this.pageGap = pageGap ?: DEFAULT_PAGE_GAP
+    this.reloadPdf()
   }
 
-  fun resetDoubleTapZoomEnabled() {
-    this.isPagingEnabled = DEFAULT_PAGING_ENABLED
-    this.renderPdf()
+  fun setContentPadding(rect: Rect?) {
+    this.contentPadding = if (rect != null) {
+      Rect(rect.left, rect.top, rect.right, rect.bottom)
+    } else {
+      DEFAULT_CONTENT_PADDING
+    }
+
+    this.reloadPdf()
   }
 
-  fun setHorizontalModeEnabled(enabled: Boolean) {
-    this.isHorizontalModeEnabled = enabled
-    this.renderPdf()
+  fun setFitMode(mode: FitMode?) {
+    this.fitMode = mode ?: DEFAULT_FIT_MODE
+    this.reloadPdf()
   }
 
-  fun resetHorizontalModeEnabled() {
-    this.isHorizontalModeEnabled = DEFAULT_HORIZONTAL_MODE_ENABLED
-    this.renderPdf()
-  }
+  private fun reloadPdf() {
+    if (!this.pdfView.isRecycled) {
+      this.pdfView.recycle()
+    }
 
-  fun setPageGap(pageGap: Int) {
-    this.pageGap = pageGap
-    this.renderPdf()
-  }
-
-  fun resetPageGap() {
-    this.pageGap = DEFAULT_PAGE_GAP
-    this.renderPdf()
-  }
-
-  fun setContentPadding(left: Int = 0, top: Int = 0, right: Int = 0, bottom: Int = 0) {
-    this.contentPadding = Rect(left, top, right, bottom)
-    this.renderPdf()
-  }
-
-  fun resetContentPadding() {
-    this.contentPadding = Rect(0, 0, 0, 0)
-    this.renderPdf()
-  }
-
-  private fun renderPdf() {
     val currentUri = this.uri ?: return
 
     val pdfBuilder = try {
@@ -144,13 +139,8 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
       return
     }
 
-    // Set the primitive PdfView's content background to transparent so that it inherits
-    // the color from the React Native view (ExpoView), as defined by the
-    // style prop in the component (`style={{ backgroundColor: '#eee' }}`).
-    this.pdfView.setBackgroundColor(Color.TRANSPARENT)
-
     pdfBuilder
-      .pageFitPolicy(FitPolicy.BOTH)
+      .pageFitPolicy(this.fitMode.toFitPolicy())
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)
       .spacing(this.pageGap)
@@ -217,7 +207,7 @@ class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, 
     super.onAttachedToWindow()
 
     this.pdfView.isRecycled.let {
-      this.renderPdf()
+      this.reloadPdf()
     }
   }
 

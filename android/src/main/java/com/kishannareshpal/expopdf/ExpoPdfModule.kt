@@ -2,7 +2,8 @@ package com.kishannareshpal.expopdf
 
 import android.net.Uri
 import androidx.core.net.toUri
-import com.kishannareshpal.expopdf.lib.records.ContentPadding
+import com.kishannareshpal.expopdf.lib.ContentPadding
+import com.kishannareshpal.expopdf.lib.FitMode
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
@@ -28,56 +29,31 @@ class ExpoPdfModule : Module() {
       }
 
       Prop("password") { view: ExpoPdfView, password: String? ->
-        if (password != null) {
-          view.setPassword(password)
-        } else {
-          view.resetPassword()
-        }
+        view.setPassword(password)
       }
 
       Prop("pagingEnabled") { view: ExpoPdfView, enabled: Boolean? ->
-        if (enabled != null) {
-          view.setPagingEnabled(enabled)
-        } else {
-          view.resetPagingEnabled()
-        }
+        view.setPagingEnabled(enabled)
       }
 
       Prop("disableDoubleTapToZoom") { view: ExpoPdfView, disabled: Boolean? ->
-        if (disabled != null) {
-          view.setDoubleTapZoomEnabled(!disabled)
-        } else {
-          view.resetDoubleTapZoomEnabled()
-        }
+        view.setDoubleTapZoomEnabled(disabled != true)
       }
 
       Prop("horizontal") { view: ExpoPdfView, enabled: Boolean? ->
-        if (enabled != null) {
-          view.setHorizontalModeEnabled(!enabled)
-        } else {
-          view.resetHorizontalModeEnabled()
-        }
+        view.setHorizontalModeEnabled(enabled)
       }
 
       Prop("pageGap") { view: ExpoPdfView, gap: Float? ->
-        if (gap != null) {
-          view.setPageGap(gap.roundToInt())
-        } else {
-          view.resetPageGap()
-        }
+        view.setPageGap(gap?.roundToInt())
       }
 
       Prop("contentPadding") { view: ExpoPdfView, contentPadding: ContentPadding? ->
-        if (contentPadding != null) {
-          view.setContentPadding(
-            contentPadding.left,
-            contentPadding.top,
-            contentPadding.right,
-            contentPadding.bottom
-          )
-        } else {
-          view.resetPageGap()
-        }
+        view.setContentPadding(contentPadding?.toRect())
+      }
+
+      Prop("fitMode") { view: ExpoPdfView, mode: FitMode? ->
+        view.setFitMode(mode)
       }
     }
   }

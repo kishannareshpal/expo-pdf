@@ -42,6 +42,8 @@ class ExpoPdfView: ExpoView {
     // the color from the React Native view (ExpoView), as defined by the
     // style prop in the component (`style={{ backgroundColor: '#eee' }}`).
     self.pdfView.backgroundColor = .clear
+    
+    // We calculate the scaling manually via PDFView.scaleToFit(contentPadding:)
     self.pdfView.autoScales = false
 
     addSubview(pdfView)
@@ -72,7 +74,7 @@ class ExpoPdfView: ExpoView {
   }
 
   func setPassword(_ password: String?) {
-    self.password = password ?? nil
+    self.password = password
     
     // Reload the PDF as it needs to perform the unlock attempt
     // if password has been set, or lock if password's been removed

@@ -1,7 +1,7 @@
 import { requireNativeView } from 'expo';
 import * as React from 'react';
 
-import { ContentPadding, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from './types';
+import { ContentPadding, FitMode, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from './types';
 import { NativeSyntheticEvent, PixelRatio, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { forwardNativeEventTo } from './utils';
 
@@ -17,6 +17,7 @@ type BaseProps = {
   horizontal?: boolean
   pageGap?: number
   contentPadding?: ContentPadding
+  fitMode?: FitMode
 }
 
 type NativePdfViewProps = BaseProps & {
@@ -52,6 +53,7 @@ export const PdfView = ({
       pagingEnabled={props.pagingEnabled}
       password={props.password}
       contentPadding={props.contentPadding}
+      fitMode={props.fitMode}
       onLoadComplete={forwardNativeEventTo(onLoadComplete)}
       onPageChanged={forwardNativeEventTo(onPageChanged)}
       onError={forwardNativeEventTo(onError)}
