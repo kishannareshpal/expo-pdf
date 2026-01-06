@@ -5,12 +5,12 @@
   ],
   "apple": {
     "modules": [
-      "ExpoPdfModule"
+      "KJExpoPdfModule"
     ]
   },
   "android": {
     "modules": [
-      "com.kishannareshpal.expopdf.ExpoPdfModule"
+      "com.kishannareshpal.expopdf.KJExpoPdfModule"
     ]
   }
 }

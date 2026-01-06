@@ -9,7 +9,7 @@ import expo.modules.kotlin.modules.ModuleDefinition
 import java.net.URL
 import kotlin.math.roundToInt
 
-class ExpoPdfModule : Module() {
+class KJExpoPdfModule : Module() {
   // Each module class must implement the definition function. The definition consists of components
   // that describes the module's functionality and behavior.
   // See https://docs.expo.dev/modules/module-api for more details about available components.
@@ -17,42 +17,42 @@ class ExpoPdfModule : Module() {
     // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
     // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
     // The module will be accessible from `requireNativeModule('ExpoPdf')` in JavaScript.
-    Name("ExpoPdf")
+    Name("KJExpoPdf")
 
     // Enables the module to be used as a native view. Definition components that are accepted as part of
     // the view definition: Prop, Events.
-    View(ExpoPdfView::class) {
+    View(KJExpoPdfView::class) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
-      Prop("uri") { view: ExpoPdfView, uri: String? ->
+      Prop("uri") { view: KJExpoPdfView, uri: String? ->
         view.setUri(uri)
       }
 
-      Prop("password") { view: ExpoPdfView, password: String? ->
+      Prop("password") { view: KJExpoPdfView, password: String? ->
         view.setPassword(password)
       }
 
-      Prop("pagingEnabled") { view: ExpoPdfView, enabled: Boolean? ->
+      Prop("pagingEnabled") { view: KJExpoPdfView, enabled: Boolean? ->
         view.setPagingEnabled(enabled)
       }
 
-      Prop("disableDoubleTapToZoom") { view: ExpoPdfView, disabled: Boolean? ->
+      Prop("disableDoubleTapToZoom") { view: KJExpoPdfView, disabled: Boolean? ->
         view.setDoubleTapZoomEnabled(disabled != true)
       }
 
-      Prop("horizontal") { view: ExpoPdfView, enabled: Boolean? ->
+      Prop("horizontal") { view: KJExpoPdfView, enabled: Boolean? ->
         view.setHorizontalModeEnabled(enabled)
       }
 
-      Prop("pageGap") { view: ExpoPdfView, gap: Float? ->
+      Prop("pageGap") { view: KJExpoPdfView, gap: Float? ->
         view.setPageGap(gap?.roundToInt())
       }
 
-      Prop("contentPadding") { view: ExpoPdfView, contentPadding: ContentPadding? ->
+      Prop("contentPadding") { view: KJExpoPdfView, contentPadding: ContentPadding? ->
         view.setContentPadding(contentPadding?.toRect())
       }
 
-      Prop("fitMode") { view: ExpoPdfView, mode: FitMode? ->
+      Prop("fitMode") { view: KJExpoPdfView, mode: FitMode? ->
         view.setFitMode(mode)
       }
     }
