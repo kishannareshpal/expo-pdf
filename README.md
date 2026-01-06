@@ -4,18 +4,18 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 ### Core features
 
-- [X] Supports Android and iOS
+- Supports Android and iOS
   - Uses Apple's [`PDFKit`](https://developer.apple.com/documentation/pdfkit/pdfview) on iOS
   - Uses [kishannareshpal/AndroidPdfViewer](https://github.com/kishannareshpal/AndroidPdfViewer) on Android which is a maintained
     fork of [barteksc/AndroidPdfViewerV2](https://github.com/kishannareshpal/AndroidPdfViewer) which uses the open-source [PDFium](https://pdfium.googlesource.com/pdfium/+/HEAD/docs/getting-started.md) PDF rendering engine.
     - Note: We'll be looking to switch to [`androidx.pdf`](https://developer.android.com/jetpack/androidx/releases/pdf) on Android once that becomes stable.
-- [x] Load PDFs from remote URLs or local file paths
-  - [x] Supports local file URIs on android and iOS and ContentResolver URIs on android.
-  - [x] Remote URLs cannot be passed directly to the PdfView component. You must download it and then use the local file URI to preview.
-- [X] Pinch-to-zoom / double-tap-to-zoom and drag gestures
-- [x] Support for password-protected PDFs
-- [x] Horizontal and vertical reading modes
-- [x] Support for content-insets 
+- Load PDFs from remote URLs or local file paths
+  - Supports local file URIs on android and iOS and ContentResolver URIs on android.
+  - Remote URLs cannot be passed directly to the PdfView component. You must download it and then use the local file URI to preview.
+- Pinch-to-zoom / double-tap-to-zoom and drag gestures
+- Support for password-protected PDFs
+- Horizontal and vertical reading modes
+- Support for content-insets 
 
 ### Demo
 
@@ -27,7 +27,7 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 This package works with both Expo and framework-less React Native projects but Expo provides a more streamlined experience.
 
-```
+```bash
 npm install @kishannareshpal/expo-pdf
 
 # bun add @kishannareshpal/expo-pdf
@@ -220,13 +220,13 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 #### Publishing a new version to the registry
 
-> [!NOTE]
+> **NOTE**
 >
 > This package follows semantic versioning with the format: `major.minor.patch`.
 > - Major version: Increment when making incompatible API changes.
 > - Minor version: Increment when adding new functionality in a backward-compatible way.
 > - Patch version: Increment when fixing bugs in a backward-compatible manner.
-****
+
 1. Bump `package.json` version using one of `npm version patch|minor|major` - this will create a new `tag`.
 2. `git push --tags` to push the new changes including the newly created tag.
 3. Navigate to [Create a New Release](https://github.com/kishannareshpal/expo-pdf/releases/new)
