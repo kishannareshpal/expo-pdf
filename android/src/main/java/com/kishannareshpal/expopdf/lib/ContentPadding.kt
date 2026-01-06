@@ -1,5 +1,6 @@
-package com.kishannareshpal.expopdf.lib.records
+package com.kishannareshpal.expopdf.lib
 
+import android.graphics.Rect
 import expo.modules.kotlin.records.Field
 import expo.modules.kotlin.records.Record
 
@@ -15,4 +16,8 @@ class ContentPadding: Record {
 
   @Field
   val bottom: Int = 0
+
+  fun toRect(): Rect {
+    return Rect(this.left, this.top, this.right, this.bottom)
+  }
 }

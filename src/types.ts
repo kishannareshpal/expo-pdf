@@ -12,3 +12,5 @@ export type ContentPadding = {
   bottom?: number;
   left?: number;
 }
+
+export type FitMode = 'width' | 'height' | 'both';

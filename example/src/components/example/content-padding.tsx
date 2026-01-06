@@ -11,12 +11,12 @@ export const ContentPadding = () => {
         <PdfView
           style={{ flex: 1, backgroundColor: 'orange' }}
           uri={pdfLocalUri}
-          pageGap={12}
+          pageGap={25}
           contentPadding={{
             top: 50,
-            left: 50,
-            right: 50,
-            bottom: 50
+            left: 0,
+            right: 0,
+            bottom: 0
           }}
           onError={(payload) => console.debug('[expo-pdf] onError', payload)}
         />
