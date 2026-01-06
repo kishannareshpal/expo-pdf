@@ -19,9 +19,9 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 ### Demo
 
-| [Video](./docs/expo-pdf-example.mp4)                                                            |
-| ----------------------------------------------------------------------------------------------- |
-| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> |
+| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                                      |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> | <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> |
 
 ### Installation
 
@@ -168,9 +168,9 @@ export const App = () => {
 | `pageGap`                | No       | `number`                                                              | PDF document URL or local file path.                   | `0`                                        |
 | `contentPadding`         | No       | [`ContentPadding`](#contentpadding)                                   | PDF document URL or local file path.                   | `{ top: 0, left: 0, right: 0, bottom: 0 }` |
 | `fitMode`                | No       | [`FitMode`](#fitmode)                                                 | PDF document URL or local file path.                   | `"width"`                                  |
-| `onLoadComplete`         | No       | [`(OnLoadCompleteEventPayload) => void`](#onloadcompleteeventpayload) | Triggered once the document has been fully loaded.     | `-`                                        |
-| `onPageChanged`          | No       | [`(OnPageChangedPayload) => void`](#onpagechangedeventpayload)        | Triggered when the user navigates to a different page. | `-`                                        |
-| `onError`                | No       | [`(OnErrorPayload) => void`](#onerroreventpayload)                    | Triggered when the PDF fails to load or render.        | `-`                                        |
+| `onLoadComplete`         | No       | [`(OnLoadCompleteEventPayload) => void`](#onloadcompleteeventpayload) | Triggered once the document has been fully loaded.     | -                                          |
+| `onPageChanged`          | No       | [`(OnPageChangedPayload) => void`](#onpagechangedeventpayload)        | Triggered when the user navigates to a different page. | -                                          |
+| `onError`                | No       | [`(OnErrorPayload) => void`](#onerroreventpayload)                    | Triggered when the PDF fails to load or render.        | -                                          |
 
 
 #### API Reference
@@ -203,14 +203,18 @@ export const App = () => {
 
 ```ts
 {
-    code: 'no_url' | 'invalid_url' | 'invalid_document', 
+    code: 'invalid_url' | 'invalid_document' | 'password_required' | 'password_incorrect', 
     message: string
 }
 ```
 
 ### Contributing
 
-Please read [CONTRIBUTING.md](./contri)
+Contributions are welcome! 
+
+#### How to contribute
+
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ### License
 
