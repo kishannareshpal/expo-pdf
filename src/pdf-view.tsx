@@ -26,7 +26,7 @@ type NativePdfViewProps = BaseProps & {
   onError?: (event: NativeSyntheticEvent<OnErrorEventPayload>) => void;
 };
 
-const NativePdfView: React.ComponentType<NativePdfViewProps> = requireNativeView('ExpoPdf');
+const NativePdfView: React.ComponentType<NativePdfViewProps> = requireNativeView('KJExpoPdf');
 
 // -----------
 

@@ -15,7 +15,7 @@ import com.kishannareshpal.expopdf.lib.FitMode
 
 // TODO: Refresh the content on prop change
 
-class ExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
+class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
     internal val DEFAULT_PAGING_ENABLED = false
     internal val DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true

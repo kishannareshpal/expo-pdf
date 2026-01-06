@@ -2,7 +2,7 @@ import ExpoModulesCore
 import PDFKit
 import SwiftUI
 
-class ExpoPdfView: ExpoView {
+class KJExpoPdfView: ExpoView {
   // MARK: - Defaults
   static let DEFAULT_PAGING_ENABLED = false
   static let DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true
@@ -37,26 +37,27 @@ class ExpoPdfView: ExpoView {
     super.init(appContext: appContext)
 
     clipsToBounds = true
-    
+
     // Set the primitive PdfView's content background to transparent so that it inherits
     // the color from the React Native view (ExpoView), as defined by the
     // style prop in the component (`style={{ backgroundColor: '#eee' }}`).
     self.pdfView.backgroundColor = .clear
-    
+
     // We calculate the scaling manually via PDFView.scaleToFit(contentPadding:)
     self.pdfView.autoScales = false
 
     addSubview(pdfView)
-    
+
     setupListeners()
   }
 
   override func layoutSubviews() {
     super.layoutSubviews()
     pdfView.frame = bounds
-    
+
     // Maintain insets on rotation, but don't reset reading position
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+    self.pdfView.scaleToFit(
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
 
   deinit {
@@ -75,7 +76,7 @@ class ExpoPdfView: ExpoView {
 
   func setPassword(_ password: String?) {
     self.password = password
-    
+
     // Reload the PDF as it needs to perform the unlock attempt
     // if password has been set, or lock if password's been removed
     if self.pdfView.document?.isLocked == true {
@@ -106,54 +107,57 @@ class ExpoPdfView: ExpoView {
       bottom: isHorizontalModeEnabled ? 0 : CGFloat(pageGap),
       right: isHorizontalModeEnabled ? CGFloat(pageGap) : 0
     )
-    
+
     // PDFView pageBreakMargins not only apply insets between the pages, but also around the pages
     // which is not what we always want - expo-pdf only uses pageBreakMargins for inter page spacing
     // and we use our contentPadding for the spacing around the document.
     // - Subtract the PDFView pageBreakMargins to prevent double spacing
     var padding = self.contentPadding
     let margins = self.pdfView.pageBreakMargins
-    
+
     padding = UIEdgeInsets(
       top: padding.top - margins.top,
       left: padding.left - margins.left,
       bottom: padding.bottom - margins.bottom,
       right: padding.right - margins.right
     )
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+    self.pdfView.scaleToFit(
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
-  
+
   func setContentPadding(_ padding: UIEdgeInsets?) {
     self.contentPadding = padding ?? Self.DEFAULT_CONTENT_PADDING
-    
+
     // PDFView pageBreakMargins not only apply insets between the pages, but also around the pages
     // which is not what we always want - expo-pdf only uses pageBreakMargins for inter page spacing
     // and we use our contentPadding for the spacing around the document.
     // - Subtract the PDFView pageBreakMargins to prevent double spacing
     var padding = self.contentPadding
     let margins = self.pdfView.pageBreakMargins
-    
+
     padding = UIEdgeInsets(
       top: padding.top - margins.top,
       left: padding.left - margins.left,
       bottom: padding.bottom - margins.bottom,
       right: padding.right - margins.right
     )
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+    self.pdfView.scaleToFit(
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
-  
+
   func setFitMode(_ mode: FitMode?) {
     self.fitMode = mode ?? Self.DEFAULT_FIT_MODE
-    
-    self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+
+    self.pdfView.scaleToFit(
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
   }
-  
+
   @objc private func handlePageChange() {
     guard
       let page = pdfView.currentPage,
       let document = pdfView.document
     else { return }
-    
+
     onPageChanged([
       "pageIndex": document.index(for: page),
       "pageCount": document.pageCount,
@@ -164,7 +168,7 @@ class ExpoPdfView: ExpoView {
     guard let document = self.loadDocument() else {
       return
     }
-    
+
     if document.isLocked {
       if let password = self.password {
         let unlocked = document.unlock(withPassword: password)
@@ -181,19 +185,20 @@ class ExpoPdfView: ExpoView {
         )
       }
     }
-    
+
     self.pdfView.document = document
 
     // Dispatch async to allow PDFView to finish its initial layout
     DispatchQueue.main.async {
-      self.pdfView.scaleToFit(contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: true)
+      self.pdfView.scaleToFit(
+        contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: true)
     }
 
     self.onLoadComplete([
       "pageCount": document.pageCount
     ])
   }
-  
+
   private func loadDocument() -> PDFDocument? {
     guard let documentURL else {
       return nil
@@ -218,7 +223,7 @@ class ExpoPdfView: ExpoView {
 
     return document
   }
-  
+
   private func setupListeners() {
     NotificationCenter.default.addObserver(
       self,

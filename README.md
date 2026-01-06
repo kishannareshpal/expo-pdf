@@ -25,6 +25,8 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 ### Installation
 
+This package works with both Expo and framework-less React Native projects but Expo provides a more streamlined experience.
+
 ```
 npm install @kishannareshpal/expo-pdf
 
@@ -210,7 +212,7 @@ export const App = () => {
 
 ### Contributing
 
-Contributions are welcome! 
+Contributions are welcome!
 
 #### How to contribute
 
