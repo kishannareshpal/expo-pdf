@@ -1,15 +1,18 @@
 import { Text, View } from "react-native";
 import { useAssetLocalUri } from "../../lib/use-asset-local-uri";
 import { PdfView } from "@kishannareshpal/expo-pdf";
+import { Stack } from "expo-router";
 
 const ContentPaddingExampleScreen = () => {
   const pdfLocalUri = useAssetLocalUri(require('@assets/pdf-samples/standard.pdf'));
 
   return (
     <View className="flex-1">
+      <Stack.Screen options={{ title: 'Content padding', headerLargeTitleEnabled: false }} />
+
       {pdfLocalUri ? (
         <PdfView
-          style={{ flex: 1, backgroundColor: 'orange' }}
+          style={{ flex: 1 }}
           uri={pdfLocalUri}
           pageGap={8}
           contentPadding={{ top: 10, left: 25, right: 25 }}

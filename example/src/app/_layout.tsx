@@ -1,14 +1,14 @@
-import './global.css'
-import { Layout } from '../components/layout';
+import '../global.css'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Stack } from 'expo-router';
+import { View } from 'react-native';
 
 const RootLayout = () => {
   return (
     <SafeAreaProvider>
-      <Layout>
-        <Stack />
-      </Layout>
+      <View className="flex-1">
+        <Stack screenOptions={{ headerLargeTitleEnabled: true, headerBackButtonDisplayMode: 'minimal' }} />
+      </View>
     </SafeAreaProvider>
   );
 }
