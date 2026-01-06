@@ -2,8 +2,8 @@ import { Text, View } from "react-native";
 import { useAssetLocalUri } from "../../lib/use-asset-local-uri";
 import { PdfView } from "@kishannareshpal/expo-pdf";
 
-export const Normal = () => {
-  const pdfLocalUri = useAssetLocalUri(require('@assets/pdf-samples/normal.pdf'));
+const StandardExampleScreen = () => {
+  const pdfLocalUri = useAssetLocalUri(require('@assets/pdf-samples/standard.pdf'));
 
   return (
     <View className="flex-1">
@@ -22,3 +22,5 @@ export const Normal = () => {
     </View>
   )
 }
+
+export default StandardExampleScreen;

@@ -1,3 +1,4 @@
 import { atom } from "jotai";
 
-export const exampleSelectorAtom = atom<'normal' | 'password-protected' | 'content-padding' | null>(null);
+export type ExampleKey = string;
+export const exampleSelectorAtom = atom<ExampleKey | null>(null);

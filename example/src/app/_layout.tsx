@@ -1,15 +1,16 @@
 import './global.css'
+import { Layout } from '../components/layout';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { HomeScreen } from './home';
-import { Layout } from './components/layout';
+import { Stack } from 'expo-router';
 
-export const App = () => {
+const RootLayout = () => {
   return (
     <SafeAreaProvider>
       <Layout>
-        <HomeScreen />
+        <Stack />
       </Layout>
     </SafeAreaProvider>
   );
 }
 
+export default RootLayout

@@ -2,7 +2,7 @@ import { requireNativeView } from 'expo';
 import * as React from 'react';
 
 import { ContentPadding, FitMode, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from './types';
-import { NativeSyntheticEvent, PixelRatio, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { NativeSyntheticEvent, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { forwardNativeEventTo } from './utils';
 
 type BaseProps = {
