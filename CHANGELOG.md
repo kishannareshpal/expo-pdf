@@ -9,6 +9,6 @@
 
 _This version does not introduce any user-facing changes._
 
-## 0.1.0 - 2026-01-04
+## 0.1.0 - 2026-01-06
 
-_This version does not introduce any user-facing changes._
+_Initial release with all features documented in README.md_
