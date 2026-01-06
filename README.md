@@ -19,9 +19,9 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 ### Demo
 
-| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                                      |
+| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                              |
 | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> | <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> |
+| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> | <video src="https://github.com/user-attachments/assets/ce9bd00f-0a4e-47ec-800c-cbdcba5c5554" /> |
 
 ### Installation
 
