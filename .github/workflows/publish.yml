@@ -1,0 +1,41 @@
+# Trusted Publishing
+# See: Trusted publishing for npm packages
+
+name: Publish Package
+on:
+  release:
+    types: created
+
+permissions:
+  id-token: write # Required for OIDC with NPM
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      # - name: 🧪 Test
+      #   run: npm test --passWithNoTests
+
+      # - name: 🔬 Lint
+      #   run: npm run lint
+
+      # Publish uses OIDC - no token needed
+      - name: 🚀 Publish the package
+        run: npm publish

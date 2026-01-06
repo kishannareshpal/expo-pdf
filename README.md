@@ -218,6 +218,26 @@ Contributions are welcome!
 
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+#### Publishing a new version to the registry
+
+> [!NOTE]
+>
+> This package follows semantic versioning with the format: `major.minor.patch`.
+> - Major version: Increment when making incompatible API changes.
+> - Minor version: Increment when adding new functionality in a backward-compatible way.
+> - Patch version: Increment when fixing bugs in a backward-compatible manner.
+****
+1. Bump `package.json` version using one of `npm version patch|minor|major` - this will create a new `tag`.
+2. `git push --tags` to push the new changes including the newly created tag.
+3. Navigate to [Create a New Release](https://github.com/kishannareshpal/expo-pdf/releases/new)
+4. Select the latest tag you've created above.
+5. Use the same name as the tag for the release title.
+6. Click <kbd>Generate release notes</kbd>, and/or edit the description to detail the changes.
+7. Click the green <kbd>Publish release</kbd> button.
+8. A GitHub action will automatically run to publish the new version of the package to the registry.
+   - Monitor the status at [kishannareshpal/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
+
+
 ### License
 
 MIT
