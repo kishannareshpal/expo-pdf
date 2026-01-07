@@ -15,7 +15,7 @@ const ContentPaddingExampleScreen = () => {
           style={{ flex: 1 }}
           uri={pdfLocalUri}
           pageGap={8}
-          contentPadding={{ top: 10, left: 25, right: 25 }}
+          contentPadding={{ top: 25, left: 25, right: 25, bottom: 25 }}
           fitMode="width"
           onError={(payload) => console.debug('[expo-pdf] onError', payload)}
         />

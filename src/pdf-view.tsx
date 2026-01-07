@@ -18,6 +18,7 @@ type BaseProps = {
   pageGap?: number
   contentPadding?: ContentPadding
   fitMode?: FitMode
+  autoScale?: boolean
 }
 
 type NativePdfViewProps = BaseProps & {
@@ -54,6 +55,7 @@ export const PdfView = ({
       password={props.password}
       contentPadding={props.contentPadding}
       fitMode={props.fitMode}
+      autoScale={props.autoScale}
       onLoadComplete={forwardNativeEventTo(onLoadComplete)}
       onPageChanged={forwardNativeEventTo(onPageChanged)}
       onError={forwardNativeEventTo(onError)}
