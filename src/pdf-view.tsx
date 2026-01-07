@@ -13,7 +13,7 @@ type BaseProps = {
   uri: string;
   password?: string;
   pagingEnabled?: boolean
-  disableDoubleTapToZoom?: boolean
+  doubleTapToZoom?: boolean
   horizontal?: boolean
   pageGap?: number
   contentPadding?: ContentPadding
@@ -48,7 +48,7 @@ export const PdfView = ({
     <NativePdfView
       style={[styles.container, style]}
       uri={props.uri}
-      disableDoubleTapToZoom={props.disableDoubleTapToZoom}
+      doubleTapToZoom={props.doubleTapToZoom}
       horizontal={props.horizontal}
       pageGap={props.pageGap}
       pagingEnabled={props.pagingEnabled}

@@ -165,7 +165,7 @@ export const App = () => {
 | `uri`                    | Required | `string`                                                              | PDF document URL or local file path.                   | -                                          |
 | `password`               | No       | `string`                                                              | PDF document URL or local file path.                   | `undefined`                                |
 | `pagingEnabled`          | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
-| `disableDoubleTapToZoom` | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
+| `doubleTapToZoom`        | No       | `boolean`                                                             | PDF document URL or local file path.                   | `true`                                     |
 | `horizontal`             | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
 | `pageGap`                | No       | `number`                                                              | PDF document URL or local file path.                   | `0`                                        |
 | `contentPadding`         | No       | [`ContentPadding`](#contentpadding)                                   | PDF document URL or local file path.                   | `{ top: 0, left: 0, right: 0, bottom: 0 }` |
