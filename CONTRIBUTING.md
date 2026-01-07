@@ -2,56 +2,33 @@
 
 Thank you for your interest in contributing to `@kishannarehpal/expo-pdf`! This document provides guidelines and instructions for contributing to the project.
 
-## Table of Contents
-
-- [Contributing to @kishannareshpal/expo-pdf](#contributing-to-kishannareshpalexpo-pdf)
-  - [Table of Contents](#table-of-contents)
-  - [Code of Conduct](#code-of-conduct)
-  - [Getting Started](#getting-started)
-  - [Development Setup](#development-setup)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Edit the module source code](#edit-the-module-source-code)
-      - [TypeScript](#typescript)
-      - [Android](#android)
-      - [iOS](#ios)
-      - [Resources](#resources)
-    - [Running the Example App](#running-the-example-app)
-    - [Code Style Guidelines](#code-style-guidelines)
-  - [Testing](#testing)
-    - [Manual Testing](#manual-testing)
-  - [Submitting Changes](#submitting-changes)
-    - [Before Submitting](#before-submitting)
-    - [Pull Request Process](#pull-request-process)
-    - [Pull Request Guidelines](#pull-request-guidelines)
-  - [Reporting Bugs](#reporting-bugs)
-  - [Requesting Features](#requesting-features)
-  - [Questions?](#questions)
-
 ## Code of Conduct
 
-This project adheres to a code of conduct that all contributors are expected to follow. Please be respectful and constructive in all interactions.
+Please be respectful and constructive in all interactions.
 
 ## Getting Started
 
 Before you begin:
 
-1. **Fork the repository** on GitHub
-2. **Clone your fork** locally:
+1. Fork and clone the repo:
    ```bash
    git clone https://github.com/your-username/expo-pdf.git
    cd expo-pdf
    ```
-3. **Add the upstream repository**:
+2. Add the upstream repository:
    ```bash
    git remote add upstream https://github.com/kishannareshpal/expo-pdf.git
+   ```
+3. Install dependencies
+   ```bash
+   bun install
    ```
 
 ## Development Setup
 
 ### Prerequisites
 
-- **bun** (https://bun.com/)
+- **bun** (https://bun.com)
 - **For iOS development**:
   - macOS (required)
   - Xcode (latest stable version)
@@ -68,6 +45,7 @@ Before you begin:
    ```bash
    bun install
    ```
+
 2. **Install example app dependencies**:
 
    ```bash
@@ -111,12 +89,14 @@ The `example/` directory contains a test app to develop and test the changes you
    cd example
    bun start
    ```
+
 2. Install and run the app on iOS:
 
    ```bash
    cd example
    bun ios
    ```
+
 3. Install and run the app on Android:
 
    ```bash
@@ -127,23 +107,19 @@ The `example/` directory contains a test app to develop and test the changes you
 ### Code Style Guidelines
 
 1. **TypeScript/React**:
-
    - Use functional components with hooks
    - Prefer `const` over `let` when possible
    - Use meaningful, self-documenting variable and function names
    - Add TSDoc comments for public APIs when necessary
 2. **Swift**:
-
    - Follow Swift style guide conventions
    - Use meaningful, self-documenting names for classes, functions, and variables
    - Add documentation comments for public APIs
 3. **Kotlin**:
-
    - Follow Kotlin style guide conventions
    - Use meaningful names for classes, functions, and variables
    - Add KDoc comments for public APIs
 4. **General**:
-
    - Keep functions focused and small
    - Write self-documenting code
    - Comment complex logic
@@ -161,7 +137,6 @@ The `example/` directory contains a test app to develop and test the changes you
 ### Before Submitting
 
 1. **Update the CHANGELOG.md**:
-
    - Add your changes under the appropriate version
    - Use the following format:
      - `### 🎉 New features` for new features
@@ -169,7 +144,6 @@ The `example/` directory contains a test app to develop and test the changes you
      - `### 💡 Others` for other changes
      - `### 🛠 Breaking changes` for breaking changes
 2. **Test your changes**:
-
    - Test on iOS
    - Test on Android
    - Verify the example app works correctly
@@ -183,12 +157,13 @@ The `example/` directory contains a test app to develop and test the changes you
    # or
    git checkout -b username/your-bug-fix
    ```
-2. **Make your changes**:
 
+2. **Make your changes**:
    - Write clean, well-documented code
    - Follow existing code patterns
    - Add tests if applicable
    - Update documentation as needed
+
 3. **Commit your changes**:
 
    ```bash
@@ -197,7 +172,6 @@ The `example/` directory contains a test app to develop and test the changes you
    ```
 
    Use conventional commit messages:
-
    - `feat:` for new features
    - `fix:` for bug fixes
    - `docs:` for documentation changes
@@ -205,13 +179,14 @@ The `example/` directory contains a test app to develop and test the changes you
    - `refactor:` for code refactoring
    - `test:` for adding tests
    - `chore:` for maintenance tasks
+
 4. **Push to your fork**:
 
    ```bash
    git push origin feature/your-feature-name
    ```
-5. **Create a Pull Request**:
 
+5. **Create a Pull Request**:
    - Go to the GitHub repository
    - Click "New Pull Request"
    - Select your branch
@@ -220,8 +195,8 @@ The `example/` directory contains a test app to develop and test the changes you
      - Testing performed
      - Screenshots/videos if applicable
      - Related issues (if any)
-6. **Respond to feedback**:
 
+6. **Respond to feedback**:
    - Address any review comments
    - Make requested changes
    - Keep the PR up to date with `main`

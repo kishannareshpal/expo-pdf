@@ -2,7 +2,11 @@
 
 A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native PDF rendering engines.
 
-### Core features
+| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                              |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> | <video src="https://github.com/user-attachments/assets/ce9bd00f-0a4e-47ec-800c-cbdcba5c5554" /> |
+
+## Features
 
 - Supports Android and iOS
   - Uses Apple's [`PDFKit`](https://developer.apple.com/documentation/pdfkit/pdfview) on iOS
@@ -17,26 +21,36 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 - Horizontal and vertical reading modes
 - Support for content-insets
 
-### Demo
-
-| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                              |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <video src="https://github.com/user-attachments/assets/6c88deb7-7801-4e3a-b93e-88f9688435a1" /> | <video src="https://github.com/user-attachments/assets/ce9bd00f-0a4e-47ec-800c-cbdcba5c5554" /> |
-
-### Installation
+## Installation
 
 This package works with both Expo and framework-less React Native projects but Expo provides a more streamlined experience.
 
-```bash
-npm install @kishannareshpal/expo-pdf
+### Expo
 
-# bun add @kishannareshpal/expo-pdf
-# pnpm add @kishannareshpal/expo-pdf
+```bash
+npx expo install @kishannareshpal/expo-pdf
 ```
 
-### Usage
+### Bare React Native
 
-#### Use a locally bundled PDF
+1. Install this package
+
+   ```bash
+   npm add @kishannareshpal/expo-pdf
+
+   # bun add @kishannareshpal/expo-pdf
+   # pnpm add @kishannareshpal/expo-pdf
+   # yarn add @kishannareshpal/expo-pdf
+   ```
+
+2. Install CocoaPods dependencies
+   ```bash
+   npx pod-install
+   ```
+
+## Usage
+
+### Use a locally bundled PDF
 
 ```jsx
 import { PdfView } from '@kishannareshpal/expo-pdf';
@@ -64,7 +78,7 @@ export const App = () => {
 };
 ```
 
-#### Load a file picked using a system picker
+### Load a file picked using a system picker
 
 ```jsx
 import { File } from 'expo-file-system';
@@ -107,7 +121,7 @@ export const App = () => {
 }
 ```
 
-#### Use remote URLs
+### Use remote URLs
 
 ```jsx
 import { File } from 'expo-file-system';
@@ -154,7 +168,7 @@ export const App = () => {
 }
 ```
 
-### API
+## API
 
 <table>
    <thead>
@@ -257,21 +271,21 @@ export const App = () => {
    </tbody>
 </table>
 
-#### API Reference
+### API Reference
 
-##### `ContentPadding`
+#### `ContentPadding`
 
 ```ts
 { top?: number, left?: number, right?: number, bottom?: number }
 ```
 
-##### `FitMode`
+#### `FitMode`
 
 ```ts
 'width' | 'height' | 'both';
 ```
 
-##### `OnLoadCompleteEventPayload`
+#### `OnLoadCompleteEventPayload`
 
 ```ts
 {
@@ -279,13 +293,13 @@ export const App = () => {
 }
 ```
 
-##### `OnPageChangedEventPayload`
+#### `OnPageChangedEventPayload`
 
 ```ts
 { pageIndex: number, pageCount: number }
 ```
 
-##### `OnErrorEventPayload`
+#### `OnErrorEventPayload`
 
 ```ts
 {
@@ -294,15 +308,15 @@ export const App = () => {
 }
 ```
 
-### Contributing
+## Contributing
 
 Contributions are welcome!
 
-#### How to contribute
+### How to contribute
 
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-#### Publishing a new version to the registry
+### How to publish a new version to the registry
 
 > **NOTE**
 >
@@ -322,6 +336,6 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 8. A GitHub action will automatically run to publish the new version of the package to the registry.
    - Monitor the status at [kishannareshpal/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
 
-### License
+## License
 
 MIT
