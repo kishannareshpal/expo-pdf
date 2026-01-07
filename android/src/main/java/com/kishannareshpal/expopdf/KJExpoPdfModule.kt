@@ -36,8 +36,8 @@ class KJExpoPdfModule : Module() {
         view.setPagingEnabled(enabled)
       }
 
-      Prop("disableDoubleTapToZoom") { view: KJExpoPdfView, disabled: Boolean? ->
-        view.setDoubleTapZoomEnabled(disabled != true)
+      Prop("doubleTapToZoom") { view: KJExpoPdfView, enabled: Boolean? ->
+        view.setDoubleTapZoomEnabled(enabled)
       }
 
       Prop("horizontal") { view: KJExpoPdfView, enabled: Boolean? ->
@@ -54,6 +54,10 @@ class KJExpoPdfModule : Module() {
 
       Prop("fitMode") { view: KJExpoPdfView, mode: FitMode? ->
         view.setFitMode(mode)
+      }
+
+      Prop("autoScale") { view: KJExpoPdfView, enabled: Boolean? ->
+        // view.setAutoScaleEnabled(enabled)
       }
     }
   }

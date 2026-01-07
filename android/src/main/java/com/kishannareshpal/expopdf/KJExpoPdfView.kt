@@ -10,10 +10,7 @@ import com.github.barteksc.pdfviewer.PDFView
 import expo.modules.kotlin.viewevent.EventDispatcher
 import java.io.FileNotFoundException
 import androidx.core.net.toUri
-import com.github.barteksc.pdfviewer.util.FitPolicy
 import com.kishannareshpal.expopdf.lib.FitMode
-
-// TODO: Refresh the content on prop change
 
 class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
@@ -104,12 +101,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
   }
 
   fun setContentPadding(rect: Rect?) {
-    this.contentPadding = if (rect != null) {
-      Rect(rect.left, rect.top, rect.right, rect.bottom)
-    } else {
-      DEFAULT_CONTENT_PADDING
-    }
-
+    this.contentPadding = rect ?: DEFAULT_CONTENT_PADDING
     this.reloadPdf()
   }
 
