@@ -10,14 +10,16 @@ import com.github.barteksc.pdfviewer.PDFView
 import expo.modules.kotlin.viewevent.EventDispatcher
 import java.io.FileNotFoundException
 import androidx.core.net.toUri
+import com.github.barteksc.pdfviewer.util.SnapEdge
 import com.kishannareshpal.expopdf.lib.FitMode
 
 class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
-    internal val DEFAULT_PAGING_ENABLED = false
-    internal val DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true
-    internal val DEFAULT_HORIZONTAL_MODE_ENABLED = false
-    internal val DEFAULT_PAGE_GAP = 0
+    internal const val DEFAULT_PAGING_ENABLED = false
+    internal const val DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true
+    internal const val DEFAULT_HORIZONTAL_MODE_ENABLED = false
+    internal const val DEFAULT_PAGE_GAP = 0
+    internal const val DEFAULT_AUTO_SCALE_ENABLED = true
     internal val DEFAULT_CONTENT_PADDING = Rect(0, 0, 0, 0)
     internal val DEFAULT_FIT_MODE = FitMode.both
   }
@@ -41,6 +43,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
   private var pageGap: Int = DEFAULT_PAGE_GAP
   private var contentPadding: Rect = DEFAULT_CONTENT_PADDING
   private var fitMode: FitMode = DEFAULT_FIT_MODE
+  private var autoScaleEnabled: Boolean = DEFAULT_AUTO_SCALE_ENABLED
 
   internal val pdfView = PDFView(context, null).apply {
     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -110,6 +113,11 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
     this.reloadPdf()
   }
 
+  fun setAutoScaleEnabled(enabled: Boolean?) {
+    this.autoScaleEnabled = enabled ?: DEFAULT_AUTO_SCALE_ENABLED
+    this.reloadPdf()
+  }
+
   private fun reloadPdf() {
     if (!this.pdfView.isRecycled) {
       this.pdfView.recycle()
@@ -136,6 +144,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)
       .spacing(this.pageGap)
+      .autoCenterOnResize(this.autoScaleEnabled)
       .contentPadding(
         this.contentPadding.left,
         this.contentPadding.top,

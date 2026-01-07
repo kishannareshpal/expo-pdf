@@ -57,7 +57,7 @@ class KJExpoPdfModule : Module() {
       }
 
       Prop("autoScale") { view: KJExpoPdfView, enabled: Boolean? ->
-        // view.setAutoScaleEnabled(enabled)
+         view.setAutoScaleEnabled(enabled)
       }
     }
   }
