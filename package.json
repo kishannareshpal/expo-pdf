@@ -1,40 +1,9 @@
 {
   "name": "@kishannareshpal/expo-pdf",
   "version": "0.1.0",
-  "description": "A cross-platform, performant PDF viewer component for React Native and Expo",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "scripts": {
-    "build": "expo-module build",
-    "clean": "expo-module clean",
-    "lint": "expo-module lint",
-    "test": "expo-module test",
-    "prepublishOnly": "expo-module prepublishOnly",
-    "expo-module": "expo-module",
-    "open:ios": "xed example/ios",
-    "open:android": "open -a \"Android Studio\" example/android",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "prepare": "husky; expo-module prepare"
-  },
-  "keywords": [
-    "react-native",
-    "expo",
-    "@kishannareshpal/expo-pdf",
-    "rn-pdf",
-    "react-native-pdf",
-    "expo-pdf",
-    "pdf",
-    "expopdf"
-  ],
-  "repository": "https://github.com/kishannareshpal/expo-pdf",
-  "bugs": {
-    "url": "https://github.com/kishannareshpal/expo-pdf/issues"
-  },
   "author": "Kishan Jadav <kishan_jadav@hotmail.com> (https://github.com/kishannareshpal)",
-  "license": "MIT",
-  "homepage": "https://github.com/kishannareshpal/expo-pdf#readme",
-  "dependencies": {},
+  "repository": "https://github.com/kishannareshpal/expo-pdf",
+  "main": "build/index.js",
   "devDependencies": {
     "@types/react": "~19.1.0",
     "expo": "^54.0.27",
@@ -49,6 +18,22 @@
     "react": "*",
     "react-native": "*"
   },
+  "bugs": {
+    "url": "https://github.com/kishannareshpal/expo-pdf/issues"
+  },
+  "description": "A cross-platform, performant PDF viewer component for React Native and Expo",
+  "homepage": "https://github.com/kishannareshpal/expo-pdf#readme",
+  "keywords": [
+    "react-native",
+    "expo",
+    "@kishannareshpal/expo-pdf",
+    "rn-pdf",
+    "react-native-pdf",
+    "expo-pdf",
+    "pdf",
+    "expopdf"
+  ],
+  "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md,yml,yaml}": [
       "prettier --write"
@@ -56,5 +41,19 @@
     "*.{java,kt,swift,h,m,mm}": [
       "prettier --write"
     ]
-  }
+  },
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module",
+    "open:ios": "xed example/ios",
+    "open:android": "open -a \"Android Studio\" example/android",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky; expo-module prepare"
+  },
+  "types": "build/index.d.ts"
 }
