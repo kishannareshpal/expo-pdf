@@ -47,7 +47,7 @@ dependencies {
   //       more updates coming from that repo.
   //       - com.github.kishannareshpal:AndroidPdfViewer repo is based on PdfiumAndroidKt, a much newer
   //       fork of PdfiumAndroid, with better maintenance and updated native libraries.
-  implementation 'com.github.kishannareshpal:AndroidPdfViewer:2026.01.05.5'
+  implementation 'com.github.kishannareshpal:AndroidPdfViewer:2026.01.07.1'
 
   // Explicitly define the version of PdfiumAndroidKt so this can be updated independently of
   // AndroidPdfViewer as updates are provided.
