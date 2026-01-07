@@ -6,18 +6,18 @@ import expo.modules.kotlin.records.Record
 
 class ContentPadding: Record {
   @Field
-  val left: Int = 0
+  val left: Float = 0f
 
   @Field
-  val top: Int = 0
+  val top: Float = 0f
 
   @Field
-  val right: Int = 0
+  val right: Float = 0f
 
   @Field
-  val bottom: Int = 0
+  val bottom: Float = 0f
 
   fun toRect(): Rect {
-    return Rect(this.left, this.top, this.right, this.bottom)
+    return Rect(this.left.toInt(), this.top.toInt(), this.right.toInt(), this.bottom.toInt())
   }
 }

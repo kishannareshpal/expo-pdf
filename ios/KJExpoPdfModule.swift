@@ -27,16 +27,16 @@ public class KJExpoPdfModule: Module {
         view.setPagingEnabled(enabled)
       }
 
-      Prop("disableDoubleTapToZoom") { (view: KJExpoPdfView, disabled: Bool?) in
-        view.setDoubleTapZoomEnabled(disabled != true)
+      Prop("doubleTapToZoom") { (view: KJExpoPdfView, enabled: Bool?) in
+        view.setDoubleTapZoomEnabled(enabled)
       }
 
       Prop("horizontal") { (view: KJExpoPdfView, enabled: Bool?) in
         view.setHorizontalModeEnabled(enabled)
       }
 
-      Prop("pageGap") { (view: KJExpoPdfView, gapPx: Int?) in
-        view.setPageGap(gapPx)
+      Prop("pageGap") { (view: KJExpoPdfView, gap: Int?) in
+        view.setPageGap(gap)
       }
 
       Prop("contentPadding") { (view: KJExpoPdfView, contentPadding: ContentPadding?) in
@@ -45,6 +45,10 @@ public class KJExpoPdfModule: Module {
 
       Prop("fitMode") { (view: KJExpoPdfView, fitMode: FitMode?) in
         view.setFitMode(fitMode)
+      }
+
+      Prop("autoScale") { (view: KJExpoPdfView, enabled: Bool?) in
+        view.setAutoScaleEnabled(enabled)
       }
     }
   }

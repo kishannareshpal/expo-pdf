@@ -1,3 +1,4 @@
+import CoreGraphics
 import ExpoModulesCore
 import PDFKit
 import SwiftUI
@@ -10,6 +11,7 @@ class KJExpoPdfView: ExpoView {
   static let DEFAULT_PAGE_GAP = 0
   static let DEFAULT_CONTENT_PADDING = UIEdgeInsets.zero
   static let DEFAULT_FIT_MODE = FitMode.both
+  static let DEFAULT_AUTO_SCALE_ENABLED = true
 
   let onLoadComplete = EventDispatcher()
   let onPageChanged = EventDispatcher()
@@ -24,6 +26,10 @@ class KJExpoPdfView: ExpoView {
 
   private let pdfView = PDFView()
 
+  private var lastLayoutBounds: CGRect = .zero
+  private var isFirstLayoutComplete: Bool = false
+
+  // - MARK: Props
   private var documentURL: URL? = nil
   private var password: String? = nil
   private var isPagingEnabled: Bool = DEFAULT_PAGING_ENABLED
@@ -32,6 +38,7 @@ class KJExpoPdfView: ExpoView {
   private var pageGap: Int = DEFAULT_PAGE_GAP
   private var contentPadding: UIEdgeInsets = DEFAULT_CONTENT_PADDING
   private var fitMode: FitMode = DEFAULT_FIT_MODE
+  private var isAutoScaleEnabled: Bool = DEFAULT_AUTO_SCALE_ENABLED
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
@@ -43,21 +50,40 @@ class KJExpoPdfView: ExpoView {
     // style prop in the component (`style={{ backgroundColor: '#eee' }}`).
     self.pdfView.backgroundColor = .clear
 
-    // We calculate the scaling manually via PDFView.scaleToFit(contentPadding:)
+    // We calculate the scaling manually via PDFView.scaleToFit(contentPadding:) and don't rely
+    // on native autoscaling because it doesn't take into account the content padding.
+    // - TODO: Maybe allow native autoscaling if no content padding is set? as that's the only reason we need the manual method.
     self.pdfView.autoScales = false
 
     addSubview(pdfView)
-
     setupListeners()
   }
 
   override func layoutSubviews() {
-    super.layoutSubviews()
-    pdfView.frame = bounds
+    // This method sometimes gets called with either one of bounds.height or bounds.width set as 0 initially
+    // so we defer until both values are available.
+    // - By delaying calling until the size in both dimensions are correct we are able to prevent duplicate measurements
+    // and detect the initial layout action.
+    let bothNewBoundsAreSet = bounds.width > 0 && bounds.height > 0
+    let previousBoundsAreSet = self.lastLayoutBounds.width > 0 || self.lastLayoutBounds.height > 0
+    let finishedInitialLayout = bothNewBoundsAreSet || previousBoundsAreSet
+    if !finishedInitialLayout {
+      return
+    }
 
-    // Maintain insets on rotation, but don't reset reading position
-    self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+    super.layoutSubviews()
+    self.pdfView.frame = bounds
+    self.lastLayoutBounds = bounds
+
+    // Force auto scale the document to fit the view on the intial layout by default
+    // - Do not autoscale on subsequent layouts if the consumer has manually disabled it
+    if !self.isFirstLayoutComplete || self.isAutoScaleEnabled {
+      // Maintain insets on rotation and reset the reading position (current scroll position) only on
+      // the first layout.
+      self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
+    }
+
+    self.isFirstLayoutComplete = true
   }
 
   deinit {
@@ -122,7 +148,7 @@ class KJExpoPdfView: ExpoView {
       right: padding.right - margins.right
     )
     self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
   }
 
   func setContentPadding(_ padding: UIEdgeInsets?) {
@@ -142,14 +168,24 @@ class KJExpoPdfView: ExpoView {
       right: padding.right - margins.right
     )
     self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
   }
 
   func setFitMode(_ mode: FitMode?) {
     self.fitMode = mode ?? Self.DEFAULT_FIT_MODE
 
     self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: false)
+      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
+  }
+
+  func setAutoScaleEnabled(_ enabled: Bool?) {
+    self.isAutoScaleEnabled = enabled ?? Self.DEFAULT_AUTO_SCALE_ENABLED
+
+    // Re-scale because a consumer will always expect a change when changing this prop.
+    if enabled == true {
+      self.pdfView.scaleToFit(
+        contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: true)
+    }
   }
 
   @objc private func handlePageChange() {
@@ -185,14 +221,9 @@ class KJExpoPdfView: ExpoView {
         )
       }
     }
-
     self.pdfView.document = document
 
-    // Dispatch async to allow PDFView to finish its initial layout
-    DispatchQueue.main.async {
-      self.pdfView.scaleToFit(
-        contentPadding: self.contentPadding, fitMode: self.fitMode, resetOffset: true)
-    }
+    self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
 
     self.onLoadComplete([
       "pageCount": document.pageCount
@@ -222,6 +253,17 @@ class KJExpoPdfView: ExpoView {
     }
 
     return document
+  }
+
+  private func autoScale(resetScrollOffset: Bool) {
+    // Dispatch async to allow PDFView to finish its initial layout
+    DispatchQueue.main.async {
+      self.pdfView.scaleToFit(
+        contentPadding: self.contentPadding,
+        fitMode: self.fitMode,
+        resetScrollOffset: resetScrollOffset
+      )
+    }
   }
 
   private func setupListeners() {

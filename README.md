@@ -15,7 +15,7 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 - Pinch-to-zoom / double-tap-to-zoom and drag gestures
 - Support for password-protected PDFs
 - Horizontal and vertical reading modes
-- Support for content-insets 
+- Support for content-insets
 
 ### Demo
 
@@ -39,33 +39,29 @@ npm install @kishannareshpal/expo-pdf
 #### Use a locally bundled PDF
 
 ```jsx
-import { PdfView } from '@kishannareshpal/expo-pdf'
+import { PdfView } from '@kishannareshpal/expo-pdf';
 
 export const App = () => {
   const [assets] = useAssets([require('./assets/sample.pdf')]);
-  const [uri, setUri] = useState<string | null>(null);
+  const [uri, setUri] = (useState < string) | (null > null);
 
   useEffect(() => {
     if (!assets?.length) {
       return;
     }
 
-    assets[0].downloadAsync()
+    assets[0]
+      .downloadAsync()
       .then((asset) => setUri(asset.localUri))
-      .catch(console.error)
-  }, [assets])
+      .catch(console.error);
+  }, [assets]);
 
   if (!uri) {
     return null;
   }
 
-  return (
-    <PdfView 
-      style={{ flex: 1 }} 
-      uri={uri}
-    />
-  )
-}
+  return <PdfView style={{ flex: 1 }} uri={uri} />;
+};
 ```
 
 #### Load a file picked using a system picker
@@ -95,11 +91,11 @@ export const App = () => {
   return (
     <View>
       <Button onPress={pickFile}>Pick a file</Button>
-      
+
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         {uri ? (
-          <PdfView 
-            style={{ flex: 1 }} 
+          <PdfView
+            style={{ flex: 1 }}
             uri={uri}
           />
         ) : (
@@ -142,11 +138,11 @@ export const App = () => {
       <Button onPress={() => loadFromUrl("https://pdfobject.com/pdf/sample.pdf")}>
         Download and load from URL
       </Button>
-      
+
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         {uri ? (
-          <PdfView 
-            style={{ flex: 1 }} 
+          <PdfView
+            style={{ flex: 1 }}
             uri={uri}
           />
         ) : (
@@ -160,20 +156,106 @@ export const App = () => {
 
 ### API
 
-| Props                    | Required | Type                                                                  | Description                                            | Default                                    |
-| ------------------------ | -------- | --------------------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------ |
-| `uri`                    | Required | `string`                                                              | PDF document URL or local file path.                   | -                                          |
-| `password`               | No       | `string`                                                              | PDF document URL or local file path.                   | `undefined`                                |
-| `pagingEnabled`          | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
-| `disableDoubleTapToZoom` | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
-| `horizontal`             | No       | `boolean`                                                             | PDF document URL or local file path.                   | `false`                                    |
-| `pageGap`                | No       | `number`                                                              | PDF document URL or local file path.                   | `0`                                        |
-| `contentPadding`         | No       | [`ContentPadding`](#contentpadding)                                   | PDF document URL or local file path.                   | `{ top: 0, left: 0, right: 0, bottom: 0 }` |
-| `fitMode`                | No       | [`FitMode`](#fitmode)                                                 | PDF document URL or local file path.                   | `"width"`                                  |
-| `onLoadComplete`         | No       | [`(OnLoadCompleteEventPayload) => void`](#onloadcompleteeventpayload) | Triggered once the document has been fully loaded.     | -                                          |
-| `onPageChanged`          | No       | [`(OnPageChangedPayload) => void`](#onpagechangedeventpayload)        | Triggered when the user navigates to a different page. | -                                          |
-| `onError`                | No       | [`(OnErrorPayload) => void`](#onerroreventpayload)                    | Triggered when the PDF fails to load or render.        | -                                          |
-
+<table>
+   <thead>
+      <tr>
+         <th>Props</th>
+         <th>Required</th>
+         <th>Type</th>
+         <th>Description</th>
+         <th>Default</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><code>uri</code></td>
+         <td>Required</td>
+         <td><code>string</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td>-</td>
+      </tr>
+      <tr>
+         <td><code>password</code></td>
+         <td>No</td>
+         <td><code>string</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>undefined</code></td>
+      </tr>
+      <tr>
+         <td><code>pagingEnabled</code></td>
+         <td>No</td>
+         <td><code>boolean</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>false</code></td>
+      </tr>
+      <tr>
+         <td><code>doubleTapToZoom</code></td>
+         <td>No</td>
+         <td><code>boolean</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>true</code></td>
+      </tr>
+      <tr>
+         <td><code>horizontal</code></td>
+         <td>No</td>
+         <td><code>boolean</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>false</code></td>
+      </tr>
+      <tr>
+         <td><code>pageGap</code></td>
+         <td>No</td>
+         <td><code>number</code></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>0</code></td>
+      </tr>
+      <tr>
+         <td><code>contentPadding</code></td>
+         <td>No</td>
+         <td><a href="#contentpadding"><code>ContentPadding</code></a></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>{ top: 0, left: 0, right: 0, bottom: 0 }</code></td>
+      </tr>
+      <tr>
+         <td><code>fitMode</code></td>
+         <td>No</td>
+         <td><a href="#fitmode"><code>FitMode</code></a></td>
+         <td>PDF document URL or local file path.</td>
+         <td><code>"width"</code></td>
+      </tr>
+      <tr>
+         <td><code>autoScale</code></td>
+         <td>No</td>
+         <td><code>boolean</code></td>
+         <td>
+            Whether the document should auto-scale when itself or its parent view changes its layout metrics. 
+            Please note that the initial render will always auto-scale to fit whatever <code>fitMode</code> is set to. 
+            This prop only affects subsequent layout changes.</td>
+         <td><code>true</code></td>
+      </tr>
+      <tr>
+         <td><code>onLoadComplete</code></td>
+         <td>No</td>
+         <td><a href="#onloadcompleteeventpayload"><code>(OnLoadCompleteEventPayload) =&gt; void</code></a></td>
+         <td>Triggered once the document has been fully loaded.</td>
+         <td>-</td>
+      </tr>
+      <tr>
+         <td><code>onPageChanged</code></td>
+         <td>No</td>
+         <td><a href="#onpagechangedeventpayload"><code>(OnPageChangedPayload) =&gt; void</code></a></td>
+         <td>Triggered when the user navigates to a different page.</td>
+         <td>-</td>
+      </tr>
+      <tr>
+         <td><code>onError</code></td>
+         <td>No</td>
+         <td><a href="#onerroreventpayload"><code>(OnErrorPayload) =&gt; void</code></a></td>
+         <td>Triggered when the PDF fails to load or render.</td>
+         <td>-</td>
+      </tr>
+   </tbody>
+</table>
 
 #### API Reference
 
@@ -186,13 +268,15 @@ export const App = () => {
 ##### `FitMode`
 
 ```ts
-"width" | "height" | "both"
+'width' | 'height' | 'both';
 ```
 
 ##### `OnLoadCompleteEventPayload`
 
 ```ts
-{ pageCount: number }
+{
+  pageCount: number;
+}
 ```
 
 ##### `OnPageChangedEventPayload`
@@ -205,7 +289,7 @@ export const App = () => {
 
 ```ts
 {
-    code: 'invalid_url' | 'invalid_document' | 'password_required' | 'password_incorrect', 
+    code: 'invalid_url' | 'invalid_document' | 'password_required' | 'password_incorrect',
     message: string
 }
 ```
@@ -223,6 +307,7 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 > **NOTE**
 >
 > This package follows semantic versioning with the format: `major.minor.patch`.
+>
 > - Major version: Increment when making incompatible API changes.
 > - Minor version: Increment when adding new functionality in a backward-compatible way.
 > - Patch version: Increment when fixing bugs in a backward-compatible manner.
@@ -236,7 +321,6 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 7. Click the green <kbd>Publish release</kbd> button.
 8. A GitHub action will automatically run to publish the new version of the package to the registry.
    - Monitor the status at [kishannareshpal/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
-
 
 ### License
 
