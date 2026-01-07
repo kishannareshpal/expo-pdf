@@ -80,9 +80,7 @@ class KJExpoPdfView: ExpoView {
     if !self.isFirstLayoutComplete || self.isAutoScaleEnabled {
       // Maintain insets on rotation and reset the reading position (current scroll position) only on
       // the first layout.
-      self.pdfView.scaleToFit(
-        contentPadding: self.contentPadding, fitMode: self.fitMode,
-        resetScrollOffset: !self.isFirstLayoutComplete)
+      self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
     }
 
     self.isFirstLayoutComplete = true
@@ -223,14 +221,9 @@ class KJExpoPdfView: ExpoView {
         )
       }
     }
-
     self.pdfView.document = document
 
-    // Dispatch async to allow PDFView to finish its initial layout
-    DispatchQueue.main.async {
-      self.pdfView.scaleToFit(
-        contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: true)
-    }
+    self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
 
     self.onLoadComplete([
       "pageCount": document.pageCount
@@ -260,6 +253,17 @@ class KJExpoPdfView: ExpoView {
     }
 
     return document
+  }
+
+  private func autoScale(resetScrollOffset: Bool) {
+    // Dispatch async to allow PDFView to finish its initial layout
+    DispatchQueue.main.async {
+      self.pdfView.scaleToFit(
+        contentPadding: self.contentPadding,
+        fitMode: self.fitMode,
+        resetScrollOffset: resetScrollOffset
+      )
+    }
   }
 
   private func setupListeners() {
