@@ -13,6 +13,14 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.1 - 2026-01-09
+
+_This version does not introduce any user-facing changes._
+
+### 💡 Others
+
+- Reduce package size by removing lock files from the package bundle (https://github.com/kishannareshpal/expo-pdf/commit/f9be18c by @kishannareshpal)
+
 ## 0.2.0 - 2026-01-09
 
 ### 🎉 New features
