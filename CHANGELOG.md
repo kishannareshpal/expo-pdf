@@ -25,6 +25,8 @@ _This version does not introduce any user-facing changes._
 
 ### 💡 Others
 
+- Added a new example for bottom sheet to showcase the use of the new `autoScale` prop (https://github.com/kishannareshpal/expo-pdf/pull/6 by @kishannareshpal)
+
 ## 0.1.0 - 2026-01-06
 
 _Initial release with all features documented in README.md_

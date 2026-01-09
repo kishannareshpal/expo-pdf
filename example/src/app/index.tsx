@@ -24,6 +24,12 @@ const EXAMPLES: ExampleItem[] = [
     description: 'Renders a PDF file with custom content padding around the entire document.',
     href: '/examples/content-padding',
   },
+  {
+    key: 'bottom-sheet',
+    title: 'Bottom sheet',
+    description: 'Renders a PDF file within a bottom sheet',
+    href: '/examples/bottom-sheet',
+  },
 ]
 
 const HomeScreen = () => {
