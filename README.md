@@ -1,7 +1,7 @@
 # `@kishannareshpal/expo-pdf`
 
 [![NPM Version](https://img.shields.io/npm/v/%40kishannareshpal%2Fexpo-pdf?style=flat&logo=npm&label=%40kishannareshpal%2Fexpo-pdf)](https://www.npmjs.com/package/@kishannareshpal/expo-pdf)
-[![GitHub Repo stars](https://img.shields.io/github/stars/kishannareshpal/expo-pdf?style=flat)](https://github.com/kishannareshpal/expo-pdf)
+[![GitHub Repo stars](https://img.shields.io/github/stars/kishannareshpal/expo-pdf?style=flat)](https://github.com/kishannareshpal/expo-pdf/stargazers)
 
 A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native PDF rendering engines.
 
