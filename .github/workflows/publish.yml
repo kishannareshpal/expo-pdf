@@ -22,13 +22,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v6
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: ".node-version"
-          registry-url: "https://registry.npmjs.org"
+          bun-version: latest
+          registries: |
+            https://registry.npmjs.org
 
       - name: 📦 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       # - name: 🧪 Test
       #   run: npm test --passWithNoTests
@@ -38,4 +39,4 @@ jobs:
 
       # Publish uses OIDC - no token needed
       - name: 🚀 Publish the package
-        run: npm publish
+        run: bun publish
