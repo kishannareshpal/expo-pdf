@@ -1,5 +1,5 @@
 # Trusted Publishing
-# See: Trusted publishing for npm packages
+# See: Trusted publishing for bun packages
 
 name: Publish Package
 on:
@@ -21,7 +21,7 @@ jobs:
       - name: 🏗 Checkout repository
         uses: actions/checkout@v6
 
-      - name: 🏗 Setup Node
+      - name: 🏗 Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -31,12 +31,12 @@ jobs:
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
 
-      # - name: 🧪 Test
-      #   run: npm test --passWithNoTests
+      - name: 🏗 Install npm for trusted publishing
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".node-version"
+          registry-url: "https://registry.npmjs.org"
 
-      # - name: 🔬 Lint
-      #   run: npm run lint
-
-      # Publish uses OIDC - no token needed
+      # Publish uses OIDC - no token needed (Note: Bun does not support trusted publishing so we have to use npm)      - name: 🚀 Publish the package
       - name: 🚀 Publish the package
-        run: bun publish
+        run: npm publish
