@@ -43,16 +43,17 @@
     ]
   },
   "scripts": {
-    "build": "expo-module build",
-    "clean": "expo-module clean",
-    "lint": "expo-module lint",
-    "test": "expo-module test",
-    "prepublishOnly": "bunx expo-module prepublishOnly",
+    "build": "bun run em build",
+    "clean": "bun run em clean",
+    "lint": "bun run em lint",
+    "test": "bun run em test",
+    "prepublishOnly": "bun run em prepublishOnly",
+    "em": "bunx expo-module",
     "open:ios": "xed example/ios",
     "open:android": "open -a \"Android Studio\" example/android",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "prepare": "husky; expo-module prepare"
+    "format": "bunx prettier --write .",
+    "format:check": "bunx prettier --check .",
+    "prepare": "bunx husky; bun run em prepare"
   },
   "types": "build/index.d.ts"
 }
