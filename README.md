@@ -1,5 +1,8 @@
 # `@kishannareshpal/expo-pdf`
 
+![NPM Version](https://img.shields.io/npm/v/%40kishannareshpal%2Fexpo-pdf?style=flat&logo=npm&label=%40kishannareshpal%2Fexpo-pdf)
+![GitHub Repo stars](https://img.shields.io/github/stars/kishannareshpal/expo-pdf?style=flat)
+
 A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native PDF rendering engines.
 
 | [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                              |
