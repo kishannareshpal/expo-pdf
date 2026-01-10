@@ -1,6 +1,6 @@
 import { Platform, Text, View } from "react-native";
 import { useAssetLocalUri } from "../../lib/use-asset-local-uri";
-import { PdfView } from "@kishannareshpal/expo-pdf";
+import { PdfView } from "@kishannareshpal/expo-pdf/legacy";
 import { Stack } from "expo-router";
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useRef } from "react";
@@ -42,8 +42,7 @@ const BottomSheetScreen = () => {
       </View>
 
       <ReactNativeTrueSheet ref={trueBottomSheetRef}>
-        {/* <Text className="text-black">Hello?</Text> */}
-        <Pdf />
+        {/* <Pdf /> */}
       </ReactNativeTrueSheet>
 
       <GorhomBottomSheet ref={gorhomBottomSheetRef}>

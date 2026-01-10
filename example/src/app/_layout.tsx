@@ -1,5 +1,5 @@
 import '../global.css'
-import { SafeAreaListener, SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaListener } from 'react-native-safe-area-context';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

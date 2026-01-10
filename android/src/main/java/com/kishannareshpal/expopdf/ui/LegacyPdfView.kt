@@ -1,19 +1,27 @@
-package com.kishannareshpal.expopdf
+package com.kishannareshpal.expopdf.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
-import expo.modules.kotlin.AppContext
-import expo.modules.kotlin.views.ExpoView
-import com.github.barteksc.pdfviewer.PDFView
-import expo.modules.kotlin.viewevent.EventDispatcher
-import java.io.FileNotFoundException
 import androidx.core.net.toUri
-import com.github.barteksc.pdfviewer.util.SnapEdge
+import com.github.barteksc.pdfviewer.PDFView
 import com.kishannareshpal.expopdf.lib.FitMode
+import expo.modules.kotlin.AppContext
+import expo.modules.kotlin.viewevent.EventDispatcher
+import expo.modules.kotlin.views.ExpoView
+import java.io.FileNotFoundException
 
-class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
+
+/**
+ * This PdfView component is used for devices running Android 13 and lower (SDK 31 and older). Newer
+ * android versions will use AndroidPdfView instead.
+ * - Both should support the new library APIs at your best effort - if not, please document them
+ * appropriately.
+ */
+@SuppressLint("ViewConstructor")
+class LegacyPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
     internal const val DEFAULT_PAGING_ENABLED = false
     internal const val DEFAULT_DOUBLE_TAP_ZOOM_ENABLED = true

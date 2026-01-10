@@ -1,6 +1,6 @@
-import { SpecView } from "@kishannareshpal/expo-pdf"
 import { Text, View } from "react-native"
 import { useAssetLocalUri } from "../../lib/use-asset-local-uri";
+import { PdfView } from "@kishannareshpal/expo-pdf";
 
 export default () => {
   const pdfLocalUri = useAssetLocalUri(require('@assets/pdf-samples/standard.pdf'));
@@ -15,7 +15,7 @@ export default () => {
 
   return (
     <View className="flex-1 justify-center items-center bg-blue-400">
-      <SpecView uri={pdfLocalUri} style={{ width: 200, height: 200, borderWidth: 1, borderColor: 'black' }} />
+      <PdfView uri={pdfLocalUri} style={{ flex: 1, width: '100%', backgroundColor: 'red' }} />
     </View>
   )
 }

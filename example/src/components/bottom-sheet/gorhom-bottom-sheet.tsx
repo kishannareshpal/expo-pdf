@@ -28,7 +28,7 @@ export const GorhomBottomSheet = ({ ref, children }: GorhomBottomSheetProps) => 
       topInset={insets.top}
       backgroundComponent={() => null}
     >
-      <GorhomBottomSheetResponsiveView className="flex-1 overflow-hidden bg-white rounded-4xl">
+      <GorhomBottomSheetResponsiveView className="flex-1 overflow-hidden bg-white rounded-t-4xl">
         {children}
       </GorhomBottomSheetResponsiveView>
     </BottomSheetModal>
