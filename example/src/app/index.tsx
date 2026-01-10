@@ -30,6 +30,12 @@ const EXAMPLES: ExampleItem[] = [
     description: 'Renders a PDF file within a bottom sheet',
     href: '/examples/bottom-sheet',
   },
+  {
+    key: 'androidx-pdf',
+    title: 'androidx.pdf',
+    description: 'Native android pdf viewer',
+    href: '/examples/androidx',
+  },
 ]
 
 const HomeScreen = () => {

@@ -3,6 +3,10 @@
     "apple",
     "android"
   ],
+  "coreFeatures": [
+    "swiftui",
+    "compose"
+  ],
   "apple": {
     "modules": [
       "KJExpoPdfModule"
