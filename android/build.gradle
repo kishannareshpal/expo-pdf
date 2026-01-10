@@ -1,4 +1,14 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:${kotlinVersion}")
+  }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 group = 'com.kishannareshpal.expopdf'
 version = '0.1.0'
@@ -37,12 +47,23 @@ android {
     versionCode 1
     versionName "0.1.0"
   }
+  buildFeatures {
+    compose true
+  }
   lintOptions {
     abortOnError false
   }
 }
 
 dependencies {
+  implementation 'androidx.compose.foundation:foundation-android:1.10.0'
+  implementation 'androidx.compose.ui:ui-android:1.10.0'
+  implementation "androidx.compose.material3:material3:1.5.0-alpha11"
+  implementation 'androidx.compose.material3:material3-android:1.5.0-alpha11'
+  implementation 'androidx.fragment:fragment-ktx:1.8.9'
+
+  implementation 'androidx.appcompat:appcompat:1.7.1'
+
   // NOTE: The original repo at com.github.barteksc is abandoned by the maintainer; there will be no
   //       more updates coming from that repo.
   //       - com.github.kishannareshpal:AndroidPdfViewer repo is based on PdfiumAndroidKt, a much newer
@@ -52,4 +73,6 @@ dependencies {
   // Explicitly define the version of PdfiumAndroidKt so this can be updated independently of
   // AndroidPdfViewer as updates are provided.
   implementation 'io.legere:pdfiumandroid:1.0.35'
+  implementation 'androidx.fragment:fragment-compose:1.8.9'
+  implementation 'androidx.pdf:pdf-viewer-fragment:1.0.0-alpha12'
 }

@@ -19,8 +19,8 @@ class KJExpoPdfModule : Module() {
     // The module will be accessible from `requireNativeModule('ExpoPdf')` in JavaScript.
     Name("KJExpoPdf")
 
-    // Enables the module to be used as a native view. Definition components that are accepted as part of
-    // the view definition: Prop, Events.
+    View(KJSpecView::class)
+
     View(KJExpoPdfView::class) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
