@@ -2,7 +2,7 @@ export type OnLoadCompleteEventPayload = { pageCount: number }
 
 export type OnPageChangedEventPayload = { pageIndex: number, pageCount: number }
 
-export type ErrorCode = 'no_url' | 'invalid_url' | 'invalid_document'
+export type ErrorCode = 'invalid_uri' | 'invalid_document' | 'password_required' | 'password_incorrect'
 
 export type OnErrorEventPayload = { code: ErrorCode, message: string }
 
