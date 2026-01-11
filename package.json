@@ -1,6 +1,6 @@
 {
   "name": "@kishannareshpal/expo-pdf",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Kishan Jadav <kishan_jadav@hotmail.com> (https://github.com/kishannareshpal)",
   "repository": "https://github.com/kishannareshpal/expo-pdf",
   "main": "build/index.js",
