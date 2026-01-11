@@ -202,7 +202,7 @@ export const App = () => {
       <td><code>pagingEnabled</code></td>
       <td>No</td>
       <td><code>boolean</code></td>
-      <td>Enables page-by-page snapping instead of free scrolling.</td>
+      <td>Enables page-by-page snapping instead of free scrolling in vertical direction by default, unless the <code>horizontal</code> prop is provided to page horizontally instead.</td>
       <td><code>false</code></td>
     </tr>
     <tr>
@@ -223,7 +223,7 @@ export const App = () => {
       <td><code>pageGap</code></td>
       <td>No</td>
       <td><code>number</code></td>
-      <td>Space (in points/pixels) between adjacent pages.</td>
+      <td>Space between adjacent pages.</td>
       <td><code>0</code></td>
     </tr>
     <tr>
@@ -237,7 +237,7 @@ export const App = () => {
       <td><code>fitMode</code></td>
       <td>No</td>
       <td><a href="#fitmode"><code>FitMode</code></a></td>
-      <td>How the document is scaled to fit within the viewer (e.g., width or height).</td>
+      <td>How the document is scaled to fit within the viewer.</td>
       <td><code>"width"</code></td>
     </tr>
     <tr>
