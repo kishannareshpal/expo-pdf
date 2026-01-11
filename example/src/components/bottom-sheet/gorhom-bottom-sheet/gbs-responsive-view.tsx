@@ -1,6 +1,5 @@
-import { Platform, StatusBar, useWindowDimensions, View, ViewProps } from "react-native";
+import { useWindowDimensions, View, ViewProps } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { getDefaultHeaderHeight } from '@react-navigation/elements';
 import { useBottomSheet } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

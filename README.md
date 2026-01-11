@@ -174,104 +174,101 @@ export const App = () => {
 ## API
 
 <table>
-   <thead>
-      <tr>
-         <th>Props</th>
-         <th>Required</th>
-         <th>Type</th>
-         <th>Description</th>
-         <th>Default</th>
-      </tr>
-   </thead>
-   <tbody>
-      <tr>
-         <td><code>uri</code></td>
-         <td>Required</td>
-         <td><code>string</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td>-</td>
-      </tr>
-      <tr>
-         <td><code>password</code></td>
-         <td>No</td>
-         <td><code>string</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>undefined</code></td>
-      </tr>
-      <tr>
-         <td><code>pagingEnabled</code></td>
-         <td>No</td>
-         <td><code>boolean</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>false</code></td>
-      </tr>
-      <tr>
-         <td><code>doubleTapToZoom</code></td>
-         <td>No</td>
-         <td><code>boolean</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>true</code></td>
-      </tr>
-      <tr>
-         <td><code>horizontal</code></td>
-         <td>No</td>
-         <td><code>boolean</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>false</code></td>
-      </tr>
-      <tr>
-         <td><code>pageGap</code></td>
-         <td>No</td>
-         <td><code>number</code></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>0</code></td>
-      </tr>
-      <tr>
-         <td><code>contentPadding</code></td>
-         <td>No</td>
-         <td><a href="#contentpadding"><code>ContentPadding</code></a></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>{ top: 0, left: 0, right: 0, bottom: 0 }</code></td>
-      </tr>
-      <tr>
-         <td><code>fitMode</code></td>
-         <td>No</td>
-         <td><a href="#fitmode"><code>FitMode</code></a></td>
-         <td>PDF document URL or local file path.</td>
-         <td><code>"width"</code></td>
-      </tr>
-      <tr>
-         <td><code>autoScale</code></td>
-         <td>No</td>
-         <td><code>boolean</code></td>
-         <td>
-            Whether the document should auto-scale when itself or its parent view changes its layout metrics. 
-            Please note that the initial render will always auto-scale to fit whatever <code>fitMode</code> is set to. 
-            This prop only affects subsequent layout changes.</td>
-         <td><code>true</code></td>
-      </tr>
-      <tr>
-         <td><code>onLoadComplete</code></td>
-         <td>No</td>
-         <td><a href="#onloadcompleteeventpayload"><code>(OnLoadCompleteEventPayload) =&gt; void</code></a></td>
-         <td>Triggered once the document has been fully loaded.</td>
-         <td>-</td>
-      </tr>
-      <tr>
-         <td><code>onPageChanged</code></td>
-         <td>No</td>
-         <td><a href="#onpagechangedeventpayload"><code>(OnPageChangedPayload) =&gt; void</code></a></td>
-         <td>Triggered when the user navigates to a different page.</td>
-         <td>-</td>
-      </tr>
-      <tr>
-         <td><code>onError</code></td>
-         <td>No</td>
-         <td><a href="#onerroreventpayload"><code>(OnErrorPayload) =&gt; void</code></a></td>
-         <td>Triggered when the PDF fails to load or render.</td>
-         <td>-</td>
-      </tr>
-   </tbody>
+  <thead>
+    <tr>
+      <th>Props</th>
+      <th>Required</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>uri</code></td>
+      <td>Required</td>
+      <td><code>string</code></td>
+      <td>PDF document URL or local file path.</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><code>password</code></td>
+      <td>No</td>
+      <td><code>string</code></td>
+      <td>Password to apply for password-protected PDFs by on load.</td>
+      <td><code>undefined</code></td>
+    </tr>
+    <tr>
+      <td><code>pagingEnabled</code></td>
+      <td>No</td>
+      <td><code>boolean</code></td>
+      <td>Enables page-by-page snapping instead of free scrolling.</td>
+      <td><code>false</code></td>
+    </tr>
+    <tr>
+      <td><code>doubleTapToZoom</code></td>
+      <td>No</td>
+      <td><code>boolean</code></td>
+      <td>Allows the user to zoom in/out by double-tapping the document.</td>
+      <td><code>true</code></td>
+    </tr>
+    <tr>
+      <td><code>horizontal</code></td>
+      <td>No</td>
+      <td><code>boolean</code></td>
+      <td>Renders and scrolls pages horizontally instead of vertically. If paging is enabled, then it changes horizontally.</td>
+      <td><code>false</code></td>
+    </tr>
+    <tr>
+      <td><code>pageGap</code></td>
+      <td>No</td>
+      <td><code>number</code></td>
+      <td>Space (in points/pixels) between adjacent pages.</td>
+      <td><code>0</code></td>
+    </tr>
+    <tr>
+      <td><code>contentPadding</code></td>
+      <td>No</td>
+      <td><a href="#contentpadding"><code>ContentPadding</code></a></td>
+      <td>Padding applied around the document inside the viewer container.</td>
+      <td><code>{ top: 0, left: 0, right: 0, bottom: 0 }</code></td>
+    </tr>
+    <tr>
+      <td><code>fitMode</code></td>
+      <td>No</td>
+      <td><a href="#fitmode"><code>FitMode</code></a></td>
+      <td>How the document is scaled to fit within the viewer (e.g., width or height).</td>
+      <td><code>"width"</code></td>
+    </tr>
+    <tr>
+      <td><code>autoScale</code></td>
+      <td>No</td>
+      <td><code>boolean</code></td>
+      <td>Automatically rescales the document when its or its parent’s layout changes after initial render.</td>
+      <td><code>true</code></td>
+    </tr>
+    <tr>
+      <td><code>onLoadComplete</code></td>
+      <td>No</td>
+      <td><a href="#onloadcompleteeventpayload"><code>(OnLoadCompleteEventPayload) =&gt; void</code></a></td>
+      <td>Triggered once the document and its metadata have finished loading.</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><code>onPageChanged</code></td>
+      <td>No</td>
+      <td><a href="#onpagechangedeventpayload"><code>(OnPageChangedPayload) =&gt; void</code></a></td>
+      <td>Triggered when the currently visible page index changes.</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td><code>onError</code></td>
+      <td>No</td>
+      <td><a href="#onerroreventpayload"><code>(OnErrorPayload) =&gt; void</code></a></td>
+      <td>Triggered when the PDF fails to load, decrypt, or render.</td>
+      <td>-</td>
+    </tr>
+  </tbody>
 </table>
 
 ### API Reference

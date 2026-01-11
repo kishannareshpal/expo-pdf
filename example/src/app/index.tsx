@@ -1,9 +1,7 @@
-import { ScrollView, Text, View } from "react-native"
+import { ScrollView, View } from "react-native"
 import { ExampleCard } from "../components/example-card";
 import { ExampleItem } from "../lib/types";
 import { Stack } from "expo-router";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useResolveClassNames } from "uniwind";
 
 const EXAMPLES: ExampleItem[] = [
   {
