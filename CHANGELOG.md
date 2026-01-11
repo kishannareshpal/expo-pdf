@@ -13,18 +13,26 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.3 - 2026-01-11
+
+_This version does not introduce any user-facing changes._
+
+### 💡 Others
+
+- Expose `react-native` `ViewProps` as part of `PdfViewProps`. This change also allows for better compatibility with other libraries such as `uniwind` or `nativewind` that supports `className` ([db7e666](https://github.com/kishannareshpal/expo-pdf/commit/db7e666) by [@kishannareshpal](https://github.com/kishannareshpal))
+- Fix TS docs as well as README prop descriptions ([db7e666](https://github.com/kishannareshpal/expo-pdf/commit/db7e666) by [@kishannareshpal](https://github.com/kishannareshpal))
+
 ## 0.2.2 - 2026-01-11
 
 _This version does not introduce any user-facing changes._
 
 ### 💡 Others
 
-- Export `PdfViewProps`, the props for the main `PdfView` component ([f9be18c](https://github.com/kishannareshpal/expo-pdf/commit/8d5c963) by [@kishannareshpal](https://github.com/kishannareshpal))
+- Export `PdfViewProps`, the props for the main `PdfView` component ([8d5c963](https://github.com/kishannareshpal/expo-pdf/commit/8d5c963) by [@kishannareshpal](https://github.com/kishannareshpal))
 
 ### 🐛 Bug fixes
 
-- Fix exported `ErrorCode` literal type to match updated error codes from the native ([f9be18c](https://github.com/kishannareshpal/expo-pdf/commit/3a34f39) by [@kishannareshpal](https://github.com/kishannareshpal))
-
+- Fix exported `ErrorCode` literal type to match updated error codes from the native ([3a34f39](https://github.com/kishannareshpal/expo-pdf/commit/3a34f39) by [@kishannareshpal](https://github.com/kishannareshpal))
 
 ## 0.2.1 - 2026-01-09
 
