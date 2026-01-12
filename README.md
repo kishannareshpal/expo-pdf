@@ -188,7 +188,7 @@ export const App = () => {
       <td><code>uri</code></td>
       <td>Required</td>
       <td><code>string</code></td>
-      <td>PDF document URL or local file path.</td>
+      <td>PDF document local file URI.</td>
       <td>-</td>
     </tr>
     <tr>
@@ -257,14 +257,14 @@ export const App = () => {
     <tr>
       <td><code>onPageChanged</code></td>
       <td>No</td>
-      <td><a href="#onpagechangedeventpayload"><code>(OnPageChangedPayload) =&gt; void</code></a></td>
+      <td><a href="#onpagechangedeventpayload"><code>(OnPageChangedEventPayload) =&gt; void</code></a></td>
       <td>Triggered when the currently visible page index changes.</td>
       <td>-</td>
     </tr>
     <tr>
       <td><code>onError</code></td>
       <td>No</td>
-      <td><a href="#onerroreventpayload"><code>(OnErrorPayload) =&gt; void</code></a></td>
+      <td><a href="#onerroreventpayload"><code>(OnErrorEventPayload) =&gt; void</code></a></td>
       <td>Triggered when the PDF fails to load, decrypt, or render.</td>
       <td>-</td>
     </tr>
