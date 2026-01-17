@@ -23,10 +23,10 @@ const EXAMPLES: ExampleItem[] = [
     href: '/examples/content-padding',
   },
   {
-    key: 'bottom-sheet',
-    title: 'Bottom sheet',
-    description: 'Renders a PDF file within a bottom sheet',
-    href: '/examples/bottom-sheet',
+    key: 'dom',
+    title: 'DOM',
+    description: 'Renders a PDF using React Native Webview using Expo DOM',
+    href: '/examples/dom',
   },
 ]
 
