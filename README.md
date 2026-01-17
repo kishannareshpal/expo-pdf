@@ -308,6 +308,42 @@ export const App = () => {
 }
 ```
 
+## Support for CSS using `uniwind` (TailwindCSS)
+
+To use `uniwind` class names, you must wrap the component with the [`withUniwind`](https://docs.uniwind.dev/api/with-uniwind#withuniwind) Higher-Order Component (HOC). 
+This allows the component to process the `className` prop and convert it into native styles.
+
+```tsx
+// src/lib/styled.tsx
+import { PdfView as PdfViewPrimitive } from "@kishannareshpal/expo-pdf";
+import { ComponentProps } from "react";
+import { withUniwind } from "uniwind";
+
+export const StyledPdfViewPrimitive = withUniwind(PdfViewPrimitive);
+export type StyledPdfViewPrimitiveProps = ComponentProps<typeof StyledPdfViewPrimitive>;
+```
+
+```tsx
+// src/app.tsx
+import { StyledPdfView } from '@/lib/styled';
+
+const App = () => {
+  return (
+    <StyledPdfView 
+      className="flex-1 rounded-4xl bg-red-500"
+      uri="..."
+      ...
+    />
+  )
+}
+```
+
+## References
+
+### Prior art
+
+This project is inspired by [`react-native-pdf`](https://github.com/wonday/react-native-pdf) and maintained to the more modern React Native and Expo ecosystem.
+
 ## Contributing
 
 Contributions are welcome!
@@ -334,7 +370,7 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 6. Click <kbd>Generate release notes</kbd>, and/or edit the description to detail the changes.
 7. Click the green <kbd>Publish release</kbd> button.
 8. A GitHub action will automatically run to publish the new version of the package to the registry.
-   - Monitor the status at [kishannareshpal/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
+   - Monitor the status at [**kishannareshpal**/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
 
 ## License
 
