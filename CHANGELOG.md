@@ -13,6 +13,19 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.4 - 2026-01-18
+
+
+### 📦 Other Changes
+
+- ci: merge release pr ([90b2b2d](https://github.com/kishannareshpal/expo-pdf/commit/90b2b2dd96aecf4734899d70e85cbf0f878450cc)) by `Kishan Jadav`
+- ci: fix changelog update ([ca9f012](https://github.com/kishannareshpal/expo-pdf/commit/ca9f0123887c567e325fab9ddc159a01e49bbae8)) by `Kishan Jadav`
+- ci: fix pr not merging on release again ([b933332](https://github.com/kishannareshpal/expo-pdf/commit/b9333328a19d0518192aecfab78f5096726c7c7c)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.4...v0.2.4
+
+
 ## 0.2.3 - 2026-01-11
 
 _This version does not introduce any user-facing changes._
