@@ -313,7 +313,7 @@ jobs:
 
           # Auto-Merge and delete branch
           echo "Merging PR..."
-          gh pr merge "$BRANCH_NAME" --merge --delete-branch
+          gh pr merge "$BRANCH_NAME" --merge --admin --delete-branch
 
           echo "Switching back to main..."
           git checkout main
