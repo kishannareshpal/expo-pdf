@@ -344,3 +344,8 @@ jobs:
               echo "- GitHub: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.determine_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
             fi
           fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📝 Generated Release Notes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat ${{ steps.release_notes.outputs.notes_file }} >> $GITHUB_STEP_SUMMARY
