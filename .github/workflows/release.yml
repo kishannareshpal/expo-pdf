@@ -272,7 +272,7 @@ jobs:
           echo "" > new_changelog_entry.md
           echo "## $VERSION - $DATE" >> new_changelog_entry.md
           echo "" >> new_changelog_entry.md
-          cat release_body.txt >> new_changelog_entry.md
+          cat ${{ steps.release_notes.outputs.notes_file }} >> new_changelog_entry.md
           echo "" >> new_changelog_entry.md
 
           # Insert the new entry into CHANGELOG.md
