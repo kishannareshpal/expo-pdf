@@ -332,16 +332,16 @@ jobs:
 
       - name: 🏁 Summary
         run: |
-          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# Release Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version:** ${{ steps.determine_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **NPM Tag:** ${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Dry Run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Already Published:** ${{ steps.check_published.outputs.published }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** \`${{ steps.determine_version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **NPM Tag:** \`${{ inputs.npm_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry Run:** \`${{ inputs.dry_run }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Already Published:** \`${{ steps.check_published.outputs.published }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ inputs.dry_run }}" == "true" ]; then
-            echo "### ℹ️ This was a dry run - no changes were published" >> $GITHUB_STEP_SUMMARY
+            echo "## ℹ️ This was a dry run - no changes were published" >> $GITHUB_STEP_SUMMARY
           else
             if [ "${{ steps.check_published.outputs.published }}" == "true" ]; then
               echo "### ⚠️ Version already published - skipped NPM publish" >> $GITHUB_STEP_SUMMARY
@@ -354,6 +354,6 @@ jobs:
           fi
 
           echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "### 📝 Generated Release Notes" >> $GITHUB_STEP_SUMMARY
+          echo "## 📝 Generated Release Notes" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           cat ${{ steps.release_notes.outputs.notes_file }} >> $GITHUB_STEP_SUMMARY
