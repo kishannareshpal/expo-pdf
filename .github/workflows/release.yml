@@ -22,6 +22,10 @@ on:
         type: string
         default: "auto"
 
+permissions:
+  id-token: write # Required for OIDC with NPM
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -29,10 +33,6 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
-    permissions:
-      id-token: write # Required for OIDC with NPM
-      contents: write
-      pull-requests: write
 
     steps:
       - name: 🏗 Checkout repository
@@ -308,7 +308,7 @@ jobs:
       - name: 🚀 Publish to NPM
         if: ${{ !inputs.dry_run && steps.check_published.outputs.published == 'false' }}
         run: |
-          npm publish --tag ${{ inputs.npm_tag }} --provenance --access public
+          npm publish --tag ${{ inputs.npm_tag }}
 
       - name: 🤖🌵 Create GitHub Release (Dry Run)
         if: ${{ inputs.dry_run }}
