@@ -13,6 +13,17 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.4 - 2026-01-18
+
+
+### 📦 Other Changes
+
+- ci: fix pr not merging on release again ([b933332](https://github.com/kishannareshpal/expo-pdf/commit/b9333328a19d0518192aecfab78f5096726c7c7c)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.4...v0.2.4
+
+
 ## 0.2.3 - 2026-01-11
 
 _This version does not introduce any user-facing changes._
