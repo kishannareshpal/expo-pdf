@@ -282,42 +282,12 @@ jobs:
 
           rm new_changelog_entry.md
 
-      - name: 🤖 Create PR and merge
+      - name: 🤖 Commit version bump (if version was updated)
         if: ${{ steps.determine_version.outputs.version_changed == 'true' && !inputs.dry_run }}
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          # Note: This step requires the the repository settings have enabled "Allow GitHub Actions to create and approve pull requests" setting
-          # as well as the job having 'pull-requests: write' permission.
-
-          VERSION="${{ steps.determine_version.outputs.version }}"
-          BRANCH_NAME="auto-release/v$VERSION"
-
-          # Create and switch to a release branch
-          git checkout -B "$BRANCH_NAME"
-
-          # Commit changes
           git add package.json CHANGELOG.md
-          git commit -m "chore: release v$VERSION"
-
-          # Push the branch
-          git push origin "$BRANCH_NAME" --force-with-lease
-
-          # Create the Pull Request
-          # Using the release notes file for the body
-          gh pr create \
-            --title "Release v$VERSION" \
-            --body-file ${{ steps.release_notes.outputs.notes_file }} \
-            --base main \
-            --head "$BRANCH_NAME"
-
-          # Auto-Merge and delete branch
-          echo "Merging PR..."
-          gh pr merge "$BRANCH_NAME" --merge --admin --delete-branch
-
-          echo "Switching back to main..."
-          git checkout main
-          git pull origin main
+          git commit -m "chore: bump version to ${{ steps.determine_version.outputs.version }}" || echo "No changes to commit"
+          git push origin main
 
       - name: 🏷️ Create Git tag (if version is to be published)
         if: ${{ !inputs.dry_run }}
