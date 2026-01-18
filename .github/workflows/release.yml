@@ -146,14 +146,22 @@ jobs:
         run: |
           VERSION="${{ steps.determine_version.outputs.version }}"
           PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          REPO_URL="https://github.com/${{ github.repository }}"
+
+          # Define the format: - Subject ([short_hash](url)) by @author
+          # %s  = Commit subject
+          # %h  = Short hash (for display)
+          # %H  = Long hash (for the link URL)
+          # %an = Author Name
+          LOG_FORMAT="- %s ([%h]($REPO_URL/commit/%H)) by \`%an\`"
 
           # Get commits and save to temp file
           if [ -z "$PREV_TAG" ]; then
             echo "No previous tag found, using all commits"
-            git log --pretty=format:"%s (%h)" --no-merges > commits.txt
+            git log --pretty=format:"$LOG_FORMAT" --no-merges > commits.txt
           else
             echo "Generating changelog from $PREV_TAG to HEAD"
-            git log $PREV_TAG..HEAD --pretty=format:"%s (%h)" --no-merges > commits.txt
+            git log $PREV_TAG..HEAD --pretty=format:"$LOG_FORMAT" --no-merges > commits.txt
           fi
 
           # Categorize commits into separate files
@@ -345,7 +353,7 @@ jobs:
             fi
           fi
 
-          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
           echo "### 📝 Generated Release Notes" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           cat ${{ steps.release_notes.outputs.notes_file }} >> $GITHUB_STEP_SUMMARY
