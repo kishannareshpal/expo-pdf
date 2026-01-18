@@ -327,7 +327,7 @@ jobs:
         run: |
           VERSION="${{ steps.determine_version.outputs.version }}"
           gh release create "v$VERSION" \
-            --title "Release v$VERSION" \
+            --title "v$VERSION" \
             --notes-file ${{ steps.release_notes.outputs.notes_file }} \
             --verify-tag
 
