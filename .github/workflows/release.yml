@@ -301,7 +301,7 @@ jobs:
           git commit -m "chore: release v$VERSION"
 
           # Push the branch
-          git push origin "$BRANCH_NAME"
+          git push origin "$BRANCH_NAME" --force-with-lease
 
           # Create the Pull Request
           # Using the release notes file for the body
