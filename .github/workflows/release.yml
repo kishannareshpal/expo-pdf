@@ -153,7 +153,7 @@ jobs:
           # %h  = Short hash (for display)
           # %H  = Long hash (for the link URL)
           # %an = Author Name
-          LOG_FORMAT="- %s ([%h]($REPO_URL/commit/%H)) by \`%an\`"
+          LOG_FORMAT="%s ([%h]($REPO_URL/commit/%H)) by \`%an\`"
 
           # Get commits and save to temp file
           if [ -z "$PREV_TAG" ]; then
