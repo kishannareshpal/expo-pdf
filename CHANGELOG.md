@@ -13,6 +13,33 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.4 - 2026-01-18
+
+
+### 📚 Documentation
+
+- docs: update readme with prior art and uniwind info ([41eed16](https://github.com/kishannareshpal/expo-pdf/commit/41eed169f5f1e8edcaf819e42706020f27bdf5f9)) by `Kishan Jadav`
+- docs: fix typo ([75204b4](https://github.com/kishannareshpal/expo-pdf/commit/75204b4b04466b3c62ccb78f3fc28b2472c08e9f)) by `Kishan Jadav`
+
+
+### 🧹 Chores
+
+- chore: add uniwind styled component example ([592aafd](https://github.com/kishannareshpal/expo-pdf/commit/592aafdc40aed850a733d1f9eadf8c7410de8143)) by `Kishan Jadav`
+
+
+### 📦 Other Changes
+
+- ci: release to create pr to allow push ([60dfc8a](https://github.com/kishannareshpal/expo-pdf/commit/60dfc8a7058dd84e27d071d5ba317e9e306a5b8f)) by `Kishan Jadav`
+- ci: tidy release action summary ([64de3d7](https://github.com/kishannareshpal/expo-pdf/commit/64de3d7607f7625994704a66cdedbad25412b695)) by `Kishan Jadav`
+- ci: fix gen release notes format ([14d6d2a](https://github.com/kishannareshpal/expo-pdf/commit/14d6d2a391de506e5c7cb201d8616c5e07d145ed)) by `Kishan Jadav`
+- ci: update release notes format to include link to commit and author name ([d4c88fa](https://github.com/kishannareshpal/expo-pdf/commit/d4c88fa4c20cad9aaa8165acec262dbdde62c15b)) by `Kishan Jadav`
+- ci: include generated summary notes in action summary ([23412a6](https://github.com/kishannareshpal/expo-pdf/commit/23412a6efb602afd1ec2a0a96ac348d714954f69)) by `Kishan Jadav`
+- ci: improve release process, update docs preview ([5503c3e](https://github.com/kishannareshpal/expo-pdf/commit/5503c3ec4bafe49ed7a68a2ec8ce821118ad3757)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.3...v0.2.4
+
+
 ## 0.2.3 - 2026-01-11
 
 _This version does not introduce any user-facing changes._
