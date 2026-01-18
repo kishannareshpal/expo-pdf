@@ -1,0 +1,346 @@
+name: ✳️ Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (skip actual publish)"
+        required: true
+        type: boolean
+        default: true
+      npm_tag:
+        description: "NPM tag (e.g., latest, beta, next)"
+        type: choice
+        required: true
+        options:
+          - latest
+          - beta
+          - next
+      version:
+        description: 'Version override (optional, e.g., 1.0.0, or "auto" to auto-increment)'
+        required: false
+        type: string
+        default: "auto"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+    permissions:
+      id-token: write # Required for OIDC with NPM
+      contents: write
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+          registries: |
+            https://registry.npmjs.org
+
+      - name: 🏗 Setup Node.js (for npm with OIDC support)
+        # Note: Bun does not support NPM trusted publishing (OIDC) so we have to use npm instead - at least at the time of writing
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          registry-url: "https://registry.npmjs.org"
+
+      - name: 🏗 Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 🧑‍🧑‍🧒‍🧒 Install dependencies
+        run: bun install --frozen-lockfile
+
+      # TODO: Fix linting
+      # - name: 🧹 Check linting and formatting
+      #   run: bun run lint
+
+      # TODO: Add tests
+      # - name: 🧪 Run tests
+      #   run: bun run test
+
+      - name: 📦 Build library
+        run: bun run build
+
+      - name: 🔭 Determine next package version
+        id: determine_version
+        run: |
+          PACKAGE_NAME=$(cat package.json | grep '"name"' | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | xargs)
+          CURRENT_VERSION=$(cat package.json | grep '"version"' | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | xargs)
+
+          VERSION_INPUT="${{ inputs.version }}"
+
+          if [ "$VERSION_INPUT" = "auto" ]; then
+            echo "Auto-increment mode enabled"
+
+            # Check if current version is already published
+            if npm view "$PACKAGE_NAME@$CURRENT_VERSION" version 2>/dev/null; then
+              echo "⚠️ Version $CURRENT_VERSION is already published, auto-incrementing..."
+
+              # Parse version (supports beta.X format)
+              if [[ $CURRENT_VERSION =~ ^(.+)-beta\.([0-9]+)$ ]]; then
+                BASE="${BASH_REMATCH[1]}"
+                BETA_NUM="${BASH_REMATCH[2]}"
+                NEW_BETA=$((BETA_NUM + 1))
+                NEW_VERSION="$BASE-beta.$NEW_BETA"
+                echo "Incrementing beta version: $CURRENT_VERSION -> $NEW_VERSION"
+              elif [[ $CURRENT_VERSION =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+                MAJOR="${BASH_REMATCH[1]}"
+                MINOR="${BASH_REMATCH[2]}"
+                PATCH="${BASH_REMATCH[3]}"
+                NEW_PATCH=$((PATCH + 1))
+                NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+                echo "Incrementing patch version: $CURRENT_VERSION -> $NEW_VERSION"
+              else
+                echo "❌ Unable to parse version format: $CURRENT_VERSION"
+                exit 1
+              fi
+
+              # Update package.json
+              sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" package.json
+              echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+              echo "version_changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "✅ Version $CURRENT_VERSION is not yet published, using as-is"
+              echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+              echo "version_changed=false" >> $GITHUB_OUTPUT
+            fi
+          elif [ -n "$VERSION_INPUT" ]; then
+            echo "Using specified version: $VERSION_INPUT"
+            sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$VERSION_INPUT\"/" package.json
+            echo "version=$VERSION_INPUT" >> $GITHUB_OUTPUT
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Using version from package.json: $CURRENT_VERSION"
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 👨🏻‍🔬 Check if version is already published
+        id: check_published
+        run: |
+          PACKAGE_NAME=$(cat package.json | grep '"name"' | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g' | xargs)
+          VERSION="${{ steps.determine_version.outputs.version }}"
+
+          if npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null; then
+            echo "published=true" >> $GITHUB_OUTPUT
+            echo "⚠️ Version $VERSION is already published to NPM"
+          else
+            echo "published=false" >> $GITHUB_OUTPUT
+            echo "✅ Version $VERSION is not yet published"
+          fi
+
+      - name: 📝 Generate release notes
+        id: release_notes
+        run: |
+          VERSION="${{ steps.determine_version.outputs.version }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          # Get commits and save to temp file
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found, using all commits"
+            git log --pretty=format:"%s (%h)" --no-merges > commits.txt
+          else
+            echo "Generating changelog from $PREV_TAG to HEAD"
+            git log $PREV_TAG..HEAD --pretty=format:"%s (%h)" --no-merges > commits.txt
+          fi
+
+          # Categorize commits into separate files
+          touch breaking.txt features.txt fixes.txt docs.txt chores.txt refactors.txt others.txt
+
+          while IFS= read -r commit; do
+            if [[ $commit =~ BREAKING[[:space:]]CHANGE ]] || [[ $commit =~ ^-?[[:space:]]*[[:alnum:]_]+(\(.*\))?!: ]]; then
+              echo "- $commit" >> breaking.txt
+            elif [[ $commit =~ ^feat(\(|:) ]]; then
+              echo "- $commit" >> features.txt
+            elif [[ $commit =~ ^fix(\(|:) ]]; then
+              echo "- $commit" >> fixes.txt
+            elif [[ $commit =~ ^docs?(\(|:) ]]; then
+              echo "- $commit" >> docs.txt
+            elif [[ $commit =~ ^chore(\(|:) ]]; then
+              echo "- $commit" >> chores.txt
+            elif [[ $commit =~ ^refactor(\(|:) ]]; then
+              echo "- $commit" >> refactors.txt
+            else
+              echo "- $commit" >> others.txt
+            fi
+          done < commits.txt
+
+          # Build body for GitHub release (no header info)
+          echo "" > release_body.txt
+
+          # # Build release notes!
+          # echo "## What's Changed" > release_notes.txt
+          # echo "" >> release_notes.txt
+
+          if [ -s breaking.txt ]; then
+            echo "### 🛠 Breaking changes" >> release_body.txt
+            cat breaking.txt >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s features.txt ]; then
+            echo "### ✨ Features" >> release_body.txt
+            echo "" >> release_body.txt
+            cat features.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s fixes.txt ]; then
+            echo "### 🐛 Bug Fixes" >> release_body.txt
+            echo "" >> release_body.txt
+            cat fixes.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s refactors.txt ]; then
+            echo "### ♻️ Refactors" >> release_body.txt
+            echo "" >> release_body.txt
+            cat refactors.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s docs.txt ]; then
+            echo "### 📚 Documentation" >> release_body.txt
+            echo "" >> release_body.txt
+            cat docs.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s chores.txt ]; then
+            echo "### 🧹 Chores" >> release_body.txt
+            echo "" >> release_body.txt
+            cat chores.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          if [ -s others.txt ]; then
+            echo "### 📦 Other Changes" >> release_body.txt
+            echo "" >> release_body.txt
+            cat others.txt >> release_body.txt
+            echo "" >> release_body.txt
+            echo "" >> release_body.txt
+          fi
+
+          # If file is empty (no commits categorized), add default text
+          if [ ! -s release_body.txt ]; then
+             echo "_This version does not introduce any user-facing changes._" >> release_body.txt
+             echo "" >> release_body.txt
+             echo "" >> release_body.txt
+          fi
+
+          echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/${PREV_TAG}...v${VERSION}" >> release_body.txt
+
+          # Make the output available to next steps in the workflow
+          echo "notes_file=release_body.txt" >> $GITHUB_OUTPUT
+
+          # Cleanup temp files
+          rm -f breaking.txt commits.txt features.txt fixes.txt docs.txt chores.txt refactors.txt others.txt
+
+      - name: 📖 Update CHANGELOG.md
+        if: ${{ steps.determine_version.outputs.version_changed == 'true' && !inputs.dry_run }}
+        run: |
+          VERSION="${{ steps.determine_version.outputs.version }}"
+          DATE=$(date +'%Y-%m-%d')
+
+          # Create a temp file with the new entry
+          echo "" > new_changelog_entry.md
+          echo "## $VERSION - $DATE" >> new_changelog_entry.md
+          echo "" >> new_changelog_entry.md
+          cat release_body.txt >> new_changelog_entry.md
+          echo "" >> new_changelog_entry.md
+
+          # Insert the new entry into CHANGELOG.md
+          # We look for the closing comment tag "-->" and insert AFTER it.
+          # If you don't use the comment block, change '/-->/r' to match your header like '/# Changelog/r'
+          sed -i '/-->/r new_changelog_entry.md' CHANGELOG.md
+
+          rm new_changelog_entry.md
+
+      - name: 🤖 Commit version bump (if version was updated)
+        if: ${{ steps.determine_version.outputs.version_changed == 'true' && !inputs.dry_run }}
+        run: |
+          git add package.json
+          git commit -m "chore: bump version to ${{ steps.determine_version.outputs.version }}" || echo "No changes to commit"
+          git push origin main
+
+      - name: 🏷️ Create Git tag (if version is to be published)
+        if: ${{ !inputs.dry_run }}
+        run: |
+          VERSION="${{ steps.determine_version.outputs.version }}"
+          git tag -a "v$VERSION" -m "Release v$VERSION"
+          git push origin "v$VERSION"
+
+      - name: 🚀🌵 Publish to NPM (Dry Run)
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "🔍 DRY RUN MODE - Would publish with:"
+          echo "  Version: ${{ steps.determine_version.outputs.version }}"
+          echo "  Tag: ${{ inputs.npm_tag }}"
+          echo "  Already published: ${{ steps.check_published.outputs.published }}"
+          npm pack --dry-run
+
+      - name: 🚀 Publish to NPM
+        if: ${{ !inputs.dry_run && steps.check_published.outputs.published == 'false' }}
+        run: |
+          npm publish --tag ${{ inputs.npm_tag }} --provenance --access public
+
+      - name: 🤖🌵 Create GitHub Release (Dry Run)
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "🔍 DRY RUN MODE - Would create GitHub release:"
+          echo "  Tag: v${{ steps.determine_version.outputs.version }}"
+          echo "  Title: Release v${{ steps.determine_version.outputs.version }}"
+          echo ""
+          echo "Release notes:"
+          cat ${{ steps.release_notes.outputs.notes_file }}
+
+      - name: 🤖 Create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.determine_version.outputs.version }}"
+          gh release create "v$VERSION" \
+            --title "Release v$VERSION" \
+            --notes-file ${{ steps.release_notes.outputs.notes_file }} \
+            --verify-tag
+
+      - name: 🏁 Summary
+        run: |
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ steps.determine_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **NPM Tag:** ${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Dry Run:** ${{ inputs.dry_run }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Already Published:** ${{ steps.check_published.outputs.published }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ inputs.dry_run }}" == "true" ]; then
+            echo "### ℹ️ This was a dry run - no changes were published" >> $GITHUB_STEP_SUMMARY
+          else
+            if [ "${{ steps.check_published.outputs.published }}" == "true" ]; then
+              echo "### ⚠️ Version already published - skipped NPM publish" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "### ✅ Package published successfully!" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "- NPM: https://www.npmjs.com/package/@kishannareshpal/expo-pdf/v/${{ steps.determine_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+              echo "- GitHub: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.determine_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi

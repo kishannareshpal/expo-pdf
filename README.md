@@ -5,9 +5,9 @@
 
 A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native PDF rendering engines.
 
-| [iOS](./docs/demo-ios.mp4)                                                                      | [Android](./docs/demo-android.mp4)                                                              |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| <video src="https://github.com/user-attachments/assets/57000914-4f7a-4139-9079-9cfd8ece740b" /> | <video src="https://github.com/user-attachments/assets/14faf4f1-b7cc-4e8b-97a5-c0da94fd26c2" /> |
+| [iOS](./docs/preview-ios.mp4)                               | [Android](./docs/preview-android.mp4)                           |
+| ----------------------------------------------------------- | --------------------------------------------------------------- |
+| ![@kishannareshpal/expo-pdf iOS preview](./preview-ios.gif) | ![@kishannareshpal/expo-pdf iOS preview](./preview-android.gif) |
 
 ## Features
 
@@ -310,17 +310,19 @@ export const App = () => {
 
 ## Support for CSS using `uniwind` (TailwindCSS)
 
-To use `uniwind` class names, you must wrap the component with the [`withUniwind`](https://docs.uniwind.dev/api/with-uniwind#withuniwind) Higher-Order Component (HOC). 
+To use `uniwind` class names, you must wrap the component with the [`withUniwind`](https://docs.uniwind.dev/api/with-uniwind#withuniwind) Higher-Order Component (HOC).
 This allows the component to process the `className` prop and convert it into native styles.
 
 ```tsx
 // src/lib/styled.tsx
-import { PdfView as PdfViewPrimitive } from "@kishannareshpal/expo-pdf";
-import { ComponentProps } from "react";
-import { withUniwind } from "uniwind";
+import { PdfView as PdfViewPrimitive } from '@kishannareshpal/expo-pdf';
+import { ComponentProps } from 'react';
+import { withUniwind } from 'uniwind';
 
 export const StyledPdfViewPrimitive = withUniwind(PdfViewPrimitive);
-export type StyledPdfViewPrimitiveProps = ComponentProps<typeof StyledPdfViewPrimitive>;
+export type StyledPdfViewPrimitiveProps = ComponentProps<
+  typeof StyledPdfViewPrimitive
+>;
 ```
 
 ```tsx
@@ -329,7 +331,7 @@ import { StyledPdfView } from '@/lib/styled';
 
 const App = () => {
   return (
-    <StyledPdfView 
+    <StyledPdfView
       className="flex-1 rounded-4xl bg-red-500"
       uri="..."
       ...
@@ -356,21 +358,23 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 > **NOTE**
 >
-> This package follows semantic versioning with the format: `major.minor.patch`.
+> This package follows semantic versioning with the format: `major.minor.patch(-beta.n|next)`.
 >
 > - Major version: Increment when making incompatible API changes.
 > - Minor version: Increment when adding new functionality in a backward-compatible way.
 > - Patch version: Increment when fixing bugs in a backward-compatible manner.
+>
+> **Only approved repository members with access to our NPM account can publish new versions.**
 
-1. Bump `package.json` version using one of `npm version patch|minor|major` - this will create a new `tag`.
-2. `git push --tags` to push the new changes including the newly created tag.
-3. Navigate to [Create a New Release](https://github.com/kishannareshpal/expo-pdf/releases/new)
-4. Select the latest tag you've created above.
-5. Use the same name as the tag for the release title.
-6. Click <kbd>Generate release notes</kbd>, and/or edit the description to detail the changes.
-7. Click the green <kbd>Publish release</kbd> button.
-8. A GitHub action will automatically run to publish the new version of the package to the registry.
-   - Monitor the status at [**kishannareshpal**/expo-pdf/actions](https://github.com/kishannareshpal/expo-pdf/actions)
+1. Ensure all changes ready for release are merged into `main`.
+2. Go to the [`✳️ Release Package`](https://github.com/kishannareshpal/expo-pdf/actions/workflows/release.yml) workflow
+3. Click the `Run workflow` dropdown button and configure the inputs:
+   - `Dry run`: Uncheck this to perform the actual release (Default is `true` to test the build/versioning without publishing - only useful when updating the `release.yml` workflow during maintenance)
+   - `NPM tag`: Leave as `latest` for standard releases, or use `beta` / `next` for pre-releases.
+   - `Version override`: Leave as `auto` to let it automatically increment the patch version (or beta version if `beta` was specified above).
+     if you to bump the minor or major version, you must specify that here (e.g. `1.2.0` or `2.0.0`)
+4. Click the `Run workflow` button to publish 🚀
+   - Monitor the status at [**kishannareshpal/expo-pdf/actions**](https://github.com/kishannareshpal/expo-pdf/actions)
 
 ## License
 
