@@ -13,6 +13,17 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.6 - 2026-01-23
+
+
+### 📚 Documentation
+
+- docs: add lib banner ([280c81d](https://github.com/kishannareshpal/expo-pdf/commit/280c81db748787e6341a3bb46663643620b89225)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.5...v0.2.6
+
+
 ## 0.2.5 - 2026-01-18
 
 
