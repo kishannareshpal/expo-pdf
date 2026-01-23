@@ -13,6 +13,12 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.2.5 - 2026-01-18
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.4...v0.2.5
+
+
 ## 0.2.4 - 2026-01-18
 
 

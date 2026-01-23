@@ -9,7 +9,7 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 | [iOS](./docs/preview-ios.mp4)                               | [Android](./docs/preview-android.mp4)                           |
 | ----------------------------------------------------------- | --------------------------------------------------------------- |
-| ![@kishannareshpal/expo-pdf iOS preview](./preview-ios.gif) | ![@kishannareshpal/expo-pdf iOS preview](./preview-android.gif) |
+| ![iOS preview](./docs/preview-ios.gif) | ![Android preview](./docs/preview-android.gif) |
 
 ## Features
 
