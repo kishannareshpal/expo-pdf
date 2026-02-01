@@ -22,6 +22,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
     internal const val DEFAULT_AUTO_SCALE_ENABLED = true
     internal val DEFAULT_CONTENT_PADDING = Rect(0, 0, 0, 0)
     internal val DEFAULT_FIT_MODE = FitMode.both
+    internal val DEFAULT_PAGE_COLOR_INVERTED_ENABLED = false
   }
 
   private val onLoadComplete by EventDispatcher()
@@ -44,6 +45,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
   private var contentPadding: Rect = DEFAULT_CONTENT_PADDING
   private var fitMode: FitMode = DEFAULT_FIT_MODE
   private var autoScaleEnabled: Boolean = DEFAULT_AUTO_SCALE_ENABLED
+  private var isPageColorInverted: Boolean = DEFAULT_PAGE_COLOR_INVERTED_ENABLED
 
   internal val pdfView = PDFView(context, null).apply {
     layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
@@ -113,6 +115,11 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
     this.reloadPdf()
   }
 
+  fun setPageColorInverted(enabled: Boolean?) {
+    this.isPageColorInverted = enabled ?: DEFAULT_PAGE_COLOR_INVERTED_ENABLED
+    this.reloadPdf()
+  }
+
   fun setAutoScaleEnabled(enabled: Boolean?) {
     this.autoScaleEnabled = enabled ?: DEFAULT_AUTO_SCALE_ENABLED
     this.reloadPdf()
@@ -143,6 +150,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
       .pageFitPolicy(this.fitMode.toFitPolicy())
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)
+      .nightMode(this.isPageColorInverted)
       .spacing(this.pageGap)
       .autoCenterOnResize(this.autoScaleEnabled)
       .contentPadding(

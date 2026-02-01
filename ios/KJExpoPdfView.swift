@@ -12,6 +12,7 @@ class KJExpoPdfView: ExpoView {
   static let DEFAULT_CONTENT_PADDING = UIEdgeInsets.zero
   static let DEFAULT_FIT_MODE = FitMode.both
   static let DEFAULT_AUTO_SCALE_ENABLED = true
+  static let DEFAULT_PAGE_COLOR_INVERTED_ENABLED = false
 
   let onLoadComplete = EventDispatcher()
   let onPageChanged = EventDispatcher()
@@ -39,6 +40,7 @@ class KJExpoPdfView: ExpoView {
   private var contentPadding: UIEdgeInsets = DEFAULT_CONTENT_PADDING
   private var fitMode: FitMode = DEFAULT_FIT_MODE
   private var isAutoScaleEnabled: Bool = DEFAULT_AUTO_SCALE_ENABLED
+  private var isPageColorInverted: Bool = DEFAULT_PAGE_COLOR_INVERTED_ENABLED
 
   required init(appContext: AppContext? = nil) {
     super.init(appContext: appContext)
@@ -177,6 +179,12 @@ class KJExpoPdfView: ExpoView {
     self.pdfView.scaleToFit(
       contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
   }
+  
+  func setPageColorInverted(_ enabled: Bool?) {
+    self.isPageColorInverted = enabled ?? Self.DEFAULT_PAGE_COLOR_INVERTED_ENABLED
+    
+    self.pdfView.layer.compositingFilter = self.isPageColorInverted ? "differenceBlendMode" : nil
+  }
 
   func setAutoScaleEnabled(_ enabled: Bool?) {
     self.isAutoScaleEnabled = enabled ?? Self.DEFAULT_AUTO_SCALE_ENABLED
@@ -235,7 +243,6 @@ class KJExpoPdfView: ExpoView {
       return nil
     }
 
-    // TODO: Apple PDFView supports "http", "https" - but I've not implemented it on Android so for consistency I'm explicitly not allowing it here until then.
     guard ["file"].contains(self.documentURL?.scheme?.lowercased()) else {
       reportError(
         .invalidUri,

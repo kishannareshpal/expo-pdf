@@ -64,6 +64,14 @@ type BaseProps = ViewProps & {
    * Note: initial render always auto-scales according to `fitMode`.
    */
   autoScale?: boolean;
+
+  /**
+   * Inverts the color of the pages to make them dark.
+   * - This is useful for documents that have white pages so this can be used to make it dark, however the image colors in the document are also inverted.
+   *
+   * Defaults to false.
+   */
+  pageColorInverted?: boolean;
 }
 
 type NativePdfViewProps = BaseProps & {
@@ -121,6 +129,7 @@ export const PdfView = ({
       contentPadding={props.contentPadding}
       fitMode={props.fitMode}
       autoScale={props.autoScale}
+      pageColorInverted={props.pageColorInverted}
       onLoadComplete={forwardNativeEventTo(onLoadComplete)}
       onPageChanged={forwardNativeEventTo(onPageChanged)}
       onError={forwardNativeEventTo(onError)}
