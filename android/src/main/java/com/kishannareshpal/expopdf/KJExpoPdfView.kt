@@ -166,13 +166,6 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
           )
         )
       }
-      .onLoad {
-        this.onLoadComplete(
-          mapOf(
-            "pageCount" to this.pdfView.pageCount
-          )
-        );
-      }
       .onPageChange { pageIndex, pageCount ->
         this.onPageChanged(
           mapOf(
@@ -215,7 +208,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
   override fun onAttachedToWindow() {
     super.onAttachedToWindow()
 
-    this.pdfView.isRecycled.let {
+    if (!this.pdfView.isRecycled) {
       this.reloadPdf()
     }
   }
