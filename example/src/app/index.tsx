@@ -28,6 +28,12 @@ const EXAMPLES: ExampleItem[] = [
     description: 'Renders a PDF file within a bottom sheet',
     href: '/examples/bottom-sheet',
   },
+  {
+    key: 'color-inversion',
+    title: 'Color inversion',
+    description: 'Renders a PDF file with color inversion (for example many PDF documents have white pages so this can be used to make it dark, however the image colors in the document are also inverted)',
+    href: '/examples/color-inversion',
+  }
 ]
 
 const HomeScreen = () => {

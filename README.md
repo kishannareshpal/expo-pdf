@@ -7,8 +7,8 @@
 
 A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native* PDF rendering engines.
 
-| [iOS](./docs/preview-ios.mp4)                               | [Android](./docs/preview-android.mp4)                           |
-| ----------------------------------------------------------- | --------------------------------------------------------------- |
+| [iOS](./docs/preview-ios.mp4)          | [Android](./docs/preview-android.mp4)          |
+| -------------------------------------- | ---------------------------------------------- |
 | ![iOS preview](./docs/preview-ios.gif) | ![Android preview](./docs/preview-android.gif) |
 
 ## Features
@@ -18,13 +18,13 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
   - *Uses [kishannareshpal/AndroidPdfViewer](https://github.com/kishannareshpal/AndroidPdfViewer) on Android which is a maintained
     fork of [barteksc/AndroidPdfViewerV2](https://github.com/kishannareshpal/AndroidPdfViewer) which uses the open-source [PDFium](https://pdfium.googlesource.com/pdfium/+/HEAD/docs/getting-started.md) PDF rendering engine.
     - Note: We'll be looking to switch to [`androidx.pdf`](https://developer.android.com/jetpack/androidx/releases/pdf) on Android once that becomes stable.
-- Load PDFs from remote URLs or local file paths
-  - Supports local file URIs on android and iOS and ContentResolver URIs on android.
-  - Remote URLs cannot be passed directly to the PdfView component. You must download it and then use the local file URI to preview.
+- Load PDFs from local file paths
+  - Supports local file URIs on android and iOS and ContentResolver URIs on android
 - Pinch-to-zoom / double-tap-to-zoom and drag gestures
 - Support for password-protected PDFs
 - Horizontal and vertical reading modes
 - Support for content-insets
+- Color inversion
 
 ## Installation
 
@@ -241,6 +241,13 @@ export const App = () => {
       <td><a href="#fitmode"><code>FitMode</code></a></td>
       <td>How the document is scaled to fit within the viewer.</td>
       <td><code>"width"</code></td>
+    </tr>
+    <tr>
+      <td><code>pageColorInverted</code></td>
+      <td>No</td>
+      <td><code>boolean</code></td>
+      <td>Whether the rendered page should have its color inverted (useful to simulate dark mode)</td>
+      <td><code>false</code></td>
     </tr>
     <tr>
       <td><code>autoScale</code></td>

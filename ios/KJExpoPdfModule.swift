@@ -47,6 +47,10 @@ public class KJExpoPdfModule: Module {
         view.setFitMode(fitMode)
       }
 
+      Prop("pageColorInverted") { (view: KJExpoPdfView, enabled: Bool?) in
+        view.setPageColorInverted(enabled)
+      }
+
       Prop("autoScale") { (view: KJExpoPdfView, enabled: Bool?) in
         view.setAutoScaleEnabled(enabled)
       }
