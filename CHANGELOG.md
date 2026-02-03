@@ -13,6 +13,27 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.3.0 - 2026-02-03
+
+
+### ✨ Features
+
+- feat: support color inversion on ios and android ([8951a5c](https://github.com/kishannareshpal/expo-pdf/commit/8951a5c4162e863cb00f21959afe66509a66890d)) by `Kishan Jadav @ mozexames`
+
+
+### 📚 Documentation
+
+- docs: color inversion ([bb4ed8f](https://github.com/kishannareshpal/expo-pdf/commit/bb4ed8f527a3201a555da62446e4e33831546e75)) by `Kishan Jadav`
+
+
+### 🧹 Chores
+
+- chore: add color inversion example ([9c90bae](https://github.com/kishannareshpal/expo-pdf/commit/9c90bae266ca489dfb4cb89bf5b9a3d5ce838e2e)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.2.6...v0.3.0
+
+
 ## 0.2.6 - 2026-01-23
 
 
