@@ -13,6 +13,17 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## 0.3.1 - 2026-02-03
+
+
+### 🐛 Bug Fixes
+
+- fix: android 7 rendering ([0edf556](https://github.com/kishannareshpal/expo-pdf/commit/0edf556b266e26205416d1cdb1e6b86c9f924e71)) by `Kishan Jadav`
+
+
+**Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.3.0...v0.3.1
+
+
 ## 0.3.0 - 2026-02-03
 
 
