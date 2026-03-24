@@ -15,6 +15,9 @@ _This version does not introduce any user-facing changes._
 
 ## 0.3.2 - 2026-03-24
 
+### 🐛 Bug Fixes
+
+- Fix onLoadComplete event not firing on iOS (#20) by @jensdev
 
 **Full Changelog**: https://github.com/kishannareshpal/expo-pdf/compare/v0.3.1...v0.3.2
 
