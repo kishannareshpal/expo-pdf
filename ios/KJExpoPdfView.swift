@@ -208,6 +208,18 @@ class KJExpoPdfView: ExpoView {
     ])
   }
 
+  @objc private func handleDocumentChanged() {
+    guard 
+      let document = pdfView.document 
+    else { return }
+    
+    DispatchQueue.main.async {
+      self.onLoadComplete([
+        "pageCount": document.pageCount
+      ])
+    }
+  }
+
   private func reloadPdf() {
     guard let document = self.loadDocument() else {
       return
@@ -233,9 +245,6 @@ class KJExpoPdfView: ExpoView {
 
     self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
 
-    self.onLoadComplete([
-      "pageCount": document.pageCount
-    ])
   }
 
   private func loadDocument() -> PDFDocument? {
@@ -278,6 +287,13 @@ class KJExpoPdfView: ExpoView {
       self,
       selector: #selector(handlePageChange),
       name: .PDFViewPageChanged,
+      object: pdfView
+    )
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(handleDocumentChanged),
+      name: .PDFViewDocumentChanged,
       object: pdfView
     )
   }
