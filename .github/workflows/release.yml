@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Dry run (skip actual publish)"
+        description: 'Dry run (skip actual publish)'
         required: true
         type: boolean
         default: true
       npm_tag:
-        description: "NPM tag (e.g., latest, beta, next)"
+        description: 'NPM tag (e.g., latest, beta, next)'
         type: choice
         required: true
         options:
@@ -20,7 +20,7 @@ on:
         description: 'Version override (optional, e.g., 1.0.0, or "auto" to auto-increment)'
         required: false
         type: string
-        default: "auto"
+        default: 'auto'
 
 permissions:
   id-token: write # Required for OIDC with NPM
@@ -41,19 +41,12 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 🏗 Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: .bun-version
-          registries: |
-            https://registry.npmjs.org
-
-      - name: 🏗 Setup Node.js (for npm with OIDC support)
-        # Note: Bun does not support NPM trusted publishing (OIDC) so we have to use npm instead - at least at the time of writing
+      - name: 🏗 Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
-          registry-url: "https://registry.npmjs.org"
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
 
       - name: 🏗 Configure git
         run: |
@@ -61,18 +54,18 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: 🧑‍🧑‍🧒‍🧒 Install dependencies
-        run: bun install --frozen-lockfile
+        run: npm ci
 
       # TODO: Fix linting
       # - name: 🧹 Check linting and formatting
-      #   run: bun run lint
+      #   run: npm run lint
 
       # TODO: Add tests
       # - name: 🧪 Run tests
-      #   run: bun run test
+      #   run: npm run test
 
       - name: 📦 Build library
-        run: bun run build
+        run: npm run build
 
       - name: 🔭 Determine next package version
         id: determine_version

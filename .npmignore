@@ -18,3 +18,5 @@ __tests__
 # Lock files
 bun.lock
 package-lock.json
+pnpm-lock.json
+yarn.lock
