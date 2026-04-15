@@ -21,14 +21,14 @@ Before you begin:
    ```
 3. Install dependencies
    ```bash
-   bun install
+   npm install
    ```
 
 ## Development Setup
 
 ### Prerequisites
 
-- **bun** (https://bun.com)
+- **Node.js LTS** - the version tracked by this repo lives in `.node-version`
 - **For iOS development**:
   - macOS (required)
   - Xcode (latest stable version)
@@ -40,17 +40,34 @@ Before you begin:
 
 ### Installation
 
-1. **Install root dependencies**:
+1. **Install the Node.js LTS version tracked in `.node-version`**:
 
    ```bash
-   bun install
+   cat .node-version
+
+   # Suggested with nvm
+   nvm install --lts
+   nvm use --lts
+
+   # Suggested with mise
+   mise install node@lts
+   mise use -g node@lts
    ```
 
-2. **Install example app dependencies**:
+2. **Install root dependencies**:
 
    ```bash
+   npm install
+   ```
+
+3. **Install example app dependencies**:
+
+   ```bash
+   npm --prefix example install
+
+   # or:
    cd example
-   bun install
+   npm install
    ```
 
 ### Edit the module source code
@@ -61,13 +78,13 @@ Edit the React Native binding TypeScript files from `src/` using your favorite e
 
 #### Android
 
-Edit the Android native files by opening Android Studio: `bun open:android`
+Edit the Android native files by opening Android Studio: `npm run open:android`
 
 ![](./docs/contributing-android.png)
 
 #### iOS
 
-Edit the iOS native files by opening Xcode: `bun open:ios`
+Edit the iOS native files by opening Xcode: `npm run open:ios`
 
 ![](./docs/contributing-ios.png)
 
@@ -87,21 +104,21 @@ The `example/` directory contains a test app to develop and test the changes you
 
    ```bash
    cd example
-   bun start
+   npm start
    ```
 
 2. Install and run the app on iOS:
 
    ```bash
    cd example
-   bun ios
+   npm run ios
    ```
 
 3. Install and run the app on Android:
 
    ```bash
    cd example
-   bun android
+   npm run android
    ```
 
 ### Code Style Guidelines
@@ -159,6 +176,7 @@ The `example/` directory contains a test app to develop and test the changes you
    ```
 
 2. **Make your changes**:
+
    - Write clean, well-documented code
    - Follow existing code patterns
    - Add tests if applicable
@@ -172,6 +190,7 @@ The `example/` directory contains a test app to develop and test the changes you
    ```
 
    Use conventional commit messages:
+
    - `feat:` for new features
    - `fix:` for bug fixes
    - `docs:` for documentation changes
@@ -187,6 +206,7 @@ The `example/` directory contains a test app to develop and test the changes you
    ```
 
 5. **Create a Pull Request**:
+
    - Go to the GitHub repository
    - Click "New Pull Request"
    - Select your branch
