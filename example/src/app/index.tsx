@@ -11,6 +11,12 @@ const EXAMPLES: ExampleItem[] = [
     href: '/examples/standard',
   },
   {
+    key: 'paging',
+    title: 'Paging',
+    description: 'Snaps between PDF pages vertically or horizontally.',
+    href: '/examples/paging',
+  },
+  {
     key: 'password-protected',
     title: 'Password protected',
     description: 'Renders a PDF file that is protected with a password.',
@@ -61,4 +67,3 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen;
-

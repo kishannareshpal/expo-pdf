@@ -2,6 +2,7 @@ import CoreGraphics
 import ExpoModulesCore
 import PDFKit
 import SwiftUI
+import UIKit
 
 class KJExpoPdfView: ExpoView {
   // MARK: - Defaults
@@ -114,7 +115,7 @@ class KJExpoPdfView: ExpoView {
 
   func setPagingEnabled(_ enabled: Bool?) {
     self.isPagingEnabled = enabled ?? Self.DEFAULT_PAGING_ENABLED
-    self.pdfView.displayMode = self.isPagingEnabled ? .singlePage : .singlePageContinuous
+    self.updateDisplayConfiguration()
   }
 
   func setDoubleTapZoomEnabled(_ enabled: Bool?) {
@@ -124,11 +125,12 @@ class KJExpoPdfView: ExpoView {
 
   func setHorizontalModeEnabled(_ enabled: Bool?) {
     self.isHorizontalModeEnabled = enabled ?? Self.DEFAULT_HORIZONTAL_MODE_ENABLED
-    self.pdfView.displayDirection = self.isHorizontalModeEnabled ? .horizontal : .vertical
+    self.updateDisplayConfiguration()
   }
 
   func setPageGap(_ gap: Int?) {
     self.pageGap = gap ?? Self.DEFAULT_PAGE_GAP
+    self.updateDisplayConfiguration()
     self.pdfView.pageBreakMargins = UIEdgeInsets(
       top: 0,
       left: 0,
@@ -280,6 +282,20 @@ class KJExpoPdfView: ExpoView {
         resetScrollOffset: resetScrollOffset
       )
     }
+  }
+
+  private func updateDisplayConfiguration() {
+    self.pdfView.displayDirection = self.isHorizontalModeEnabled ? .horizontal : .vertical
+    self.pdfView.displayMode = self.isPagingEnabled ? .singlePage : .singlePageContinuous
+
+    let pageViewOptions: [AnyHashable: Any]? = self.isPagingEnabled
+      ? [UIPageViewController.OptionsKey.interPageSpacing: CGFloat(self.pageGap)]
+      : nil
+
+    self.pdfView.usePageViewController(
+      self.isPagingEnabled,
+      withViewOptions: pageViewOptions
+    )
   }
 
   private func setupListeners() {
