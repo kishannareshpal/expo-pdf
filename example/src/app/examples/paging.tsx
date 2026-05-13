@@ -60,8 +60,9 @@ const PagingExampleScreen = () => {
           uri={pdfLocalUri}
           pagingEnabled
           horizontal={isHorizontal}
-          pageGap={12}
-          fitMode="height"
+          // pageGap={100}
+          // fitMode="width"
+          contentPadding={{ top: 20, left: 20, right: 20, bottom: 20 }}
           onLoadComplete={(payload) => {
             setPageIndex(0);
             setPageCount(payload.pageCount);

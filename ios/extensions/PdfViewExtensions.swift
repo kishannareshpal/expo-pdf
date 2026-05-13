@@ -7,6 +7,7 @@
 
 import ExpoModulesCore
 import PDFKit
+import UIKit
 
 extension PDFView {
   func scaleToFit(contentPadding: UIEdgeInsets, fitMode: FitMode, resetScrollOffset: Bool = false) {
@@ -52,9 +53,9 @@ extension PDFView {
   }
 
   func applyContentPadding(_ contentPadding: UIEdgeInsets, resetScrollOffset: Bool = false) {
-    // Iterate through the PDFView's subviews to find the scroll view
-    if let scrollView = self.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
+    for scrollView in self.contentScrollViews {
       scrollView.contentInset = contentPadding
+      scrollView.scrollIndicatorInsets = contentPadding
 
       if resetScrollOffset {
         var offset = scrollView.contentOffset
@@ -94,6 +95,40 @@ extension PDFView {
           }
         }
       }
+    }
+  }
+}
+
+private extension PDFView {
+  var contentScrollViews: [UIScrollView] {
+    let directScrollViews = subviews
+      .compactMap { $0 as? UIScrollView }
+      .filter(\.canReceivePdfContentPadding)
+
+    if !directScrollViews.isEmpty {
+      return directScrollViews
+    }
+
+    return descendantScrollViews.filter(\.canReceivePdfContentPadding)
+  }
+}
+
+private extension UIScrollView {
+  var canReceivePdfContentPadding: Bool {
+    !isPagingEnabled
+  }
+}
+
+private extension UIView {
+  var descendantScrollViews: [UIScrollView] {
+    subviews.flatMap { subview in
+      let nestedScrollViews = subview.descendantScrollViews
+
+      guard let scrollView = subview as? UIScrollView else {
+        return nestedScrollViews
+      }
+
+      return [scrollView] + nestedScrollViews
     }
   }
 }

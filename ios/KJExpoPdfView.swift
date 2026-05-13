@@ -208,6 +208,10 @@ class KJExpoPdfView: ExpoView {
       "pageIndex": document.index(for: page),
       "pageCount": document.pageCount,
     ])
+
+    DispatchQueue.main.async {
+      self.pdfView.applyContentPadding(self.contentPadding)
+    }
   }
 
   @objc private func handleDocumentChanged() {
