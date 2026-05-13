@@ -58,9 +58,10 @@ const PagingExampleScreen = () => {
           key={mode}
           style={{ flex: 1 }}
           uri={pdfLocalUri}
-          pagingEnabled
-          horizontal={isHorizontal}
-          // pageGap={100}
+          // pagingEnabled
+          // horizontal={isHorizontal}
+          horizontal
+          pageGap={100}
           // fitMode="width"
           contentPadding={{ top: 20, left: 20, right: 20, bottom: 20 }}
           onLoadComplete={(payload) => {

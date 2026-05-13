@@ -126,17 +126,13 @@ class KJExpoPdfView: ExpoView {
   func setHorizontalModeEnabled(_ enabled: Bool?) {
     self.isHorizontalModeEnabled = enabled ?? Self.DEFAULT_HORIZONTAL_MODE_ENABLED
     self.updateDisplayConfiguration()
+    self.updatePageBreakMargins()
   }
 
   func setPageGap(_ gap: Int?) {
     self.pageGap = gap ?? Self.DEFAULT_PAGE_GAP
     self.updateDisplayConfiguration()
-    self.pdfView.pageBreakMargins = UIEdgeInsets(
-      top: 0,
-      left: 0,
-      bottom: isHorizontalModeEnabled ? 0 : CGFloat(pageGap),
-      right: isHorizontalModeEnabled ? CGFloat(pageGap) : 0
-    )
+    self.updatePageBreakMargins()
 
     // PDFView pageBreakMargins not only apply insets between the pages, but also around the pages
     // which is not what we always want - expo-pdf only uses pageBreakMargins for inter page spacing
@@ -299,6 +295,15 @@ class KJExpoPdfView: ExpoView {
     self.pdfView.usePageViewController(
       self.isPagingEnabled,
       withViewOptions: pageViewOptions
+    )
+  }
+
+  private func updatePageBreakMargins() {
+    self.pdfView.pageBreakMargins = UIEdgeInsets(
+      top: 0,
+      left: 0,
+      bottom: self.isHorizontalModeEnabled ? 0 : CGFloat(self.pageGap),
+      right: self.isHorizontalModeEnabled ? CGFloat(self.pageGap) : 0
     )
   }
 
