@@ -7,9 +7,17 @@
 
 import ExpoModulesCore
 import PDFKit
+import UIKit
 
 extension PDFView {
-  func scaleToFit(contentPadding: UIEdgeInsets, fitMode: FitMode, resetScrollOffset: Bool = false) {
+  func scaleToFit(
+    contentPadding: UIEdgeInsets,
+    fitMode: FitMode,
+    minScaleFactor configuredMinScaleFactor: CGFloat? = nil,
+    scrollContentPadding: UIEdgeInsets,
+    defaultPagePlacementPadding: UIEdgeInsets,
+    resetScrollOffset: Bool = false
+  ) {
     guard let page = self.currentPage else {
       return
     }
@@ -17,52 +25,68 @@ extension PDFView {
     let viewSize = self.bounds.size
     let pageSize = page.bounds(for: self.displayBox).size
 
-    // Ensure we have valid dimensions to avoid division by zero
     guard viewSize.width > 0, pageSize.width > 0, pageSize.height > 0 else {
       return
     }
 
-    // Calculate the available space (View size minus Padding)
     let availableWidth = viewSize.width - contentPadding.left - contentPadding.right
     let availableHeight = viewSize.height - contentPadding.top - contentPadding.bottom
 
-    // Calculate potential scale factors
+    guard availableWidth > 0, availableHeight > 0 else {
+      return
+    }
+
     let widthScale = availableWidth / pageSize.width
     let heightScale = availableHeight / pageSize.height
 
-    // Determine the target scale based on the requested FitMode
-    let targetScale: CGFloat
+    let defaultScale: CGFloat
     switch fitMode {
     case .width:
-      targetScale = widthScale
+      defaultScale = widthScale
     case .height:
-      targetScale = heightScale
+      defaultScale = heightScale
     case .both:
-      // "Aspect Fit": Choose the smaller scale to ensure the whole page is visible
-      targetScale = min(widthScale, heightScale)
+      defaultScale = min(widthScale, heightScale)
     }
 
-    // Apply new scale factor
-    if abs(self.scaleFactor - targetScale) > 0.001 {
-      self.minScaleFactor = targetScale  // Prevent zooming out further than the fit
-      self.scaleFactor = targetScale
-    }
+    let effectiveMinScale = configuredMinScaleFactor ?? defaultScale
+    let targetScale = max(defaultScale, effectiveMinScale)
 
-    self.applyContentPadding(contentPadding, resetScrollOffset: resetScrollOffset)
+    self.performWithoutScaleAnimation {
+      self.minScaleFactor = effectiveMinScale
+
+      if abs(self.scaleFactor - targetScale) > 0.001 {
+        self.scaleFactor = targetScale
+      }
+
+      self.applyContentPadding(scrollContentPadding, resetScrollOffset: resetScrollOffset)
+      self.applyDefaultPagePlacement(defaultPagePlacementPadding)
+    }
+  }
+
+  func applyDefaultPagePlacement(_ contentPadding: UIEdgeInsets) {
+    let offset = CGPoint(
+      x: (contentPadding.left - contentPadding.right) / 2,
+      y: (contentPadding.top - contentPadding.bottom) / 2
+    )
+
+    documentView?.transform = CGAffineTransform(
+      translationX: offset.x,
+      y: offset.y
+    )
   }
 
   func applyContentPadding(_ contentPadding: UIEdgeInsets, resetScrollOffset: Bool = false) {
-    // Iterate through the PDFView's subviews to find the scroll view
-    if let scrollView = self.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView {
-      scrollView.contentInset = contentPadding
+    for scrollView in self.contentScrollViews {
+      let needsInitialOffset = !scrollView.contentInset.matches(contentPadding)
 
-      if resetScrollOffset {
+      scrollView.contentInset = contentPadding
+      scrollView.scrollIndicatorInsets = contentPadding
+
+      if resetScrollOffset || needsInitialOffset {
         var offset = scrollView.contentOffset
-        if self.displayDirection == .horizontal {
-          offset.x = -contentPadding.left
-        } else {
-          offset.y = -contentPadding.top
-        }
+        offset.x = -contentPadding.left
+        offset.y = -contentPadding.top
         scrollView.contentOffset = offset
       }
     }
@@ -95,5 +119,61 @@ extension PDFView {
         }
       }
     }
+  }
+}
+
+private extension PDFView {
+  func performWithoutScaleAnimation(_ updates: () -> Void) {
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
+
+    UIView.performWithoutAnimation {
+      updates()
+      self.layoutIfNeeded()
+      self.documentView?.layoutIfNeeded()
+    }
+
+    CATransaction.commit()
+  }
+
+  var contentScrollViews: [UIScrollView] {
+    let directScrollViews = subviews
+      .compactMap { $0 as? UIScrollView }
+      .filter(\.canReceivePdfContentPadding)
+
+    if !directScrollViews.isEmpty {
+      return directScrollViews
+    }
+
+    return descendantScrollViews.filter(\.canReceivePdfContentPadding)
+  }
+}
+
+private extension UIScrollView {
+  var canReceivePdfContentPadding: Bool {
+    !isPagingEnabled
+  }
+}
+
+private extension UIView {
+  var descendantScrollViews: [UIScrollView] {
+    subviews.flatMap { subview in
+      let nestedScrollViews = subview.descendantScrollViews
+
+      guard let scrollView = subview as? UIScrollView else {
+        return nestedScrollViews
+      }
+
+      return [scrollView] + nestedScrollViews
+    }
+  }
+}
+
+private extension UIEdgeInsets {
+  func matches(_ other: UIEdgeInsets) -> Bool {
+    top == other.top &&
+      right == other.right &&
+      bottom == other.bottom &&
+      left == other.left
   }
 }

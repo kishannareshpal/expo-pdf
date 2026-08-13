@@ -2,6 +2,7 @@ import CoreGraphics
 import ExpoModulesCore
 import PDFKit
 import SwiftUI
+import UIKit
 
 class KJExpoPdfView: ExpoView {
   // MARK: - Defaults
@@ -38,6 +39,7 @@ class KJExpoPdfView: ExpoView {
   private var isHorizontalModeEnabled: Bool = DEFAULT_HORIZONTAL_MODE_ENABLED
   private var pageGap: Int = DEFAULT_PAGE_GAP
   private var contentPadding: UIEdgeInsets = DEFAULT_CONTENT_PADDING
+  private var minScaleFactor: CGFloat? = nil
   private var fitMode: FitMode = DEFAULT_FIT_MODE
   private var isAutoScaleEnabled: Bool = DEFAULT_AUTO_SCALE_ENABLED
   private var isPageColorInverted: Bool = DEFAULT_PAGE_COLOR_INVERTED_ENABLED
@@ -56,6 +58,7 @@ class KJExpoPdfView: ExpoView {
     // on native autoscaling because it doesn't take into account the content padding.
     // - TODO: Maybe allow native autoscaling if no content padding is set? as that's the only reason we need the manual method.
     self.pdfView.autoScales = false
+    self.pdfView.displaysPageBreaks = false
 
     addSubview(pdfView)
     setupListeners()
@@ -74,7 +77,7 @@ class KJExpoPdfView: ExpoView {
     }
 
     super.layoutSubviews()
-    self.pdfView.frame = bounds
+    self.updatePdfViewFrame()
     self.lastLayoutBounds = bounds
 
     // Force auto scale the document to fit the view on the intial layout by default
@@ -114,7 +117,10 @@ class KJExpoPdfView: ExpoView {
 
   func setPagingEnabled(_ enabled: Bool?) {
     self.isPagingEnabled = enabled ?? Self.DEFAULT_PAGING_ENABLED
-    self.pdfView.displayMode = self.isPagingEnabled ? .singlePage : .singlePageContinuous
+    self.updateDisplayConfiguration()
+    self.updatePageBreakMargins()
+    self.updatePdfViewFrame()
+    self.autoScale(resetScrollOffset: true)
   }
 
   func setDoubleTapZoomEnabled(_ enabled: Bool?) {
@@ -124,65 +130,45 @@ class KJExpoPdfView: ExpoView {
 
   func setHorizontalModeEnabled(_ enabled: Bool?) {
     self.isHorizontalModeEnabled = enabled ?? Self.DEFAULT_HORIZONTAL_MODE_ENABLED
-    self.pdfView.displayDirection = self.isHorizontalModeEnabled ? .horizontal : .vertical
+    self.updateDisplayConfiguration()
+    self.updatePageBreakMargins()
+    self.autoScale(resetScrollOffset: true)
   }
 
   func setPageGap(_ gap: Int?) {
     self.pageGap = gap ?? Self.DEFAULT_PAGE_GAP
-    self.pdfView.pageBreakMargins = UIEdgeInsets(
-      top: 0,
-      left: 0,
-      bottom: isHorizontalModeEnabled ? 0 : CGFloat(pageGap),
-      right: isHorizontalModeEnabled ? CGFloat(pageGap) : 0
-    )
+    self.updateDisplayConfiguration()
+    self.updatePageBreakMargins()
 
-    // PDFView pageBreakMargins not only apply insets between the pages, but also around the pages
-    // which is not what we always want - expo-pdf only uses pageBreakMargins for inter page spacing
-    // and we use our contentPadding for the spacing around the document.
-    // - Subtract the PDFView pageBreakMargins to prevent double spacing
-    var padding = self.contentPadding
-    let margins = self.pdfView.pageBreakMargins
-
-    padding = UIEdgeInsets(
-      top: padding.top - margins.top,
-      left: padding.left - margins.left,
-      bottom: padding.bottom - margins.bottom,
-      right: padding.right - margins.right
-    )
-    self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
+    self.scaleToFit(resetScrollOffset: false)
   }
 
   func setContentPadding(_ padding: UIEdgeInsets?) {
     self.contentPadding = padding ?? Self.DEFAULT_CONTENT_PADDING
+    self.updatePdfViewFrame()
 
-    // PDFView pageBreakMargins not only apply insets between the pages, but also around the pages
-    // which is not what we always want - expo-pdf only uses pageBreakMargins for inter page spacing
-    // and we use our contentPadding for the spacing around the document.
-    // - Subtract the PDFView pageBreakMargins to prevent double spacing
-    var padding = self.contentPadding
-    let margins = self.pdfView.pageBreakMargins
+    self.scaleToFit(resetScrollOffset: false)
+  }
 
-    padding = UIEdgeInsets(
-      top: padding.top - margins.top,
-      left: padding.left - margins.left,
-      bottom: padding.bottom - margins.bottom,
-      right: padding.right - margins.right
-    )
-    self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
+  func setMinScaleFactor(_ scaleFactor: Double?) {
+    if let scaleFactor, scaleFactor > 0 {
+      self.minScaleFactor = CGFloat(scaleFactor)
+    } else {
+      self.minScaleFactor = nil
+    }
+
+    self.scaleToFit(resetScrollOffset: false)
   }
 
   func setFitMode(_ mode: FitMode?) {
     self.fitMode = mode ?? Self.DEFAULT_FIT_MODE
 
-    self.pdfView.scaleToFit(
-      contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: false)
+    self.scaleToFit(resetScrollOffset: false)
   }
-  
+
   func setPageColorInverted(_ enabled: Bool?) {
     self.isPageColorInverted = enabled ?? Self.DEFAULT_PAGE_COLOR_INVERTED_ENABLED
-    
+
     self.pdfView.layer.compositingFilter = self.isPageColorInverted ? "differenceBlendMode" : nil
   }
 
@@ -191,8 +177,7 @@ class KJExpoPdfView: ExpoView {
 
     // Re-scale because a consumer will always expect a change when changing this prop.
     if enabled == true {
-      self.pdfView.scaleToFit(
-        contentPadding: self.contentPadding, fitMode: self.fitMode, resetScrollOffset: true)
+      self.scaleToFit(resetScrollOffset: true)
     }
   }
 
@@ -206,13 +191,23 @@ class KJExpoPdfView: ExpoView {
       "pageIndex": document.index(for: page),
       "pageCount": document.pageCount,
     ])
+
+    if self.isPagingEnabled {
+      self.scaleToFit(resetScrollOffset: true)
+      return
+    }
+
+    DispatchQueue.main.async {
+      self.pdfView.applyContentPadding(self.contentPadding)
+      self.pdfView.applyDefaultPagePlacement(self.defaultPagePlacementPadding)
+    }
   }
 
   @objc private func handleDocumentChanged() {
-    guard 
-      let document = pdfView.document 
+    guard
+      let document = pdfView.document
     else { return }
-    
+
     DispatchQueue.main.async {
       self.onLoadComplete([
         "pageCount": document.pageCount
@@ -244,7 +239,6 @@ class KJExpoPdfView: ExpoView {
     self.pdfView.document = document
 
     self.autoScale(resetScrollOffset: !self.isFirstLayoutComplete)
-
   }
 
   private func loadDocument() -> PDFDocument? {
@@ -274,12 +268,55 @@ class KJExpoPdfView: ExpoView {
   private func autoScale(resetScrollOffset: Bool) {
     // Dispatch async to allow PDFView to finish its initial layout
     DispatchQueue.main.async {
-      self.pdfView.scaleToFit(
-        contentPadding: self.contentPadding,
-        fitMode: self.fitMode,
-        resetScrollOffset: resetScrollOffset
-      )
+      self.scaleToFit(resetScrollOffset: resetScrollOffset)
     }
+  }
+
+  private func scaleToFit(resetScrollOffset: Bool) {
+    self.pdfView.scaleToFit(
+      contentPadding: self.contentPadding,
+      fitMode: self.fitMode,
+      minScaleFactor: self.minScaleFactor,
+      scrollContentPadding: self.contentPadding,
+      defaultPagePlacementPadding: self.defaultPagePlacementPadding,
+      resetScrollOffset: resetScrollOffset
+    )
+  }
+
+  private func updateDisplayConfiguration() {
+    self.pdfView.displayDirection = self.isHorizontalModeEnabled ? .horizontal : .vertical
+    self.pdfView.displayMode = self.isPagingEnabled ? .singlePage : .singlePageContinuous
+
+    let pageViewOptions: [AnyHashable: Any]? = self.isPagingEnabled
+      ? [UIPageViewController.OptionsKey.interPageSpacing: CGFloat(self.pageGap)]
+      : nil
+
+    self.pdfView.usePageViewController(
+      self.isPagingEnabled,
+      withViewOptions: pageViewOptions
+    )
+  }
+
+  private func updatePageBreakMargins() {
+    let shouldDisplayPageBreaks = !self.isPagingEnabled && self.pageGap > 0
+    let gap = shouldDisplayPageBreaks ? CGFloat(self.pageGap) : 0
+
+    self.pdfView.displaysPageBreaks = shouldDisplayPageBreaks
+    self.pdfView.pageBreakMargins = UIEdgeInsets(
+      top: 0,
+      left: 0,
+      bottom: self.isHorizontalModeEnabled ? 0 : gap,
+      right: self.isHorizontalModeEnabled ? gap : 0
+    )
+    self.pdfView.layoutDocumentView()
+  }
+
+  private var defaultPagePlacementPadding: UIEdgeInsets {
+    self.isPagingEnabled ? self.contentPadding : .zero
+  }
+
+  private func updatePdfViewFrame() {
+    self.pdfView.frame = bounds
   }
 
   private func setupListeners() {
@@ -289,7 +326,7 @@ class KJExpoPdfView: ExpoView {
       name: .PDFViewPageChanged,
       object: pdfView
     )
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(handleDocumentChanged),

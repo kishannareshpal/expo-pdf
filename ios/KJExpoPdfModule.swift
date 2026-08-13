@@ -43,6 +43,10 @@ public class KJExpoPdfModule: Module {
         view.setContentPadding(contentPadding?.toEdgeInset())
       }
 
+      Prop("minScaleFactor") { (view: KJExpoPdfView, minScaleFactor: Double?) in
+        view.setMinScaleFactor(minScaleFactor)
+      }
+
       Prop("fitMode") { (view: KJExpoPdfView, fitMode: FitMode?) in
         view.setFitMode(fitMode)
       }

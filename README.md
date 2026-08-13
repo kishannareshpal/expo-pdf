@@ -5,7 +5,7 @@
 [![NPM Version](https://img.shields.io/npm/v/%40kishannareshpal%2Fexpo-pdf?style=flat&logo=npm&label=%40kishannareshpal%2Fexpo-pdf)](https://www.npmjs.com/package/@kishannareshpal/expo-pdf)
 [![GitHub Repo stars](https://img.shields.io/github/stars/kishannareshpal/expo-pdf?style=flat)](https://github.com/kishannareshpal/expo-pdf/stargazers)
 
-A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native* PDF rendering engines.
+A cross-platform, high-performance PDF viewer for React Native and Expo, built on top of native\* PDF rendering engines.
 
 | [iOS](./docs/preview-ios.mp4)          | [Android](./docs/preview-android.mp4)          |
 | -------------------------------------- | ---------------------------------------------- |
@@ -15,7 +15,7 @@ A cross-platform, high-performance PDF viewer for React Native and Expo, built o
 
 - Supports Android and iOS
   - Uses Apple's [`PDFKit`](https://developer.apple.com/documentation/pdfkit/pdfview) on iOS
-  - *Uses [kishannareshpal/AndroidPdfViewer](https://github.com/kishannareshpal/AndroidPdfViewer) on Android which is a maintained
+  - \*Uses [kishannareshpal/AndroidPdfViewer](https://github.com/kishannareshpal/AndroidPdfViewer) on Android which is a maintained
     fork of [barteksc/AndroidPdfViewerV2](https://github.com/kishannareshpal/AndroidPdfViewer) which uses the open-source [PDFium](https://pdfium.googlesource.com/pdfium/+/HEAD/docs/getting-started.md) PDF rendering engine.
     - Note: We'll be looking to switch to [`androidx.pdf`](https://developer.android.com/jetpack/androidx/releases/pdf) on Android once that becomes stable.
 - Load PDFs from local file paths
@@ -232,8 +232,15 @@ export const App = () => {
       <td><code>contentPadding</code></td>
       <td>No</td>
       <td><a href="#contentpadding"><code>ContentPadding</code></a></td>
-      <td>Padding applied around the document inside the viewer container.</td>
+      <td>Padding applied around the document inside the viewer container. In paging mode, this affects the default fitted page placement; zoomed pages can render across the padded area while pan limits preserve padding at the page edges. In continuous mode, this is scrollable padding around the document flow.</td>
       <td><code>{ top: 0, left: 0, right: 0, bottom: 0 }</code></td>
+    </tr>
+    <tr>
+      <td><code>minScaleFactor</code></td>
+      <td>No</td>
+      <td><code>number</code></td>
+      <td>Minimum zoom scale allowed by the viewer. Currently supported on iOS only; Android support is planned.</td>
+      <td><code>undefined</code></td>
     </tr>
     <tr>
       <td><code>fitMode</code></td>
