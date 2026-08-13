@@ -1,7 +1,7 @@
-import { ScrollView, View } from "react-native"
-import { ExampleCard } from "../components/example-card";
-import { ExampleItem } from "../lib/types";
-import { Stack } from "expo-router";
+import { ScrollView, View } from 'react-native';
+import { ExampleCard } from '../components/example-card';
+import { ExampleItem } from '../lib/types';
+import { Stack } from 'expo-router';
 
 const EXAMPLES: ExampleItem[] = [
   {
@@ -9,6 +9,12 @@ const EXAMPLES: ExampleItem[] = [
     title: 'Standard PDF',
     description: 'Renders a standard PDF file with multiple pages.',
     href: '/examples/standard',
+  },
+  {
+    key: 'props',
+    title: 'Props',
+    description: 'Changes every configurable PDF viewer prop from one screen.',
+    href: '/examples/props',
   },
   {
     key: 'paging',
@@ -25,7 +31,8 @@ const EXAMPLES: ExampleItem[] = [
   {
     key: 'content-padding',
     title: 'Content padding',
-    description: 'Renders a PDF file with custom content padding around the entire document.',
+    description:
+      'Renders a PDF file with custom content padding around the entire document.',
     href: '/examples/content-padding',
   },
   {
@@ -37,10 +44,11 @@ const EXAMPLES: ExampleItem[] = [
   {
     key: 'color-inversion',
     title: 'Color inversion',
-    description: 'Renders a PDF file with color inversion (for example many PDF documents have white pages so this can be used to make it dark, however the image colors in the document are also inverted)',
+    description:
+      'Renders a PDF file with color inversion (for example many PDF documents have white pages so this can be used to make it dark, however the image colors in the document are also inverted)',
     href: '/examples/color-inversion',
-  }
-]
+  },
+];
 
 const HomeScreen = () => {
   return (
@@ -63,7 +71,7 @@ const HomeScreen = () => {
         </View>
       </ScrollView>
     </View>
-  )
-}
+  );
+};
 
 export default HomeScreen;
