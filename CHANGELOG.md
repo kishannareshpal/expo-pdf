@@ -13,6 +13,12 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## Unreleased
+
+### 🐛 Bug fixes
+
+- [ios] Enable native page navigation in paging mode, recompute gaps when direction changes, and reject invalid fit scales (#24, #25, #28).
+
 ## 0.3.2 - 2026-03-24
 
 ### 🐛 Bug Fixes

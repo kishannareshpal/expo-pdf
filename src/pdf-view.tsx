@@ -135,13 +135,14 @@ export type PdfViewProps = BaseProps & {
 
 export const PdfView = ({
   style,
+  minScaleFactor,
   onLoadComplete,
   onError,
   onPageChanged,
   ...props
 }: PdfViewProps) => {
   const iosOnlyProps =
-    Platform.OS === 'ios' ? { minScaleFactor: props.minScaleFactor } : {};
+    Platform.OS === 'ios' ? { minScaleFactor } : {};
 
   return (
     <NativePdfView

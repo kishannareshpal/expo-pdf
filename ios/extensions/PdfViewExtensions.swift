@@ -25,14 +25,19 @@ extension PDFView {
     let viewSize = self.bounds.size
     let pageSize = page.bounds(for: self.displayBox).size
 
-    guard viewSize.width > 0, pageSize.width > 0, pageSize.height > 0 else {
+    guard viewSize.width.isFinite, viewSize.height.isFinite,
+      pageSize.width.isFinite, pageSize.height.isFinite,
+      viewSize.width > 0, viewSize.height > 0, pageSize.width > 0, pageSize.height > 0
+    else {
       return
     }
 
     let availableWidth = viewSize.width - contentPadding.left - contentPadding.right
     let availableHeight = viewSize.height - contentPadding.top - contentPadding.bottom
 
-    guard availableWidth > 0, availableHeight > 0 else {
+    guard availableWidth.isFinite, availableHeight.isFinite,
+      availableWidth > 0, availableHeight > 0
+    else {
       return
     }
 
@@ -51,6 +56,10 @@ extension PDFView {
 
     let effectiveMinScale = configuredMinScaleFactor ?? defaultScale
     let targetScale = max(defaultScale, effectiveMinScale)
+
+    guard effectiveMinScale.isFinite, effectiveMinScale > 0,
+      targetScale.isFinite, targetScale > 0
+    else { return }
 
     self.performWithoutScaleAnimation {
       self.minScaleFactor = effectiveMinScale

@@ -151,7 +151,7 @@ class KJExpoPdfView: ExpoView {
   }
 
   func setMinScaleFactor(_ scaleFactor: Double?) {
-    if let scaleFactor, scaleFactor > 0 {
+    if let scaleFactor, scaleFactor.isFinite, scaleFactor > 0 {
       self.minScaleFactor = CGFloat(scaleFactor)
     } else {
       self.minScaleFactor = nil
