@@ -103,11 +103,10 @@ class KJExpoPdfView: ExpoView {
   }
 
   func setPassword(_ password: String?) {
+    guard self.password != password else { return }
     self.password = password
 
-    // Reload the PDF as it needs to perform the unlock attempt
-    // if password has been set, or lock if password's been removed
-    if self.pdfView.document?.isLocked == true {
+    if self.documentURL != nil {
       self.reloadPdf()
     }
   }
@@ -210,10 +209,12 @@ class KJExpoPdfView: ExpoView {
 
   @objc private func handleDocumentChanged() {
     guard 
-      let document = pdfView.document 
+      let document = pdfView.document,
+      !document.isLocked
     else { return }
     
-    DispatchQueue.main.async {
+    DispatchQueue.main.async { [weak self] in
+      guard let self, self.pdfView.document === document, !document.isLocked else { return }
       self.onLoadComplete([
         "pageCount": document.pageCount
       ])
@@ -221,6 +222,7 @@ class KJExpoPdfView: ExpoView {
   }
 
   private func reloadPdf() {
+    self.pdfView.document = nil
     guard let document = self.loadDocument() else {
       return
     }
@@ -233,12 +235,14 @@ class KJExpoPdfView: ExpoView {
             .passwordIncorrect,
             "The provided password was incorrect"
           )
+          return
         }
       } else {
         reportError(
           .passwordRequired,
           "PDF requires a password, but no password was provided"
         )
+        return
       }
     }
     self.pdfView.document = document
