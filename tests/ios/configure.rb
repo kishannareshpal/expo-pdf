@@ -19,6 +19,7 @@ tests.build_configurations.each do |config|
   app_config = app.build_configurations.find { |item| item.name == config.name }
   config.build_settings.merge!({
     'GENERATE_INFOPLIST_FILE' => 'YES',
+    'EXCLUDED_SOURCE_FILE_NAMES' => 'ExpoModulesProvider.swift',
     'PRODUCT_NAME' => '$(TARGET_NAME)',
     'PRODUCT_BUNDLE_IDENTIFIER' => 'com.kishannareshpal.expopdf.tests',
     'TEST_HOST' => '$(BUILT_PRODUCTS_DIR)/expopdfexample.app/expopdfexample',
