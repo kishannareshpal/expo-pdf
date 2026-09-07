@@ -15,6 +15,7 @@ final class LayoutTests: XCTestCase {
     let document = PDFDocument()
     let image = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 400)).image { _ in }
     document.insert(try XCTUnwrap(PDFPage(image: image)), at: 0)
+    document.insert(try XCTUnwrap(PDFPage(image: image)), at: 1)
     let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".pdf")
     defer { try? FileManager.default.removeItem(at: url) }
     XCTAssertTrue(document.write(to: url))
@@ -38,6 +39,14 @@ final class LayoutTests: XCTestCase {
     let asymmetricFrame = pdf.convert(page.bounds(for: pdf.displayBox), from: page)
     XCTAssertEqual(asymmetricFrame.minX, 32, accuracy: 1)
     XCTAssertEqual(asymmetricFrame.maxX, pdf.bounds.width - 8, accuracy: 1)
+    let nextPage = try XCTUnwrap(pdf.document?.page(at: 1))
+    pdf.go(to: nextPage)
+    await withCheckedContinuation { continuation in
+      DispatchQueue.main.async { DispatchQueue.main.async { continuation.resume() } }
+    }
+    let nextFrame = pdf.convert(nextPage.bounds(for: pdf.displayBox), from: nextPage)
+    XCTAssertEqual(nextFrame.minX, 32, accuracy: 1)
+    XCTAssertEqual(nextFrame.maxX, pdf.bounds.width - 8, accuracy: 1)
   }
 
   func testPagingUsesTheNativePageController() throws {

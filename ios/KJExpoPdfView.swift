@@ -193,7 +193,7 @@ class KJExpoPdfView: ExpoView {
     ])
 
     if self.isPagingEnabled {
-      self.scaleToFit(resetScrollOffset: true)
+      self.autoScale(resetScrollOffset: true)
       return
     }
 
