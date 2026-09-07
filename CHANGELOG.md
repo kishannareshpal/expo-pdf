@@ -13,6 +13,12 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## Unreleased
+
+### 🐛 Bug fixes
+
+- [ios] Reload password changes and emit load-complete events only for the current, successfully unlocked document (#22, #23).
+
 ## 0.3.2 - 2026-03-24
 
 ### 🐛 Bug Fixes
