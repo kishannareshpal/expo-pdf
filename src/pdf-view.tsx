@@ -1,7 +1,14 @@
 import { requireNativeView } from 'expo';
 import * as React from 'react';
 
-import { ContentPadding, FitMode, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from './types';
+import {
+  ContentPadding,
+  FitMode,
+  OnErrorEventPayload,
+  OnLoadCompleteEventPayload,
+  OnPageChangedEventPayload,
+  PdfViewRef,
+} from './types';
 import { NativeSyntheticEvent, StyleSheet, ViewProps } from 'react-native';
 import { forwardNativeEventTo } from './utils';
 
@@ -72,7 +79,7 @@ type BaseProps = ViewProps & {
    * Defaults to false.
    */
   pageColorInverted?: boolean;
-}
+};
 
 type NativePdfViewProps = BaseProps & {
   /**
@@ -95,50 +102,50 @@ type NativePdfViewProps = BaseProps & {
    * Fired when the PDF fails to load, decrypt, or render.
    * The payload contains error information.
    */
-  onError?: (
-    event: NativeSyntheticEvent<OnErrorEventPayload>
-  ) => void;
+  onError?: (event: NativeSyntheticEvent<OnErrorEventPayload>) => void;
 };
 
-const NativePdfView: React.ComponentType<NativePdfViewProps> = requireNativeView('KJExpoPdf');
+const NativePdfView: React.ComponentType<
+  NativePdfViewProps & React.RefAttributes<PdfViewRef>
+> = requireNativeView('KJExpoPdf');
 
 // -----------
 
 export type PdfViewProps = BaseProps & {
-  onLoadComplete?: (params: OnLoadCompleteEventPayload) => void,
-  onPageChanged?: (params: OnPageChangedEventPayload) => void,
-  onError?: (params: OnErrorEventPayload) => void
+  onLoadComplete?: (params: OnLoadCompleteEventPayload) => void;
+  onPageChanged?: (params: OnPageChangedEventPayload) => void;
+  onError?: (params: OnErrorEventPayload) => void;
 };
 
-export const PdfView = ({
-  style,
-  onLoadComplete,
-  onError,
-  onPageChanged,
-  ...props
-}: PdfViewProps) => {
-  return (
-    <NativePdfView
-      style={[styles.container, style]}
-      uri={props.uri}
-      doubleTapToZoom={props.doubleTapToZoom}
-      horizontal={props.horizontal}
-      pageGap={props.pageGap}
-      pagingEnabled={props.pagingEnabled}
-      password={props.password}
-      contentPadding={props.contentPadding}
-      fitMode={props.fitMode}
-      autoScale={props.autoScale}
-      pageColorInverted={props.pageColorInverted}
-      onLoadComplete={forwardNativeEventTo(onLoadComplete)}
-      onPageChanged={forwardNativeEventTo(onPageChanged)}
-      onError={forwardNativeEventTo(onError)}
-    />
-  )
-}
+export const PdfView = React.forwardRef<PdfViewRef, PdfViewProps>(
+  ({ style, onLoadComplete, onError, onPageChanged, ...props }, ref) => {
+    return (
+      <NativePdfView
+        ref={ref}
+        {...props}
+        style={[styles.container, style]}
+        uri={props.uri}
+        doubleTapToZoom={props.doubleTapToZoom}
+        horizontal={props.horizontal}
+        pageGap={props.pageGap}
+        pagingEnabled={props.pagingEnabled}
+        password={props.password}
+        contentPadding={props.contentPadding}
+        fitMode={props.fitMode}
+        autoScale={props.autoScale}
+        pageColorInverted={props.pageColorInverted}
+        onLoadComplete={forwardNativeEventTo(onLoadComplete)}
+        onPageChanged={forwardNativeEventTo(onPageChanged)}
+        onError={forwardNativeEventTo(onError)}
+      />
+    );
+  }
+);
+
+PdfView.displayName = 'PdfView';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#eeeeee'
-  }
-})
+    backgroundColor: '#eeeeee',
+  },
+});

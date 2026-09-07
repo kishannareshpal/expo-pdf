@@ -144,6 +144,18 @@ The `example/` directory contains a test app to develop and test the changes you
 
 ## Testing
 
+### iOS native regression tests
+
+After installing the root and example dependencies, generate the example project with `pnpm exec expo prebuild --no-install` from `example/`. From the repository root, run `ruby tests/ios/configure.rb`, then run `pod install` from `example/ios/`.
+
+Run the native tests against a booted simulator:
+
+```zsh
+xcodebuild -workspace example/ios/expopdfexample.xcworkspace -scheme ExpoPdfTests -destination 'platform=iOS Simulator,name=iPhone Air' test
+```
+
+The tests exercise the module's actual PDFKit view and native event dispatchers. Use an available simulator name, or a physical device destination with your development signing team configured.
+
 ### Manual Testing
 
 1. Use the example app to manually test your changes

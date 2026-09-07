@@ -12,6 +12,7 @@ import java.io.FileNotFoundException
 import androidx.core.net.toUri
 import com.github.barteksc.pdfviewer.util.SnapEdge
 import com.kishannareshpal.expopdf.lib.FitMode
+import io.legere.pdfiumandroid.PdfDocument
 
 class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context, appContext) {
   companion object {
@@ -85,6 +86,23 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
     this.reloadPdf()
   }
 
+  fun getBookmarks(): List<Map<String, Any?>> {
+    fun bookmarks(items: List<PdfDocument.Bookmark>): List<Map<String, Any?>> = items.map { item ->
+      mapOf(
+        "title" to (item.title ?: ""),
+        "pageIndex" to item.pageIdx.takeIf { it >= 0 && it < pdfView.pageCount }?.toInt(),
+        "children" to bookmarks(item.children)
+      )
+    }
+    return bookmarks(pdfView.tableOfContents)
+  }
+
+  fun goToPage(pageIndex: Int): Boolean {
+    if (pageIndex !in 0 until pdfView.pageCount) return false
+    pdfView.jumpTo(pageIndex)
+    return true
+  }
+
   fun setPagingEnabled(enabled: Boolean?) {
     this.isPagingEnabled = enabled ?: DEFAULT_PAGING_ENABLED
     this.reloadPdf()
@@ -147,6 +165,7 @@ class KJExpoPdfView(context: Context, appContext: AppContext) : ExpoView(context
     }
 
     pdfBuilder
+      .enableAnnotationRendering(true)
       .pageFitPolicy(this.fitMode.toFitPolicy())
       .enableDoubletap(this.isDoubleTapZoomEnabled)
       .swipeHorizontal(this.isHorizontalModeEnabled)

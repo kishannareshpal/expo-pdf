@@ -24,6 +24,14 @@ class KJExpoPdfModule : Module() {
     View(KJExpoPdfView::class) {
       Events("onLoadComplete", "onPageChanged", "onError")
 
+      AsyncFunction("getBookmarks") { view: KJExpoPdfView ->
+        view.getBookmarks()
+      }
+
+      AsyncFunction("goToPage") { view: KJExpoPdfView, pageIndex: Int ->
+        view.goToPage(pageIndex)
+      }
+
       Prop("uri") { view: KJExpoPdfView, uri: String? ->
         view.setUri(uri)
       }

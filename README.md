@@ -388,3 +388,25 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 ## License
 
 MIT
+
+### Annotations and bookmarks
+
+Existing PDF annotations are rendered by PDFKit on iOS and AndroidPdfViewer on Android. This includes supported annotation appearances already embedded in the file. The component does not provide tools to create, edit, or save annotations.
+
+Use a `PdfViewRef` to read the document's outline and navigate to a bookmark:
+
+```tsx
+const pdf = useRef<PdfViewRef>(null);
+
+<PdfView
+  ref={pdf}
+  uri={localPdfUri}
+  onLoadComplete={async () => {
+    const bookmarks = await pdf.current?.getBookmarks();
+    const pageIndex = bookmarks?.[0]?.pageIndex;
+    if (pageIndex != null) await pdf.current?.goToPage(pageIndex);
+  }}
+/>
+```
+
+`getBookmarks()` returns nested `{ title, pageIndex, children }` entries. Page indexes are zero-based; `pageIndex` is `null` for entries without a valid local page destination. Documents without an outline return an empty array. `goToPage(pageIndex)` returns `false` if the document is not loaded or the index is outside the document. Bookmarks here are the PDF's existing outline, not user-created reading-position bookmarks.
