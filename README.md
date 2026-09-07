@@ -388,3 +388,7 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md)
 ## License
 
 MIT
+
+### Android accessibility
+
+The viewer exposes the current page’s embedded text and page number to Android accessibility services, with actions to move to the next or previous page. Image-only pages report that no readable text is available; OCR is not included.
