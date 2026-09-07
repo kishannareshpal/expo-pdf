@@ -102,6 +102,36 @@ class KJExpoPdfView: ExpoView {
     self.reloadPdf()
   }
 
+  func getBookmarks() -> [[String: Any]] {
+    guard let document = pdfView.document, !document.isLocked,
+      let root = document.outlineRoot
+    else { return [] }
+
+    func bookmarks(in outline: PDFOutline) -> [[String: Any]] {
+      (0..<outline.numberOfChildren).compactMap { index in
+        guard let child = outline.child(at: index) else { return nil }
+        let destination = child.destination ?? (child.action as? PDFActionGoTo)?.destination
+        let pageIndex = destination?.page.map { document.index(for: $0) }
+        return [
+          "title": child.label ?? "",
+          "pageIndex": pageIndex.flatMap { (0..<document.pageCount).contains($0) ? $0 : nil } as Any? ?? NSNull(),
+          "children": bookmarks(in: child),
+        ]
+      }
+    }
+
+    return bookmarks(in: root)
+  }
+
+  func goToPage(_ pageIndex: Int) -> Bool {
+    guard let document = pdfView.document, !document.isLocked,
+      (0..<document.pageCount).contains(pageIndex),
+      let page = document.page(at: pageIndex)
+    else { return false }
+    pdfView.go(to: page)
+    return true
+  }
+
   func setPassword(_ password: String?) {
     self.password = password
 

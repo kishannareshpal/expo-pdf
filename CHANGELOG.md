@@ -13,6 +13,12 @@
 _This version does not introduce any user-facing changes._
 -->
 
+## Unreleased
+
+### 🎉 New features
+
+- [ios|android] Expose document bookmarks and page navigation through `PdfViewRef`, and render existing annotations on Android (#27).
+
 ## 0.3.2 - 2026-03-24
 
 ### 🐛 Bug Fixes
