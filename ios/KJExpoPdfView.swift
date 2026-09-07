@@ -199,7 +199,6 @@ class KJExpoPdfView: ExpoView {
 
     DispatchQueue.main.async {
       self.pdfView.applyContentPadding(self.contentPadding)
-      self.pdfView.applyDefaultPagePlacement(self.defaultPagePlacementPadding)
     }
   }
 
@@ -278,7 +277,6 @@ class KJExpoPdfView: ExpoView {
       fitMode: self.fitMode,
       minScaleFactor: self.minScaleFactor,
       scrollContentPadding: self.contentPadding,
-      defaultPagePlacementPadding: self.defaultPagePlacementPadding,
       resetScrollOffset: resetScrollOffset
     )
   }
@@ -309,10 +307,6 @@ class KJExpoPdfView: ExpoView {
       right: self.isHorizontalModeEnabled ? gap : 0
     )
     self.pdfView.layoutDocumentView()
-  }
-
-  private var defaultPagePlacementPadding: UIEdgeInsets {
-    self.isPagingEnabled ? self.contentPadding : .zero
   }
 
   private func updatePdfViewFrame() {

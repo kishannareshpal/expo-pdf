@@ -15,7 +15,6 @@ extension PDFView {
     fitMode: FitMode,
     minScaleFactor configuredMinScaleFactor: CGFloat? = nil,
     scrollContentPadding: UIEdgeInsets,
-    defaultPagePlacementPadding: UIEdgeInsets,
     resetScrollOffset: Bool = false
   ) {
     guard let page = self.currentPage else {
@@ -69,20 +68,7 @@ extension PDFView {
       }
 
       self.applyContentPadding(scrollContentPadding, resetScrollOffset: resetScrollOffset)
-      self.applyDefaultPagePlacement(defaultPagePlacementPadding)
     }
-  }
-
-  func applyDefaultPagePlacement(_ contentPadding: UIEdgeInsets) {
-    let offset = CGPoint(
-      x: (contentPadding.left - contentPadding.right) / 2,
-      y: (contentPadding.top - contentPadding.bottom) / 2
-    )
-
-    documentView?.transform = CGAffineTransform(
-      translationX: offset.x,
-      y: offset.y
-    )
   }
 
   func applyContentPadding(_ contentPadding: UIEdgeInsets, resetScrollOffset: Bool = false) {
@@ -94,8 +80,8 @@ extension PDFView {
 
       if resetScrollOffset || needsInitialOffset {
         var offset = scrollView.contentOffset
-        offset.x = -contentPadding.left
-        offset.y = -contentPadding.top
+        offset.x = isUsingPageViewController ? (contentPadding.right - contentPadding.left) / 2 : -contentPadding.left
+        offset.y = isUsingPageViewController ? (contentPadding.bottom - contentPadding.top) / 2 : -contentPadding.top
         scrollView.contentOffset = offset
       }
     }
