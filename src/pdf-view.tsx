@@ -1,8 +1,19 @@
 import { requireNativeView } from 'expo';
 import * as React from 'react';
 
-import { ContentPadding, FitMode, OnErrorEventPayload, OnLoadCompleteEventPayload, OnPageChangedEventPayload } from './types';
-import { NativeSyntheticEvent, StyleSheet, ViewProps } from 'react-native';
+import {
+  ContentPadding,
+  FitMode,
+  OnErrorEventPayload,
+  OnLoadCompleteEventPayload,
+  OnPageChangedEventPayload,
+} from './types';
+import {
+  NativeSyntheticEvent,
+  Platform,
+  StyleSheet,
+  ViewProps,
+} from 'react-native';
 import { forwardNativeEventTo } from './utils';
 
 type BaseProps = ViewProps & {
@@ -48,8 +59,21 @@ type BaseProps = ViewProps & {
 
   /**
    * Padding applied around the document inside the viewer container.
+   *
+   * In paging mode, this affects the default fitted page placement. Zoomed pages
+   * can render across the padded area while pan limits preserve the padding at
+   * the page edges.
+   *
+   * In continuous mode, this is scrollable padding around the document flow.
    */
   contentPadding?: ContentPadding;
+
+  /**
+   * Minimum zoom scale allowed by the viewer.
+   *
+   * Currently supported on iOS only. Android support is planned.
+   */
+  minScaleFactor?: number;
 
   /**
    * Determines how the document is scaled to fit within the viewer
@@ -72,7 +96,7 @@ type BaseProps = ViewProps & {
    * Defaults to false.
    */
   pageColorInverted?: boolean;
-}
+};
 
 type NativePdfViewProps = BaseProps & {
   /**
@@ -95,28 +119,31 @@ type NativePdfViewProps = BaseProps & {
    * Fired when the PDF fails to load, decrypt, or render.
    * The payload contains error information.
    */
-  onError?: (
-    event: NativeSyntheticEvent<OnErrorEventPayload>
-  ) => void;
+  onError?: (event: NativeSyntheticEvent<OnErrorEventPayload>) => void;
 };
 
-const NativePdfView: React.ComponentType<NativePdfViewProps> = requireNativeView('KJExpoPdf');
+const NativePdfView: React.ComponentType<NativePdfViewProps> =
+  requireNativeView('KJExpoPdf');
 
 // -----------
 
 export type PdfViewProps = BaseProps & {
-  onLoadComplete?: (params: OnLoadCompleteEventPayload) => void,
-  onPageChanged?: (params: OnPageChangedEventPayload) => void,
-  onError?: (params: OnErrorEventPayload) => void
+  onLoadComplete?: (params: OnLoadCompleteEventPayload) => void;
+  onPageChanged?: (params: OnPageChangedEventPayload) => void;
+  onError?: (params: OnErrorEventPayload) => void;
 };
 
 export const PdfView = ({
   style,
+  minScaleFactor,
   onLoadComplete,
   onError,
   onPageChanged,
   ...props
 }: PdfViewProps) => {
+  const iosOnlyProps =
+    Platform.OS === 'ios' ? { minScaleFactor } : {};
+
   return (
     <NativePdfView
       style={[styles.container, style]}
@@ -127,6 +154,7 @@ export const PdfView = ({
       pagingEnabled={props.pagingEnabled}
       password={props.password}
       contentPadding={props.contentPadding}
+      {...iosOnlyProps}
       fitMode={props.fitMode}
       autoScale={props.autoScale}
       pageColorInverted={props.pageColorInverted}
@@ -134,11 +162,11 @@ export const PdfView = ({
       onPageChanged={forwardNativeEventTo(onPageChanged)}
       onError={forwardNativeEventTo(onError)}
     />
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#eeeeee'
-  }
-})
+    backgroundColor: '#eeeeee',
+  },
+});

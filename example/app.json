@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kishannareshpal.expopdf.example"
+      "bundleIdentifier": "com.kishannareshpal.expopdf.example",
+      "appleTeamId": "75D56365P2"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,9 +28,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-asset",
-      "expo-router"
-    ]
+    "plugins": ["expo-asset", "expo-router"]
   }
 }
