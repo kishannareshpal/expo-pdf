@@ -12,13 +12,13 @@ import {
 import { Pressable, Text, View } from 'react-native';
 import { useCallback, useState } from 'react';
 import { useAssetLocalUri } from '../../lib/use-asset-local-uri';
-import { PagingControlsSheet } from './paging-controls-sheet';
+import { PagingControlsSheet } from '../../components/paging/paging-controls-sheet';
 import {
   MAX_CONTENT_PADDING,
   PADDING_STEP,
   usePagingPreferencesStore,
-} from './paging-preferences-store';
-import type { PaddingSide, PdfPadding } from './paging-preferences-store';
+} from '../../components/paging/paging-preferences-store';
+import type { PaddingSide, PdfPadding } from '../../components/paging/paging-preferences-store';
 
 type PagingMode = 'vertical' | 'horizontal';
 
